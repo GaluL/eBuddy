@@ -1,0 +1,15 @@
+﻿<Page
+    x:Class="eBuddy.AuthenticationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eBuddy"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <StackPanel Orientation="Vertical">
+        <Button Name="ButtonFbLogin" Click="ButtonFbLogin_Click">Login with Facebook</Button>
+        <Button Name="ButtonGoogleLogin" Click="ButtonGoogleLogin_Click">Login with Google</Button>
+        <Button Name="ButtonBack" Click="ButtonBack_OnClick">Back</Button>
+    </StackPanel>
+</Page>

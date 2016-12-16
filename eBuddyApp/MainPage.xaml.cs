@@ -33,12 +33,26 @@ namespace eBuddy
         private IMobileServiceTable<TodoItem> todoTable = App.MobileService.GetTable<TodoItem>();
 #endif
 
-        // Define a member variable for storing the signed-in user. 
-        private MobileServiceUser user;
+
 
         public MainPage()
         {
             this.InitializeComponent();
+
+            this.Loaded += MainPage_Loading;
+        }
+
+        private void MainPage_Loading(object sender, RoutedEventArgs e)
+        {
+            if (!Authenticator.Instance.IsAuthenticated)
+            {
+                this.Frame.Navigate(typeof(AuthenticationPage));
+            }
+
+            //if (!BandHandler.Instance.IsPaired)
+            //{
+            //    this.Frame.Navigate(typeof(BandPage));
+            //}
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -61,78 +75,78 @@ namespace eBuddy
 #endif
         }
 
-        private async Task RefreshTodoItems()
-        {
-            MobileServiceInvalidOperationException exception = null;
-            try
-            {
-                // This code refreshes the entries in the list view by querying the TodoItems table.
-                // The query excludes completed TodoItems.
-                items = await todoTable
-                    .Where(todoItem => todoItem.Complete == false)
-                    .ToCollectionAsync();
-            }
-            catch (MobileServiceInvalidOperationException e)
-            {
-                exception = e;
-            }
+        //private async Task RefreshTodoItems()
+        //{
+        //    MobileServiceInvalidOperationException exception = null;
+        //    try
+        //    {
+        //        // This code refreshes the entries in the list view by querying the TodoItems table.
+        //        // The query excludes completed TodoItems.
+        //        items = await todoTable
+        //            .Where(todoItem => todoItem.Complete == false)
+        //            .ToCollectionAsync();
+        //    }
+        //    catch (MobileServiceInvalidOperationException e)
+        //    {
+        //        exception = e;
+        //    }
 
-            if (exception != null)
-            {
-                await new MessageDialog(exception.Message, "Error loading items").ShowAsync();
-            }
-            else
-            {
-                ListItems.ItemsSource = items;
-                this.ButtonSave.IsEnabled = true;
-            }
-        }
+        //    if (exception != null)
+        //    {
+        //        await new MessageDialog(exception.Message, "Error loading items").ShowAsync();
+        //    }
+        //    else
+        //    {
+        //        ListItems.ItemsSource = items;
+        //        this.ButtonSave.IsEnabled = true;
+        //    }
+        //}
 
-        private async Task UpdateCheckedTodoItem(TodoItem item)
-        {
-            // This code takes a freshly completed TodoItem and updates the database.
-			// After the MobileService client responds, the item is removed from the list.
-            await todoTable.UpdateAsync(item);
-            items.Remove(item);
-            ListItems.Focus(Windows.UI.Xaml.FocusState.Unfocused);
+//        private async Task UpdateCheckedTodoItem(TodoItem item)
+//        {
+//            // This code takes a freshly completed TodoItem and updates the database.
+//			// After the MobileService client responds, the item is removed from the list.
+//            await todoTable.UpdateAsync(item);
+//            items.Remove(item);
+//            ListItems.Focus(Windows.UI.Xaml.FocusState.Unfocused);
 
-#if OFFLINE_SYNC_ENABLED
-            await App.MobileService.SyncContext.PushAsync(); // offline sync
-#endif
-        }
+//#if OFFLINE_SYNC_ENABLED
+//            await App.MobileService.SyncContext.PushAsync(); // offline sync
+//#endif
+//        }
 
-        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            ButtonRefresh.IsEnabled = false;
+//        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+//        {
+//            ButtonRefresh.IsEnabled = false;
 
-#if OFFLINE_SYNC_ENABLED
-            await SyncAsync(); // offline sync
-#endif
-            await RefreshTodoItems();
+//#if OFFLINE_SYNC_ENABLED
+//            await SyncAsync(); // offline sync
+//#endif
+//            await RefreshTodoItems();
 
-            ButtonRefresh.IsEnabled = true;
-        }
+//            ButtonRefresh.IsEnabled = true;
+//        }
 
-        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {
-            var todoItem = new TodoItem { Text = TextInput.Text };
-            TextInput.Text = "";
-            await InsertTodoItem(todoItem);
-        }
+        //private async void ButtonSave_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var todoItem = new TodoItem { Text = TextInput.Text };
+        //    TextInput.Text = "";
+        //    await InsertTodoItem(todoItem);
+        //}
 
-        private async void CheckBoxComplete_Checked(object sender, RoutedEventArgs e)
-        {
-            CheckBox cb = (CheckBox)sender;
-            TodoItem item = cb.DataContext as TodoItem;
-            await UpdateCheckedTodoItem(item);
-        }
+        //private async void CheckBoxComplete_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    CheckBox cb = (CheckBox)sender;
+        //    TodoItem item = cb.DataContext as TodoItem;
+        //    await UpdateCheckedTodoItem(item);
+        //}
 
-        private void TextInput_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
-        {
-            if (e.Key == Windows.System.VirtualKey.Enter) {
-                ButtonSave.Focus(FocusState.Programmatic);
-            }
-        }
+        //private void TextInput_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        //{
+        //    if (e.Key == Windows.System.VirtualKey.Enter) {
+        //        ButtonSave.Focus(FocusState.Programmatic);
+        //    }
+        //}
 
         #region Offline sync
 #if OFFLINE_SYNC_ENABLED
@@ -155,87 +169,5 @@ namespace eBuddy
         }
 #endif
         #endregion
-
-        // Define a method that performs the authentication process
-        // using a Facebook sign-in. 
-        private async Task<bool> AuthenticateAsync()
-        {
-            string message;
-            bool success = false;
-
-            // This sample uses the Facebook provider.
-            var provider = MobileServiceAuthenticationProvider.Facebook;
-
-            // Use the PasswordVault to securely store and access credentials.
-            PasswordVault vault = new PasswordVault();
-            PasswordCredential credential = null;
-
-            try
-            {
-                // Try to get an existing credential from the vault.
-                credential = vault.FindAllByResource(provider.ToString()).FirstOrDefault();
-            }
-            catch (Exception)
-            {
-                // When there is no matching resource an error occurs, which we ignore.
-            }
-
-            if (credential != null)
-            {
-                // Create a user from the stored credentials.
-                user = new MobileServiceUser(credential.UserName);
-                credential.RetrievePassword();
-                user.MobileServiceAuthenticationToken = credential.Password;
-
-                // Set the user from the stored credentials.
-                App.MobileService.CurrentUser = user;
-
-                // Consider adding a check to determine if the token is 
-                // expired, as shown in this post: http://aka.ms/jww5vp.
-
-                success = true;
-                message = string.Format("Cached credentials for user - {0}", user.UserId);
-            }
-            else
-            {
-                try
-                {
-                    // Login with the identity provider.
-                    user = await App.MobileService
-                        .LoginAsync(provider);
-
-                    // Create and store the user credentials.
-                    credential = new PasswordCredential(provider.ToString(),
-                        user.UserId, user.MobileServiceAuthenticationToken);
-                    vault.Add(credential);
-
-                    success = true;
-                    message = string.Format("You are now logged in - {0}", user.UserId);
-                }
-                catch (MobileServiceInvalidOperationException)
-                {
-                    message = "You must log in. Login Required";
-                }
-            }
-
-            var dialog = new MessageDialog(message);
-            dialog.Commands.Add(new UICommand("OK"));
-            await dialog.ShowAsync();
-
-            return success;
-        }
-
-        private async void ButtonLogin_Click(object sender, RoutedEventArgs e)
-        {
-            // Login the user and then load data from the mobile app.
-            if (await AuthenticateAsync())
-            {
-                // Switch the buttons and load items from the mobile app.
-                ButtonLogin.Visibility = Visibility.Collapsed;
-                ButtonSave.Visibility = Visibility.Visible;
-                //await InitLocalStoreAsync(); //offline sync support.
-                await RefreshTodoItems();
-            }
-        }
     }
 }
