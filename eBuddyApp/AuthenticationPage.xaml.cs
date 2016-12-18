@@ -45,5 +45,10 @@ namespace eBuddy
         {
             throw new NotImplementedException();
         }
+
+        private void ButtomServerPing_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

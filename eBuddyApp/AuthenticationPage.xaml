@@ -7,9 +7,61 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical">
+    <Grid Background="#242e38">
+        <Grid VerticalAlignment="Center" Background="White"
+              Margin="8"
+              Padding="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Button Name="ButtonFbLogin"
+                    Grid.Row="0"
+                    Margin="8"
+                    Click="ButtonFbLogin_Click">Login with Facebook
+            </Button>
+            <Button Name="ButtonGoogleLogin"
+                    Grid.Row="1"
+                    Margin="8"
+                    Click="ButtonGoogleLogin_Click">Login with Google
+            </Button>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Name="ButtomServerPing"
+                    Grid.Column="0"
+                    Margin="8"
+                    Background="#1cb3bc"
+                    Foreground="White"
+                    HorizontalAlignment="Stretch"
+                    Click="ButtomServerPing_Click">Ping to server
+                </Button>
+                <Button Name="ButtonBack"
+                    Grid.Column="1"
+                    Margin="8"
+                    Background="#D32424"
+                    Foreground="White"
+                    HorizontalAlignment="Stretch"
+                    Click="ButtonBack_OnClick">Back
+                </Button>
+   
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
+    
+    
+    
+<!--<StackPanel Orientation="Vertical">
         <Button Name="ButtonFbLogin" Click="ButtonFbLogin_Click">Login with Facebook</Button>
         <Button Name="ButtonGoogleLogin" Click="ButtonGoogleLogin_Click">Login with Google</Button>
         <Button Name="ButtonBack" Click="ButtonBack_OnClick">Back</Button>
+        <Button Name="ButtomServerPing" Click="ButtomServerPing_Click">Ping to server</Button>
+
+
     </StackPanel>
-</Page>
+</Page>-->
