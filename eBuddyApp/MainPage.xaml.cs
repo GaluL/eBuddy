@@ -15,6 +15,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Linq;
+using Windows.Devices.Geolocation;
 using Windows.Security.Credentials;
 using eBuddy.DataModel;
 
@@ -45,6 +46,9 @@ namespace eBuddy
 
             this.Loaded += MainPage_Loading;
         }
+
+        public static readonly Geopoint SeattleGeopoint = new Geopoint(new BasicGeoposition() { Latitude = 32.08, Longitude = 34.77 });
+
 
         private void MainPage_Loading(object sender, RoutedEventArgs e)
         {
