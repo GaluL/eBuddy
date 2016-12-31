@@ -9,8 +9,18 @@
     <Pivot x:Name="rootPivot" Title="Pivot Title">
         <PivotItem Header="Me">
             <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 1."/>
+            <Grid>
+                <TextBlock Text="Content of pivot item 1."/>
+                <Button Name="ButtonSave"
+                    Grid.Row="1"
+                    Margin="8"
+                    Click="ButtonSave_Click">
+                    button    
+                </Button>
+            </Grid>
+
         </PivotItem>
+
         <PivotItem Header="Run">
             <!--Pivot content goes here-->
             <local:RunTab/>

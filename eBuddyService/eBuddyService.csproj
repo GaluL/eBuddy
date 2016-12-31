@@ -174,8 +174,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
+    <Compile Include="Controllers\EBuddyUserController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DataObjects\eBuddyUser1.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="Models\eBuddyContext.cs" />
     <Compile Include="Startup.cs" />

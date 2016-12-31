@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using System.Linq;
 using Windows.Security.Credentials;
+using eBuddy.DataModel;
 
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;  // offline sync
@@ -32,6 +33,9 @@ namespace eBuddy
 #else
         private IMobileServiceTable<TodoItem> todoTable = App.MobileService.GetTable<TodoItem>();
 #endif
+        private MobileServiceCollection<eBuddyUser1, eBuddyUser1> Users;
+
+        private IMobileServiceTable<eBuddyUser1> eBuddyUserTable = App.MobileService.GetTable<eBuddyUser1>();
 
 
 
@@ -69,11 +73,32 @@ namespace eBuddy
             // and the mobile app backend has assigned an id, the item is added to the CollectionView.
             await todoTable.InsertAsync(todoItem);
             items.Add(todoItem);
+            
 
 #if OFFLINE_SYNC_ENABLED
             await App.MobileService.SyncContext.PushAsync(); // offline sync
 #endif
         }
+
+        private async Task InsertUserToDataBase(eBuddyUser1 eBuddyUser)
+        {
+            // This code inserts a new TodoItem into the database. After the operation completes
+            // and the mobile app backend has assigned an id, the item is added to the CollectionView.
+            await eBuddyUserTable.InsertAsync(eBuddyUser);
+            Users.Add(eBuddyUser);
+
+
+#if OFFLINE_SYNC_ENABLED
+            await App.MobileService.SyncContext.PushAsync(); // offline sync
+#endif
+        }
+
+        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
+        {
+            var eBuddyuser = new eBuddyUser1 { Id = "3030", name = "ofek", age = 10, height = 175, weight = 70};
+            await InsertUserToDataBase(eBuddyuser);
+        }
+
 
         //private async Task RefreshTodoItems()
         //{
@@ -102,30 +127,30 @@ namespace eBuddy
         //    }
         //}
 
-//        private async Task UpdateCheckedTodoItem(TodoItem item)
-//        {
-//            // This code takes a freshly completed TodoItem and updates the database.
-//			// After the MobileService client responds, the item is removed from the list.
-//            await todoTable.UpdateAsync(item);
-//            items.Remove(item);
-//            ListItems.Focus(Windows.UI.Xaml.FocusState.Unfocused);
+        //        private async Task UpdateCheckedTodoItem(TodoItem item)
+        //        {
+        //            // This code takes a freshly completed TodoItem and updates the database.
+        //			// After the MobileService client responds, the item is removed from the list.
+        //            await todoTable.UpdateAsync(item);
+        //            items.Remove(item);
+        //            ListItems.Focus(Windows.UI.Xaml.FocusState.Unfocused);
 
-//#if OFFLINE_SYNC_ENABLED
-//            await App.MobileService.SyncContext.PushAsync(); // offline sync
-//#endif
-//        }
+        //#if OFFLINE_SYNC_ENABLED
+        //            await App.MobileService.SyncContext.PushAsync(); // offline sync
+        //#endif
+        //        }
 
-//        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
-//        {
-//            ButtonRefresh.IsEnabled = false;
+        //        private async void ButtonRefresh_Click(object sender, RoutedEventArgs e)
+        //        {
+        //            ButtonRefresh.IsEnabled = false;
 
-//#if OFFLINE_SYNC_ENABLED
-//            await SyncAsync(); // offline sync
-//#endif
-//            await RefreshTodoItems();
+        //#if OFFLINE_SYNC_ENABLED
+        //            await SyncAsync(); // offline sync
+        //#endif
+        //            await RefreshTodoItems();
 
-//            ButtonRefresh.IsEnabled = true;
-//        }
+        //            ButtonRefresh.IsEnabled = true;
+        //        }
 
         //private async void ButtonSave_Click(object sender, RoutedEventArgs e)
         //{
