@@ -38,8 +38,6 @@ namespace eBuddy
 
         private IMobileServiceTable<eBuddyUser1> eBuddyUserTable = App.MobileService.GetTable<eBuddyUser1>();
 
-
-
         public MainPage()
         {
             this.InitializeComponent();
@@ -56,11 +54,6 @@ namespace eBuddy
             {
                 this.Frame.Navigate(typeof(AuthenticationPage));
             }
-
-            //if (!BandHandler.Instance.IsPaired)
-            //{
-            //    this.Frame.Navigate(typeof(BandPage));
-            //}
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)

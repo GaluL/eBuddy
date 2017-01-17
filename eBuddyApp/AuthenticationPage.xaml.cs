@@ -32,7 +32,7 @@ namespace eBuddy
             // Login the user and then load data from the mobile app.
             if (await Authenticator.Instance.AuthenticateWithFacebook())
             {
-                this.Frame.Navigate(typeof(MainPage));
+                this.Frame.Navigate(typeof(BandPage));
             }
         }
 

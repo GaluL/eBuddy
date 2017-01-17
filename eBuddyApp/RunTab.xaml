@@ -9,12 +9,6 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <!--<StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <maps:MapControl Name="MapControlViewer"/>
-        <Button Name="ButtonGo" Click="ButtonGo_OnClick">Go</Button>
-    </StackPanel>
-</UserControl>-->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
@@ -51,6 +45,17 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Margin="0,0,0,10" Grid.Row="0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="timeTitleLabel" Text="Time: "/>
+                    <TextBlock x:Name="timeDataLabel" Text="N/A"/>
+                    <TextBlock x:Name="distanceTitleLabel" Text="Distance: "/>
+                    <TextBlock x:Name="distanceDataLabel" Text="N/A"/>
+                    <TextBlock x:Name="speedTitleLabel" Text="Speed: "/>
+                    <TextBlock x:Name="speedDataLabel" Text="N/A"/>
+                    <TextBlock x:Name="heartrateTitleLabel" Text="Heartrate: "/>
+                    <TextBlock x:Name="heartrateDataLabel" Text="N/A"/>
+                </StackPanel>
+                <Button Name="ButtonGo" Click="ButtonGo_OnClick" Grid.Row="3">Go</Button>
                 <TextBlock x:Name="description" Text="Description:"/>
             </StackPanel>
             <Grid Grid.Row="1">
@@ -81,6 +86,7 @@
                                      HorizontalAlignment="Left"
                                      Loaded="MyMap_Loaded"
                                      MapTapped="MyMap_MapTapped"
+                                     MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq"
                                      />
         </Grid>
     </Grid>

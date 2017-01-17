@@ -25,6 +25,20 @@ namespace eBuddy
         public BandPage()
         {
             this.InitializeComponent();
+            BandHandler.Instance.OnConnectionStatusChange += Instance_OnConnectionStatusChange;
+        }
+
+        private void Instance_OnConnectionStatusChange(bool obj)
+        {
+            if (obj)
+            {
+                this.Frame.Navigate(typeof(MainPage));
+            }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            BandHandler.Instance.Connect();
         }
     }
 }
