@@ -34,10 +34,6 @@ namespace eBuddy
 #else
         private IMobileServiceTable<TodoItem> todoTable = App.MobileService.GetTable<TodoItem>();
 #endif
-        private MobileServiceCollection<eBuddyUser1, eBuddyUser1> Users;
-
-        private IMobileServiceTable<eBuddyUser1> eBuddyUserTable = App.MobileService.GetTable<eBuddyUser1>();
-
         private string selectitem = null;
 
 
@@ -96,26 +92,6 @@ namespace eBuddy
             await App.MobileService.SyncContext.PushAsync(); // offline sync
 #endif
         }
-
-        private async Task InsertUserToDataBase(eBuddyUser1 eBuddyUser)
-        {
-            // This code inserts a new TodoItem into the database. After the operation completes
-            // and the mobile app backend has assigned an id, the item is added to the CollectionView.
-            await eBuddyUserTable.InsertAsync(eBuddyUser);
-            Users.Add(eBuddyUser);
-
-
-#if OFFLINE_SYNC_ENABLED
-            await App.MobileService.SyncContext.PushAsync(); // offline sync
-#endif
-        }
-
-        private async void ButtonSave_Click(object sender, RoutedEventArgs e)
-        {
-            var eBuddyuser = new eBuddyUser1 { Id = "3030", name = "ofek", age = 10, height = 175, weight = 70};
-            await InsertUserToDataBase(eBuddyuser);
-        }
-
 
         //private async Task RefreshTodoItems()
         //{

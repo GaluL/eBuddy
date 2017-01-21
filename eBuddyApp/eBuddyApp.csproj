@@ -119,6 +119,7 @@
     <Compile Include="RunTab.xaml.cs">
       <DependentUpon>RunTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestRunManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

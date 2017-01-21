@@ -160,7 +160,7 @@ namespace eBuddy
             }
         }
 
-        internal void Start()
+        internal virtual void Start()
         {
             _waypoints.Clear();
             Speed = 0;
@@ -169,7 +169,7 @@ namespace eBuddy
             LocationTracker.Instance.Start();
         }
 
-        internal void Stop()
+        internal virtual void Stop()
         {
             LocationTracker.Instance.Stop();
         }
