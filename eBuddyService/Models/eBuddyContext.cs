@@ -16,13 +16,14 @@ namespace eBuddyService.Models
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
 
-        private const string connectionStringName = "Name=MS_TableConnectionString2";
+        private const string connectionStringName = "Name=MS_TableConnectionString";
 
         public eBuddyContext() : base(connectionStringName)
         {
         } 
 
         public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<UserItem> UserItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

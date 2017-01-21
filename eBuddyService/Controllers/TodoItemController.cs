@@ -9,7 +9,6 @@ using eBuddyService.Models;
 
 namespace eBuddyService.Controllers
 {
-    [Authorize]
     public class TodoItemController : TableController<TodoItem>
     {
         protected override void Initialize(HttpControllerContext controllerContext)

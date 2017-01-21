@@ -106,10 +106,10 @@
     <Compile Include="Common\QuickStartTask.xaml.cs">
       <DependentUpon>QuickStartTask.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataModel\eBuddyUser1.cs" />
     <Compile Include="DataModel\HeartRateSample.cs" />
     <Compile Include="DataModel\GPSSample.cs" />
     <Compile Include="DataModel\TodoItem.cs" />
+    <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="LocationTracker.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
