@@ -9,10 +9,19 @@ namespace eBuddy
     class TestRunManager : RunManager
     {
         // The mode
-        private const int ChillMode = 1;
-        private const int WarmUpMode = 2;
-        private const int InRunMode = 3;
-        private const int FinishedMode = 4;
+        //private const int ChillMode = 1;
+        //private const int WarmUpMode = 2;
+        //private const int InRunMode = 3;
+        //private const int FinishedMode = 4;
+
+        public enum ETestPhase
+        {
+            NotStarted,
+            Chill,
+            WarmUp,
+            InRun,
+            Finished
+        }
 
         private const int restHeartBeatTime = 20;
         private const int warmUpTime = 20;
@@ -38,7 +47,7 @@ namespace eBuddy
          *                                   3 - In run - 1200 meters of high pace running
          *                                   4 - Finished - calculate and present score.   
          */
-        private int _Status = 0;
+        private ETestPhase _Status = ETestPhase.NotStarted;
 
         // Constructor
         public TestRunManager()
@@ -59,7 +68,7 @@ namespace eBuddy
             {
                 MaxHeartrate = Heartrate;
             }
-            if (Status == ChillMode)
+            if (Status == ETestPhase.Chill)
             {
                 RestHeartrate = Heartrate;
             }
@@ -70,13 +79,14 @@ namespace eBuddy
         {
             switch (Status)
             {
-                case InRunMode:
+                case ETestPhase.InRun:
+                {
                     if (MaxSpeed < Speed)
                     {
                         MaxSpeed = Speed;
-
                     }
                     break;
+                }
             }
         }
 
@@ -84,15 +94,17 @@ namespace eBuddy
         {
             switch (Status)
             {
-                case WarmUpMode:
+                case ETestPhase.WarmUp:
+                {
                     if (obj.Minutes == warmUpTime)
                     {
                         base.Stop();
-                        Status = InRunMode;
+                        Status = ETestPhase.InRun;
                         // starting the intense run
                         base.Start();
                     }
                     break;
+                }
             }
         }
 
@@ -100,21 +112,18 @@ namespace eBuddy
         {
             switch (Status)
             {
-                case InRunMode:
+                case ETestPhase.InRun:
+                {
                     if (obj == testDistance)
                     {
-                        Status = FinishedMode;
+                        Status = ETestPhase.Finished;
                         ModeTime = Time;
                         Stop();
-
                     }
                     break;
+                }
             }
         }
-
-
-
-
 
         public double MaxHeartrate
         {
@@ -157,7 +166,7 @@ namespace eBuddy
             }
         }
 
-        public int Status
+        public ETestPhase Status
         {
             get
             {
@@ -237,7 +246,7 @@ namespace eBuddy
             }
         }
 
-        public event Action<int> OnStatusChanged;
+        public event Action<ETestPhase> OnStatusChanged;
         public event Action<TimeSpan> OnModeTimeUpdate;
         public event Action<double> OnTotalDistanceChanged;
         public event Action<double> OnHeartRestRateUpdate;
@@ -245,7 +254,7 @@ namespace eBuddy
         // Override the start method
         internal override void Start()
         {
-            Status = ChillMode;
+            Status = ETestPhase.Chill;
             Waypoints.Clear();
             TestStartTime = DateTime.Now;
             ModeTime = DateTime.Now - TestStartTime;
@@ -255,7 +264,7 @@ namespace eBuddy
                 ModeTime = DateTime.Now - TestStartTime;
                 // TODO: update the user countdown
             }
-            Status = WarmUpMode;
+            Status = ETestPhase.WarmUp;
 
             // starting the warm up -> UI need to tell the user to start
             // warm up for the next 20 minutes it could be light run or straches.
