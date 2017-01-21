@@ -18,12 +18,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="ME page"/>
-                    <Button Name="ButtonSave"
-                                Grid.Row="0"
-                                Margin="8"
-                                Click="ButtonSave_Click">button
-                        </Button>
-                    </Grid>
+                </Grid>
                 </PivotItem>
 
             <PivotItem Header="Run" FontStyle="Oblique">

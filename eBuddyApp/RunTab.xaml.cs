@@ -11,6 +11,7 @@ using Windows.Foundation.Collections;
 using Windows.Services.Maps;
 using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -31,18 +32,12 @@ namespace eBuddy
 
         private RunManager _runManager;
         private ManualResetEvent _mapServiceEvent;
+        private bool _scoreRun;
 
-        public RunTab()
+       public RunTab()
         {
             this.InitializeComponent();
-
-            _runManager = new RunManager();
-
-            _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
-            _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;
-            _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
-            _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
-            _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
+            _scoreRun = false;
 
             MapService.ServiceToken =
                 "OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq";
@@ -53,7 +48,7 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    timeDataLabel.Text = obj.ToString(@"hh\:mm\:ss");
+                    timeDataLabel.Text = obj.ToString(@"mm\:ss");
                 }
                 );
         }
@@ -63,7 +58,11 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        speedDataLabel.Text = obj.ToString("0.00");
+                        if (obj.ToString("00.0")[0] == '0')
+                            speedDataLabel.Text = obj.ToString("0.0") + " min/km";
+                        else
+                            speedDataLabel.Text = obj.ToString("00.0") + " min/km";
+
                     }
                     );
         }
@@ -83,7 +82,7 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                             () =>
                             {
-                                distanceDataLabel.Text = obj.ToString();
+                                distanceDataLabel.Text = obj.ToString("0.00") + " km";
                             }
                             );
         }
@@ -97,10 +96,9 @@ namespace eBuddy
                 double latitude = LocationTracker.Instance.CurrentLocation.Coordinate.Latitude;
                 double longitude = LocationTracker.Instance.CurrentLocation.Coordinate.Longitude;
                 myMap.Center = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
-                myMap.ZoomLevel = 20;
+                myMap.ZoomLevel = 17;
                 myMap.DesiredPitch = 64;
                 var routeView = new MapRouteView(obj);
-
                 myMap.Routes.Clear();
                 myMap.Routes.Add(routeView);
             }
@@ -109,27 +107,13 @@ namespace eBuddy
 
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
-                 
             myMap.Center = MainPage.SeattleGeopoint;
             myMap.ZoomLevel = 15;
-
         }
 
         private void MyMap_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
         {
             var tappedGeoPosition = args.Location.Position;
-            string status = "MapTapped at \nLatitude:" + tappedGeoPosition.Latitude + "\nLongitude: " + tappedGeoPosition.Longitude;
-            //rootPage.NotifyUser(status, NotifyType.StatusMessage);
-        }
-
-        private void TrafficFlowVisible_Checked(object sender, RoutedEventArgs e)
-        {
-            myMap.TrafficFlowVisible = true;
-        }
-
-        private void trafficFlowVisibleCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            myMap.TrafficFlowVisible = false;
         }
 
 //        private void styleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -158,18 +142,79 @@ namespace eBuddy
         private const string BackgroundTaskName = "SampleLocationBackgroundTask";
         private const string BackgroundTaskEntryPoint = "LocationTracker";
 
-        private IBackgroundTaskRegistration _geolocTask = null;
-
         private async void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         { 
             var accessStatus = await Geolocator.RequestAccessAsync();
-
+            if (_scoreRun)
+            {
+                _runManager = new TestRunManager(); //ofek
+                _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
+                _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;
+                _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
+                _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
+                _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
+                ((TestRunManager) _runManager).OnStatusChanged += _runManager_OnStatusChanged;
+                ((TestRunManager)_runManager).OnMASScoreUpdate += _runManager_OnMASScoreUpdate;
+                ((TestRunManager)_runManager).OnVo2Update += _runManager_OnVo2Update;
+            }
+            else
+            {
+                _runManager = new RunManager();
+                _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
+                _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;
+                _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
+                _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
+                _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
+            }
             if (accessStatus == GeolocationAccessStatus.Allowed)
             {
                 _runManager.Start();
             }
         }
-        /// <summary>
+
+       private async void _runManager_OnVo2Update(double obj)
+       {
+            MessageDialog dialog = new MessageDialog("Vo2: " + ((TestRunManager)_runManager).V02Max.ToString());
+            dialog.Commands.Add(new UICommand("OK"));
+            await dialog.ShowAsync();
+        }
+
+       private async void _runManager_OnMASScoreUpdate(double obj)
+       {
+            MessageDialog dialog = new MessageDialog("Score: " + ((TestRunManager)_runManager).MASscore.ToString());
+            dialog.Commands.Add(new UICommand("OK"));
+            await dialog.ShowAsync();
+        }
+
+       private async void _runManager_OnStatusChanged(TestRunManager.ETestPhase obj)
+       {
+            MessageDialog dialog = null;
+           switch (obj)
+           {
+               case TestRunManager.ETestPhase.Chill:
+                    dialog = new MessageDialog("Chill for 5 seconds - were calculating your rest heartbeat.");
+                    dialog.Commands.Add(new UICommand("OK"));
+                    await dialog.ShowAsync();
+                   break;
+                case TestRunManager.ETestPhase.WarmUp:
+                    dialog = new MessageDialog("Start warm up for 20 minutes");
+                    dialog.Commands.Add(new UICommand("OK"));
+                    await dialog.ShowAsync();
+                   break;
+                case TestRunManager.ETestPhase.InRun:
+                    dialog = new MessageDialog("Run your best time for 1200 meters");
+                    dialog.Commands.Add(new UICommand("OK"));
+                    await dialog.ShowAsync();
+                    break;
+                case TestRunManager.ETestPhase.Finished:
+                    dialog = new MessageDialog("Finished! calculating your score..");
+                    dialog.Commands.Add(new UICommand("OK"));
+                    await dialog.ShowAsync();
+                   break;
+           }
+       }
+
+       /// <summary>
         /// Get permission for location from the user. If the user has already answered once,
         /// this does nothing and the user must manually update their preference via Settings.
         /// </summary>
@@ -187,51 +232,14 @@ namespace eBuddy
             //ScenarioOutput_Accuracy.Text = "No data";
             UpdateButtonStates(/*registered:*/ false);
             //_rootPage.NotifyUser("Background task unregistered", NotifyType.StatusMessage);
+
+            _runManager.OnRouteUpdate -= _runManager_OnRouteUpdate;
+            _runManager.OnDistanceUpdate -= _runManager_OnDistanceUpdate;
+            _runManager.OnHeartRateUpdate -= _runManager_OnHeartRateUpdate;
+            _runManager.OnSpeedUpdate -= _runManager_OnSpeedUpdate;
+            _runManager.OnTimeUpdate -= _runManager_OnTimeUpdate;
         }
 
-        /// <summary>
-        /// Event handle to be raised when the background task is completed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void OnCompleted(IBackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs e)
-        {
-            if (sender != null)
-            {
-                // Update the UI with progress reported by the background task
-                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                {
-                    try
-                    {
-                        // If the background task threw an exception, display the exception in
-                        // the error text box.
-                        e.CheckResult();
-
-                        // Update the UI with the completion status of the background task
-                        // The Run method of the background task sets this status. 
-                        var settings = ApplicationData.Current.LocalSettings;
-                        if (settings.Values["Status"] != null)
-                        {
-                            //_rootPage.NotifyUser(settings.Values["Status"].ToString(), NotifyType.StatusMessage);
-                        }
-
-                        // Extract and display location data set by the background task if not null
-                        //ScenarioOutput_Latitude.Text = (settings.Values["Latitude"] == null) ? "No data" : settings.Values["Latitude"].ToString();
-                        //ScenarioOutput_Longitude.Text = (settings.Values["Longitude"] == null) ? "No data" : settings.Values["Longitude"].ToString();
-                        //ScenarioOutput_Accuracy.Text = (settings.Values["Accuracy"] == null) ? "No data" : settings.Values["Accuracy"].ToString();
-                    }
-                    catch (Exception ex)
-                    {
-                        // The background task had an error
-                        //_rootPage.NotifyUser(ex.ToString(), NotifyType.ErrorMessage);
-                    }
-                });
-            }
-        }
-
-        /// <summary>
-        /// Update the enable state of the register/unregister buttons.
-        /// 
         private async void UpdateButtonStates(bool registered)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
@@ -242,6 +250,15 @@ namespace eBuddy
                 });
         }
 
-    }
+       private void scoreFlowVisibleCheckBox_Unchecked(object sender, RoutedEventArgs e)
+       {
+            _scoreRun = false;
+        }
+
+       private void scoreFlowVisible_Checked(object sender, RoutedEventArgs e)
+       {
+           _scoreRun = true;
+       }
+   }
 }
 
