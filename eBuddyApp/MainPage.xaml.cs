@@ -38,6 +38,9 @@ namespace eBuddy
 
         private IMobileServiceTable<eBuddyUser1> eBuddyUserTable = App.MobileService.GetTable<eBuddyUser1>();
 
+        private string selectitem = null;
+
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -58,9 +61,26 @@ namespace eBuddy
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-#if OFFLINE_SYNC_ENABLED
-            await InitLocalStoreAsync(); // offline sync
-#endif
+
+//            if (e.Parameter != null)
+//            {
+//                string getdata = e.Parameter.ToString();
+//                selectitem = getdata;
+//            }
+//
+//            if (selectitem.Equals("Item1"))
+//            {
+//                rootPivot.SelectedIndex = 0;
+//            }
+//            else if (selectitem.Equals("Item2"))
+//            {
+//                rootPivot.SelectedIndex = 1;
+//            }
+//            else
+//            {
+//                rootPivot.SelectedIndex = 2;
+//            }
+
             //ButtonRefresh_Click(this, null);
         }
 

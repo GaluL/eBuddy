@@ -59,8 +59,10 @@ namespace eBuddy
         private LocationTracker()
         {
             _geolocator = new Geolocator();
-
             _geolocator.ReportInterval = 1000;
+            _geolocator.DesiredAccuracyInMeters = 1;
+
+
 
             // Subscribe to the StatusChanged event to get updates of location status changes.
             _geolocator.StatusChanged += OnStatusChanged;
@@ -77,11 +79,11 @@ namespace eBuddy
 
         public void Stop()
         {
-            if (_geolocator != null)
-            {
-                // Subscribe to the PositionChanged event to get location updates.
-                _geolocator.PositionChanged -= OnPositionChanged;
-            }
+//            if (_geolocator != null)
+//            {
+//                // Subscribe to the PositionChanged event to get location updates.
+//                _geolocator.PositionChanged -= OnPositionChanged;
+//            }
         }
 
         private void UpdateLocationData(Geoposition pos)

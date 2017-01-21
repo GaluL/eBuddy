@@ -6,32 +6,39 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Pivot x:Name="rootPivot" Title="Pivot Title">
-        <PivotItem Header="Me">
-            <!--Pivot content goes here-->
-            <Grid>
-                <TextBlock Text="Content of pivot item 1."/>
-                <Button Name="ButtonSave"
-                    Grid.Row="1"
-                    Margin="8"
-                    Click="ButtonSave_Click">
-                    button    
-                </Button>
-            </Grid>
+    <Grid Background="#333333">
+        <Pivot x:Name="rootPivot">
+            <PivotItem Header="Me" FontStyle="Oblique">
+                    <!--Pivot content goes here-->
+                <Grid VerticalAlignment="Center" Background="White"
+                                                 Margin="8"
+                                                 Padding="16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="550"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="ME page"/>
+                    <Button Name="ButtonSave"
+                                Grid.Row="0"
+                                Margin="8"
+                                Click="ButtonSave_Click">button
+                        </Button>
+                    </Grid>
+                </PivotItem>
 
-        </PivotItem>
+            <PivotItem Header="Run" FontStyle="Oblique">
+                    <!--Pivot content goes here-->
+                    <local:RunTab/>
+                </PivotItem>
+                <PivotItem Header="Suggestions" FontStyle="Oblique">
+                    <!--Pivot content goes here-->
+                    <TextBlock Text="Content of pivot item 3."/>
+                </PivotItem>
+            <PivotItem Header="Settings" FontStyle="Oblique">
+                    <!--Pivot content goes here-->
+                    <TextBlock Text="Content of pivot item 4."/>
+                </PivotItem>
+            </Pivot>
+        </Grid>
 
-        <PivotItem Header="Run">
-            <!--Pivot content goes here-->
-            <local:RunTab/>
-        </PivotItem>
-        <PivotItem Header="Suggestions">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 3."/>
-        </PivotItem>
-        <PivotItem Header="Settings">
-            <!--Pivot content goes here-->
-            <TextBlock Text="Content of pivot item 4."/>
-        </PivotItem>
-    </Pivot>
 </Page>

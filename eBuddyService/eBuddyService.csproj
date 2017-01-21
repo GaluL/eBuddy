@@ -176,9 +176,6 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\EBuddyUserController.cs" />
     <Compile Include="Controllers\TodoItemController.cs" />
-    <Compile Include="Controllers\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\eBuddyUser1.cs" />
     <Compile Include="DataObjects\TodoItem.cs" />
@@ -200,12 +197,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\eBuddy - Web Deploy.pubxml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controllers\UserControl1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

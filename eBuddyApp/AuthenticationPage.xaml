@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="#242e38">
+    <Grid Background="#333333">
         <Grid VerticalAlignment="Center" Background="White"
               Margin="8"
               Padding="16">

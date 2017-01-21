@@ -121,26 +121,26 @@ namespace eBuddy
 
         private async void LocationTracker_OnLocationChange(Geoposition obj)
         {
-            //_waypoints.Add(new Geopoint(new BasicGeoposition()
-            //{
-            //    Altitude = obj.Coordinate.Altitude.HasValue ? obj.Coordinate.Altitude.Value : 0,
-            //    Latitude = obj.Coordinate.Latitude,
-            //    Longitude = obj.Coordinate.Longitude
-            //}));
-
-            List<Geopoint> list = new List<Geopoint>()
+            _waypoints.Add(new Geopoint(new BasicGeoposition()
             {
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079864147217236, Longitude = 34.770158141831232}),
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079905, Longitude = 34.769737}),
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079969, Longitude = 34.768267}),
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.080014, Longitude = 34.76729}),
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.081532, Longitude = 34.76772}),
-                new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.082732, Longitude = 34.76876})
-            };
+                Altitude = obj.Coordinate.Altitude.HasValue ? obj.Coordinate.Altitude.Value : 0,
+                Latitude = obj.Coordinate.Latitude,
+                Longitude = obj.Coordinate.Longitude
+            }));
 
-            _waypoints.Add(list[cnt]);
+            //List<Geopoint> list = new List<Geopoint>()
+            //{
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079864147217236, Longitude = 34.770158141831232}),
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079905, Longitude = 34.769737}),
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.079969, Longitude = 34.768267}),
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.080014, Longitude = 34.76729}),
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.081532, Longitude = 34.76772}),
+            //    new Geopoint(new BasicGeoposition() {Altitude = 56, Latitude = 32.082732, Longitude = 34.76876})
+            //};
 
-            cnt = (cnt + 1) % 6;
+            //_waypoints.Add(list[cnt]);
+
+            //cnt = (cnt + 1) % 6;
 
             if (_waypoints.Count > 1)
             {
@@ -153,7 +153,7 @@ namespace eBuddy
                     Route = routeFind.Route;
                     Time = DateTime.Now - _startTime;
                     Distance = Route.LengthInMeters;
-                    Speed = (Distance / 1000.0) / (Time.Seconds / 60.0 / 60.0);
+                    Speed = (Distance / 1000.00000) / (Time.Seconds / 60.0 / 60.0);
                 }
 
                 _mapServiceEvent.Set();
@@ -163,7 +163,8 @@ namespace eBuddy
         internal void Start()
         {
             _waypoints.Clear();
-
+            Speed = 0;
+            Distance = 0;
             _startTime = DateTime.Now;
             LocationTracker.Instance.Start();
         }

@@ -7,7 +7,21 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel>
-        <Button Click="ButtonBase_OnClick">Connect</Button>    
-    </StackPanel>
+    <Grid Background="#242e38">
+        <Grid VerticalAlignment="Center" Background="White"
+              Margin="8"
+              Padding="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0"
+                    Margin="8"
+                    Click="ButtonBase_OnClick">Connect
+            </Button>
+        </Grid>
+    </Grid>
 </Page>
+<!--<StackPanel>-->
+<!--        <Button Click="ButtonBase_OnClick">Connect</Button>    -->
+<!--    </StackPanel>-->
+<!--</Page>-->

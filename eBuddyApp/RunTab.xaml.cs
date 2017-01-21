@@ -11,6 +11,7 @@ using Windows.Foundation.Collections;
 using Windows.Services.Maps;
 using Windows.Storage;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -52,7 +53,7 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                 () =>
                 {
-                    timeDataLabel.Text = obj.ToString("hh\\mm\\ss");
+                    timeDataLabel.Text = obj.ToString(@"hh\:mm\:ss");
                 }
                 );
         }
@@ -62,7 +63,7 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        speedDataLabel.Text = obj.ToString();
+                        speedDataLabel.Text = obj.ToString("0.00");
                     }
                     );
         }
@@ -92,6 +93,12 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
+
+                double latitude = LocationTracker.Instance.CurrentLocation.Coordinate.Latitude;
+                double longitude = LocationTracker.Instance.CurrentLocation.Coordinate.Longitude;
+                myMap.Center = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
+                myMap.ZoomLevel = 20;
+                myMap.DesiredPitch = 64;
                 var routeView = new MapRouteView(obj);
 
                 myMap.Routes.Clear();
@@ -102,8 +109,10 @@ namespace eBuddy
 
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
+                 
             myMap.Center = MainPage.SeattleGeopoint;
-            myMap.ZoomLevel = 12;
+            myMap.ZoomLevel = 15;
+
         }
 
         private void MyMap_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
@@ -123,27 +132,27 @@ namespace eBuddy
             myMap.TrafficFlowVisible = false;
         }
 
-        private void styleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            switch (styleCombobox.SelectedIndex)
-            {
-                case 0:
-                    myMap.Style = MapStyle.None;
-                    break;
-                case 1:
-                    myMap.Style = MapStyle.Road;
-                    break;
-                case 2:
-                    myMap.Style = MapStyle.Aerial;
-                    break;
-                case 3:
-                    myMap.Style = MapStyle.AerialWithRoads;
-                    break;
-                case 4:
-                    myMap.Style = MapStyle.Terrain;
-                    break;
-            }
-        }
+//        private void styleCombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+//        {
+//            switch (styleCombobox.SelectedIndex)
+//            {
+//                case 0:
+//                    myMap.Style = MapStyle.None;
+//                    break;
+//                case 1:
+//                    myMap.Style = MapStyle.Road;
+//                    break;
+//                case 2:
+//                    myMap.Style = MapStyle.Aerial;
+//                    break;
+//                case 3:
+//                    myMap.Style = MapStyle.AerialWithRoads;
+//                    break;
+//                case 4:
+//                    myMap.Style = MapStyle.Terrain;
+//                    break;
+//            }
+//        }
 
         // For background task registration
         private const string BackgroundTaskName = "SampleLocationBackgroundTask";
@@ -151,12 +160,7 @@ namespace eBuddy
 
         private IBackgroundTaskRegistration _geolocTask = null;
 
-        /// <summary>
-        /// This is the click handler for the 'Register' button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        async private void ButtonGo_OnClick(object sender, RoutedEventArgs e)
+        private async void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         { 
             var accessStatus = await Geolocator.RequestAccessAsync();
 
@@ -165,7 +169,6 @@ namespace eBuddy
                 _runManager.Start();
             }
         }
-
         /// <summary>
         /// Get permission for location from the user. If the user has already answered once,
         /// this does nothing and the user must manually update their preference via Settings.
@@ -175,20 +178,10 @@ namespace eBuddy
             // Request permission to access location
         }
 
-        /// <summary>
-        /// This is the click handler for the 'Unregister' button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ButtonStop_OnClick(object sender, RoutedEventArgs e)
         {
-            // Unregister the background task
-            if (null != _geolocTask)
-            {
-                _geolocTask.Unregister(true);
-                _geolocTask = null;
-            }
-
+            _runManager.Stop();
+//            Frame.Navigate(typeof(BandPage), 1);
             //ScenarioOutput_Latitude.Text = "No data";
             //ScenarioOutput_Longitude.Text = "No data";
             //ScenarioOutput_Accuracy.Text = "No data";
@@ -248,6 +241,7 @@ namespace eBuddy
                     //ButtonStop.IsEnabled = registered;
                 });
         }
+
     }
 }
 
