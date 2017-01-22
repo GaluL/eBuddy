@@ -229,6 +229,7 @@ namespace eBuddy
             set
             {
                 v02Max = value;
+                OnVo2Update?.Invoke(value);
             }
         }
 
@@ -242,6 +243,7 @@ namespace eBuddy
             set
             {
                 MAS = value;
+                OnMASScoreUpdate?.Invoke(value);
             }
         }
 
@@ -249,6 +251,8 @@ namespace eBuddy
         public event Action<TimeSpan> OnModeTimeUpdate;
         public event Action<double> OnTotalDistanceChanged;
         public event Action<double> OnHeartRestRateUpdate;
+        public event Action<double> OnMASScoreUpdate;
+        public event Action<double> OnVo2Update;
 
         // Override the start method
         internal override void Start()
