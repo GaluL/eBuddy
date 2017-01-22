@@ -57,7 +57,7 @@ namespace eBuddy
             try
             {
                 // Try to get an existing credential from the vault.
-                credential = vault.FindAllByResource(provider.ToString()).FirstOrDefault();
+                //credential = vault.FindAllByResource(provider.ToString()).FirstOrDefault();
             }
             catch (Exception)
             {
@@ -102,11 +102,15 @@ namespace eBuddy
                 }
             }
 
-            var dialog = new MessageDialog(message);
-            dialog.Commands.Add(new UICommand("OK"));
-            await dialog.ShowAsync();
+            if (!success)
+            {
+                var dialog = new MessageDialog(message);
+                dialog.Commands.Add(new UICommand("OK"));
+                await dialog.ShowAsync();
+            }
 
             isAuthenticated = success;
+            
             return success;
         }
     }

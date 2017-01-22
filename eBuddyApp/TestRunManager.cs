@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace eBuddy
 {
     class TestRunManager : RunManager
     {
-        // The mode
-        //private const int ChillMode = 1;
-        //private const int WarmUpMode = 2;
-        //private const int InRunMode = 3;
-        //private const int FinishedMode = 4;
-
         public enum ETestPhase
         {
             NotStarted,
@@ -23,12 +18,16 @@ namespace eBuddy
             Finished
         }
 
-        private const int restHeartBeatTime = 20;
+        #region Constans
+
+        private const int restHeartBeatTime = 5;
         private const int warmUpTime = 20;
         private const double v02maxMultiplayer = 15.3;
         private const double testDistance = 1200;
 
+        #endregion
 
+        #region Fields
 
         private double _maxHeartrate = 0;
         private double _restHeartrate = 0;
@@ -38,6 +37,9 @@ namespace eBuddy
         private double _maxSpeed = 0;
         private double v02Max = 0;
         private double MAS = 0;
+
+        #endregion
+
         /*
          * Indicate and the TestRun status - 
          *                                   0 - Before started
@@ -52,27 +54,22 @@ namespace eBuddy
         // Constructor
         public TestRunManager()
         {
-
-
             base.OnHeartRateUpdate += TestRun_OnHeartRateUpdate;
             base.OnDistanceUpdate += TestRun_OnDistanceUpdate;
             base.OnTimeUpdate += TestRun_OnTimeUpdate;
             base.OnSpeedUpdate += TestRun_OnSpeedUpdate;
-
-
         }
 
         private void TestRun_OnHeartRateUpdate(double obj)
         {
-            if (Heartrate > MaxHeartrate)
+            if (Status == ETestPhase.InRun && obj > MaxHeartrate)
             {
-                MaxHeartrate = Heartrate;
+                MaxHeartrate = obj;
             }
-            if (Status == ETestPhase.Chill)
+            else if (Status == ETestPhase.Chill)
             {
-                RestHeartrate = Heartrate;
+                RestHeartrate = obj;
             }
-
         }
 
         private void TestRun_OnSpeedUpdate(double obj)
@@ -96,10 +93,12 @@ namespace eBuddy
             {
                 case ETestPhase.WarmUp:
                 {
-                    if (obj.Minutes == warmUpTime)
+                    if (obj.Minutes >= warmUpTime)
                     {
                         base.Stop();
+
                         Status = ETestPhase.InRun;
+                        
                         // starting the intense run
                         base.Start();
                     }
@@ -114,7 +113,7 @@ namespace eBuddy
             {
                 case ETestPhase.InRun:
                 {
-                    if (obj == testDistance)
+                    if (obj >= testDistance)
                     {
                         Status = ETestPhase.Finished;
                         ModeTime = Time;
@@ -254,6 +253,11 @@ namespace eBuddy
         // Override the start method
         internal override void Start()
         {
+            Task.Run(() => TestHandler());
+        }
+
+        internal async void TestHandler()
+        {
             Status = ETestPhase.Chill;
             Waypoints.Clear();
             TestStartTime = DateTime.Now;
@@ -262,8 +266,10 @@ namespace eBuddy
             while (ModeTime.Seconds <= restHeartBeatTime)
             {
                 ModeTime = DateTime.Now - TestStartTime;
+                await Task.Delay(1000);
                 // TODO: update the user countdown
             }
+
             Status = ETestPhase.WarmUp;
 
             // starting the warm up -> UI need to tell the user to start
@@ -273,9 +279,9 @@ namespace eBuddy
 
         internal override void Stop()
         {
-            RestHeartrate = RestHeartrate * 3;
+            double restHR = RestHeartrate * 3;
 
-            V02Max = (MaxHeartrate / RestHeartrate) * v02maxMultiplayer;
+            V02Max = (MaxHeartrate / restHR) * v02maxMultiplayer;
             MASscore = (testDistance / modeTime.Seconds);
 
             LocationTracker.Instance.Stop();

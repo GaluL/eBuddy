@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="eBuddy.ProfileUC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:eBuddy"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center">My Profile</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0">Private Name:</TextBlock>
+                <TextBox Name="privateNameTextbox" Grid.Row="0" Grid.Column="1" LostFocus="PrivateNameTextbox_OnLostFocus"/>
+                <TextBlock Grid.Row="1" Grid.Column="0">Sur Name:</TextBlock>
+                <TextBox Name="surNameTextbox" Grid.Row="1" Grid.Column="1" LostFocus="SurNameTextbox_OnLostFocus"/>
+                <TextBlock Grid.Row="2" Grid.Column="0">Age:</TextBlock>
+                <TextBox Name="ageTextbox" Grid.Row="2" Grid.Column="1" LostFocus="AgeTextbox_OnLostFocus"/>
+                <TextBlock Grid.Row="3" Grid.Column="0">Weight:</TextBlock>
+                <TextBox Name="weightTextbox" Grid.Row="3" Grid.Column="1" LostFocus="WeightTextbox_OnLostFocus"/>
+                <TextBlock Grid.Row="4" Grid.Column="0">Height:</TextBlock>
+                <TextBox Name="heightTextbox" Grid.Row="4" Grid.Column="1" LostFocus="HeightTextbox_OnLostFocus"/>
+                <TextBlock Grid.Row="5" Grid.Column="0">MAS:</TextBlock>
+                <TextBox Name="masTextbox" Grid.Row="5" Grid.Column="1"/>
+                <TextBlock Grid.Row="6" Grid.Column="0">VO2Max:</TextBlock>
+                <TextBox Name="vo2maxTextbox" Grid.Row="6" Grid.Column="1"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

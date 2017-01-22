@@ -29,14 +29,14 @@ namespace eBuddy
    {
         private MainPage rootPage;
 
-        private RunManager _runManager;
+        private TestRunManager _runManager;
         private ManualResetEvent _mapServiceEvent;
 
         public RunTab()
         {
             this.InitializeComponent();
 
-            _runManager = new RunManager();
+            _runManager = new TestRunManager();
 
             _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
             _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;

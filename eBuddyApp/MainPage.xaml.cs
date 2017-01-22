@@ -57,27 +57,10 @@ namespace eBuddy
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-
-//            if (e.Parameter != null)
-//            {
-//                string getdata = e.Parameter.ToString();
-//                selectitem = getdata;
-//            }
-//
-//            if (selectitem.Equals("Item1"))
-//            {
-//                rootPivot.SelectedIndex = 0;
-//            }
-//            else if (selectitem.Equals("Item2"))
-//            {
-//                rootPivot.SelectedIndex = 1;
-//            }
-//            else
-//            {
-//                rootPivot.SelectedIndex = 2;
-//            }
-
-            //ButtonRefresh_Click(this, null);
+            if (UserDataProvider.Initialized)
+            {
+                meTab.UserViewModel = UserDataProvider.ViewModel;
+            }
         }
 
         private async Task InsertTodoItem(TodoItem todoItem)
