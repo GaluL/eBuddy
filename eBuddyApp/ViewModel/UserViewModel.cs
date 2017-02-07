@@ -85,9 +85,9 @@ namespace eBuddy.ViewModel
 
         public UserViewModel() : this (new UserItem()) {}
 
-        public UserViewModel(UserItem userItem)
+        public UserViewModel(UserItem user)
         {
-            Model = userItem;
+            Model = user;
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

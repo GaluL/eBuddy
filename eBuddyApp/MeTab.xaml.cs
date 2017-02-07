@@ -46,7 +46,7 @@ namespace eBuddy
             helloTextblock.Text = "Hi " + UserDataProvider.ViewModel.PrivateName + " " + UserDataProvider.ViewModel.SurName +
                       "! Nice to see you again.";
 
-            scoreTextblock.Text = "Your current score is: " + UserDataProvider.ViewModel.Model.MAS;
+            scoreTextblock.Text = "Your current score is: "; //+ UserDataProvider.ViewModel.Model.MAS;
         }
     }
 }

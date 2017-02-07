@@ -11,10 +11,10 @@ namespace eBuddy.DataModel
     {
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "privatename")]
+        [JsonProperty(PropertyName = "privateName")]
         public String PrivateName { get; set; }
 
-        [JsonProperty(PropertyName = "surname")]
+        [JsonProperty(PropertyName = "surName")]
         public String SurName { get; set; }
 
         [JsonProperty(PropertyName = "age")]
@@ -26,7 +26,13 @@ namespace eBuddy.DataModel
         [JsonProperty(PropertyName = "height")]
         public Double Height { get; set; }
 
-        [JsonProperty(PropertyName = "mas")]
-        public Double MAS { get; set; }
+        [JsonProperty(PropertyName = "gender")]
+        public Boolean Gender { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
+        public String Email { get; set; }
+
+        [JsonProperty(PropertyName = "FacebookId")]
+        public String FacebookId { get; set; }
     }
 }
