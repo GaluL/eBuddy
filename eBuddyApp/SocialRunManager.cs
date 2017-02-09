@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
@@ -12,8 +13,8 @@ namespace eBuddy
 {
     class SocialRunManager : RunManager
     {
-        public HubConnection runnersHubConnection { get; set; }
-        public IHubProxy runnersHubProxy { get; set; }
+        private HubConnection runnersHubConnection { get; set; }
+        private IHubProxy runnersHubProxy { get; set; }
 
         private ObservableCollection<Geopoint> _buddyWaypoints;
         public ObservableCollection<Geopoint> BuddyWaypoints
@@ -36,8 +37,6 @@ namespace eBuddy
 
         public SocialRunManager() : base()
         {
-            ConnectHub();
-
             LocationTracker.Instance.OnLocationChange += Instance_OnLocationChange;
         }
 
@@ -45,17 +44,17 @@ namespace eBuddy
         {
             var msg = LocationMessage.FromGeoposition(obj, DateTime.UtcNow);
             msg.SourceUserId = App.MobileService.CurrentUser.UserId;
-            msg.DestUserId = "";
+            msg.DestUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05";
 
             runnersHubProxy.Invoke("SendLocation", msg);
         }
 
-        internal async void RegisterToUpdates()
-        {
-            runnersHubProxy.Invoke("Register", App.MobileService.CurrentUser.UserId);
+        //internal async void RegisterToUpdates()
+        //{
+        //    runnersHubProxy.Invoke("Register", App.MobileService.CurrentUser.UserId);
 
-            runnersHubProxy.On<LocationMessage>("buddyLocationUpdate", OnLocationMessage);
-        }
+        //    runnersHubProxy.On<LocationMessage>("buddyLocationUpdate", OnLocationMessage);
+        //}
 
         private async void OnLocationMessage(LocationMessage obj)
         {
@@ -69,12 +68,23 @@ namespace eBuddy
             }
         }
 
-        internal async void ConnectHub()
+        internal async Task<bool> ConnectHub()
         {
             runnersHubConnection = new HubConnection("http://ebuddy.azurewebsites.net");
             runnersHubProxy = runnersHubConnection.CreateHubProxy("SocialRunsHub");
 
             await runnersHubConnection.Start();
+
+            if (runnersHubConnection.State != ConnectionState.Connected)
+            {
+                return false;
+            }
+
+            await runnersHubProxy.Invoke("Register", App.MobileService.CurrentUser.UserId);
+
+            runnersHubProxy.On<LocationMessage>("buddyLocationUpdate", OnLocationMessage);
+
+            return true;
         }
     }
 }

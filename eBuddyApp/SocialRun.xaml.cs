@@ -155,10 +155,12 @@ namespace eBuddy
                 _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
                 _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
                 _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
-            _runManager.OnBuddyRouteUpdate += _runManager_OnBuddyRouteUpdate;
+                _runManager.OnBuddyRouteUpdate += _runManager_OnBuddyRouteUpdate;
 
             if (accessStatus == GeolocationAccessStatus.Allowed)
             {
+                await _runManager.ConnectHub();
+
                 _runManager.Start();
             }
         }
