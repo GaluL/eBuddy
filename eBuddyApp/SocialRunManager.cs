@@ -20,6 +20,8 @@ namespace eBuddy
 
         private ObservableCollection<Geopoint> _buddyWaypoints;
 
+        private ManualResetEvent routeFinderEvent;
+
         public ObservableCollection<Geopoint> BuddyWaypoints
         {
             get { return _buddyWaypoints; }
@@ -43,6 +45,8 @@ namespace eBuddy
         {
             _buddyWaypoints = new ObservableCollection<Geopoint>();
 
+            routeFinderEvent = new ManualResetEvent(true);
+
             LocationTracker.Instance.OnLocationChange += Instance_OnLocationChange;
         }
 
@@ -64,6 +68,8 @@ namespace eBuddy
 
         private async void OnLocationMessage(LocationMessage obj)
         {
+            routeFinderEvent.Reset();
+
             _buddyWaypoints.Add(obj.GetGeoPoint());
 
             if (_buddyWaypoints.Count > 1)
@@ -75,6 +81,8 @@ namespace eBuddy
                     BuddyRoute = routeFind.Route;
                 }
             }
+
+            routeFinderEvent.Set();
         }
 
         internal async Task<bool> ConnectHub()
