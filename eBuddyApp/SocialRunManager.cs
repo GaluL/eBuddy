@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace eBuddy
         private IHubProxy runnersHubProxy { get; set; }
 
         private ObservableCollection<Geopoint> _buddyWaypoints;
+
         public ObservableCollection<Geopoint> BuddyWaypoints
         {
             get { return _buddyWaypoints; }
@@ -24,6 +26,7 @@ namespace eBuddy
 
         public event Action<MapRoute> OnBuddyRouteUpdate;
         private MapRoute _buddyRoute;
+
         public MapRoute BuddyRoute
         {
             get { return _buddyRoute; }
@@ -70,8 +73,18 @@ namespace eBuddy
 
         internal async Task<bool> ConnectHub()
         {
-            runnersHubConnection = new HubConnection("http://ebuddy.azurewebsites.net");
+            runnersHubConnection = new HubConnection(App.MobileService.MobileAppUri.AbsoluteUri);
             runnersHubProxy = runnersHubConnection.CreateHubProxy("SocialRunsHub");
+
+            if (App.MobileService.CurrentUser != null)
+            {
+                runnersHubConnection.Headers["x-zumo-auth"] = 
+                    App.MobileService.CurrentUser.MobileServiceAuthenticationToken;
+            }
+            else
+            {
+                runnersHubConnection.Headers["x-zumo-application"] = "";
+            }
 
             await runnersHubConnection.Start();
 
