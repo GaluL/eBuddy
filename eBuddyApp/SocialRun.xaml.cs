@@ -170,9 +170,7 @@ namespace eBuddy
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
-                double latitude = LocationTracker.Instance.CurrentLocation.Coordinate.Latitude;
-                double longitude = LocationTracker.Instance.CurrentLocation.Coordinate.Longitude;
-                myMap2.Center = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
+                myMap2.Center = new Geopoint(_runManager.Waypoints[_runManager.Waypoints.Count - 1].Position);
                 myMap2.ZoomLevel = 15;
                 myMap2.DesiredPitch = 64;
                 var routeView = new MapRouteView(obj);
