@@ -13,6 +13,8 @@ namespace eBuddyService.DataObjects
         public Double Age { get; set; }
         public Double Weight { get; set; }
         public Double Height { get; set; }
-        public Double MAS { get; set; }
+        public Boolean Gender { get; set; }
+        public String Email { get; set; }
+        public String FacebookId { get; set; }
     }
 }

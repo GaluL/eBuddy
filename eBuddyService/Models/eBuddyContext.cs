@@ -22,7 +22,6 @@ namespace eBuddyService.Models
         {
         } 
 
-        public DbSet<TodoItem> TodoItems { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

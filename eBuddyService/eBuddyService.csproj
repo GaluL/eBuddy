@@ -60,6 +60,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.8.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
       <Private>True</Private>
@@ -159,11 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\Startup.MobileApp.cs" />
-    <Compile Include="Controllers\TodoItemController.cs" />
     <Compile Include="Controllers\UserItemController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DataObjects\TodoItem.cs" />
     <Compile Include="DataObjects\UserItem.cs" />
+    <Compile Include="Hubs\SocialRunsHub.cs" />
     <Compile Include="Migrations\201701211035314_Initial.cs" />
     <Compile Include="Migrations\201701211035314_Initial.Designer.cs">
       <DependentUpon>201701211035314_Initial.cs</DependentUpon>
@@ -179,6 +182,10 @@
     <Compile Include="Migrations\201701211259162_AddUsersTable1.cs" />
     <Compile Include="Migrations\201701211259162_AddUsersTable1.Designer.cs">
       <DependentUpon>201701211259162_AddUsersTable1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702091420167_ChangeUserItem.cs" />
+    <Compile Include="Migrations\201702091420167_ChangeUserItem.Designer.cs">
+      <DependentUpon>201702091420167_ChangeUserItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\eBuddyContext.cs" />
@@ -212,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701211259162_AddUsersTable1.resx">
       <DependentUpon>201701211259162_AddUsersTable1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702091420167_ChangeUserItem.resx">
+      <DependentUpon>201702091420167_ChangeUserItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
