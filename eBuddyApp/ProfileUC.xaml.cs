@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 using eBuddy.DataModel;
 using eBuddy.ViewModel;
 
-// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+// The UserItem Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace eBuddy
 {

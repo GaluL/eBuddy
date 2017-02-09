@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee401ae3bc6810330432c2f42f9e6d4b00d3cf15
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +26,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+<<<<<<< HEAD
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+=======
+// The UserItem Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
+>>>>>>> ee401ae3bc6810330432c2f42f9e6d4b00d3cf15
 
 namespace eBuddy
 {

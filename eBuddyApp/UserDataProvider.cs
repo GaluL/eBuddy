@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using eBuddy.DataModel;
 using eBuddy.ViewModel;
 using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json.Linq;
 
 namespace eBuddy
 {
@@ -36,7 +37,7 @@ namespace eBuddy
 
             try
             {
-                _model = users.First(x => x.Id == App.MobileService.CurrentUser.UserId);
+                _model = users.First(x => x.FacebookId == App.MobileService.CurrentUser.UserId);
             }
             catch (Exception e)
             {
@@ -53,7 +54,7 @@ namespace eBuddy
 
         internal static async void RegisterUser()
         {
-            _model.Id = App.MobileService.CurrentUser.UserId;
+            _model.FacebookId = App.MobileService.CurrentUser.UserId;
 
             await usersTable.InsertAsync(_model);
         }
