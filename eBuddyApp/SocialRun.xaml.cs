@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +31,7 @@ namespace eBuddy
     {
         private MainPage rootPage;
 
-        private RunManager _runManager;
+        private SocialRunManager _runManager;
         private ManualResetEvent _mapServiceEvent;
         private bool _scoreRun;
 
@@ -110,7 +109,10 @@ namespace eBuddy
         private void MyMap_Loaded(object sender, RoutedEventArgs e)
         {
             myMap.Center = MainPage.SeattleGeopoint;
-            myMap.ZoomLevel = 15;
+            myMap.ZoomLevel = 17;
+
+            myMap2.Center = MainPage.SeattleGeopoint;
+            myMap2.ZoomLevel = 10;
         }
 
         private void MyMap_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
@@ -147,45 +149,35 @@ namespace eBuddy
         private async void ButtonGo_OnClick(object sender, RoutedEventArgs e)
         {
             var accessStatus = await Geolocator.RequestAccessAsync();
-            if (_scoreRun)
-            {
-                _runManager = new TestRunManager(); //ofek
+                _runManager = new SocialRunManager();
                 _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
                 _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;
                 _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
                 _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
                 _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
-                ((TestRunManager)_runManager).OnStatusChanged += _runManager_OnStatusChanged;
-                ((TestRunManager)_runManager).OnMASScoreUpdate += _runManager_OnMASScoreUpdate;
-                ((TestRunManager)_runManager).OnVo2Update += _runManager_OnVo2Update;
-            }
-            else
-            {
-                _runManager = new RunManager();
-                _runManager.OnRouteUpdate += _runManager_OnRouteUpdate;
-                _runManager.OnDistanceUpdate += _runManager_OnDistanceUpdate;
-                _runManager.OnHeartRateUpdate += _runManager_OnHeartRateUpdate;
-                _runManager.OnSpeedUpdate += _runManager_OnSpeedUpdate;
-                _runManager.OnTimeUpdate += _runManager_OnTimeUpdate;
-            }
+            _runManager.OnBuddyRouteUpdate += _runManager_OnBuddyRouteUpdate;
+
             if (accessStatus == GeolocationAccessStatus.Allowed)
             {
                 _runManager.Start();
             }
         }
 
-        private async void _runManager_OnVo2Update(double obj)
+        private async void _runManager_OnBuddyRouteUpdate(MapRoute obj)
         {
-            MessageDialog dialog = new MessageDialog("Vo2: " + ((TestRunManager)_runManager).V02Max.ToString());
-            dialog.Commands.Add(new UICommand("OK"));
-            await dialog.ShowAsync();
-        }
-
-        private async void _runManager_OnMASScoreUpdate(double obj)
-        {
-            MessageDialog dialog = new MessageDialog("Score: " + ((TestRunManager)_runManager).MASscore.ToString());
-            dialog.Commands.Add(new UICommand("OK"));
-            await dialog.ShowAsync();
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () =>
+            {
+                double latitude = LocationTracker.Instance.CurrentLocation.Coordinate.Latitude;
+                double longitude = LocationTracker.Instance.CurrentLocation.Coordinate.Longitude;
+                myMap2.Center = new Geopoint(new BasicGeoposition() { Latitude = latitude, Longitude = longitude });
+                myMap2.ZoomLevel = 15;
+                myMap2.DesiredPitch = 64;
+                var routeView = new MapRouteView(obj);
+                myMap2.Routes.Clear();
+                myMap2.Routes.Add(routeView);
+            }
+            );
         }
 
         private async void _runManager_OnStatusChanged(TestRunManager.ETestPhase obj)
