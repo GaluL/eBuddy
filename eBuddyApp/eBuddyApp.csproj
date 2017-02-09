@@ -128,6 +128,9 @@
     <Compile Include="RunTab.xaml.cs">
       <DependentUpon>RunTab.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SocialRun.xaml.cs">
+      <DependentUpon>SocialRun.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestRunManager.cs" />
     <Compile Include="UserDataProvider.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
@@ -184,6 +187,10 @@
     <Page Include="RunTab.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SocialRun.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -20,9 +20,9 @@
                     <!--Pivot content goes here-->
                     <TextBlock Text="Content of pivot item 3."/>
                 </PivotItem>
-            <PivotItem Header="Settings" FontStyle="Oblique">
+            <PivotItem Header="SocialRun" FontStyle="Oblique">
                     <!--Pivot content goes here-->
-                    <TextBlock Text="Content of pivot item 4."/>
+                <local:SocialRun/>
                 </PivotItem>
             </Pivot>
         </Grid>
