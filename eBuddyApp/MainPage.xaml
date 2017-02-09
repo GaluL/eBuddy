@@ -24,7 +24,11 @@
                     <!--Pivot content goes here-->
                     <TextBlock Text="Content of pivot item 4."/>
                 </PivotItem>
-            </Pivot>
+            <PivotItem Header="SocialRun" FontStyle="Oblique">
+                <!--Pivot content goes here-->
+                <local:SocialRun x:Name="SocialRun"/>
+            </PivotItem>
+        </Pivot>
         </Grid>
 
 </Page>
