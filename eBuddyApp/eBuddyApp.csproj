@@ -107,7 +107,7 @@
       <DependentUpon>QuickStartTask.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\HeartRateSample.cs" />
-    <Compile Include="DataModel\GPSSample.cs" />
+    <Compile Include="DataModel\LocationMessage.cs" />
     <Compile Include="DataModel\TodoItem.cs" />
     <Compile Include="DataModel\UserItem.cs" />
     <Compile Include="LocationTracker.cs" />
@@ -131,6 +131,7 @@
     <Compile Include="SocialRun.xaml.cs">
       <DependentUpon>SocialRun.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SocialRunManager.cs" />
     <Compile Include="TestRunManager.cs" />
     <Compile Include="UserDataProvider.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />

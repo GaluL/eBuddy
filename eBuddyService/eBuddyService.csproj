@@ -165,6 +165,7 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\UserItemController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="DataObjects\LocationMessage.cs" />
     <Compile Include="DataObjects\UserItem.cs" />
     <Compile Include="Hubs\SocialRunsHub.cs" />
     <Compile Include="Migrations\201701211035314_Initial.cs" />

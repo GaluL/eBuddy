@@ -6,9 +6,13 @@ using Newtonsoft.Json;
 
 namespace eBuddy
 {
-    public class GPSSample
+    public class LocationMessage
     {
-        public string Id { get; set; }
+        [JsonProperty(PropertyName = "sourceUserId")]
+        public string SourceUserId;
+
+        [JsonProperty(PropertyName = "destUserId")]
+        public string DestUserId;
 
         [JsonProperty(PropertyName = "latitude")]
         public double Latitude;
@@ -25,12 +29,12 @@ namespace eBuddy
         [JsonProperty(PropertyName = "time")]
         public DateTime Time;
 
-        public static GPSSample FromGeoposition(Geoposition pos, DateTime time)
+        public static LocationMessage FromGeoposition(Geoposition pos, DateTime time)
         {
             if (pos == null)
                 return null;
 
-            return new GPSSample()
+            return new LocationMessage()
             {
                 Accuracy = pos.Coordinate.Accuracy,
                 Longitude = pos.Coordinate.Longitude,
@@ -38,6 +42,16 @@ namespace eBuddy
                 Altitude = pos.Coordinate.Altitude.HasValue ? pos.Coordinate.Altitude.Value : -1,
                 Time = time
             };
+        }
+
+        public Geopoint GetGeoPoint()
+        {
+            return new Geopoint(new BasicGeoposition()
+            {
+                Altitude = this.Altitude,
+                Latitude = this.Latitude,
+                Longitude = this.Longitude
+            });
         }
     }
 }
