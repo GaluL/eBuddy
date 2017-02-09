@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Services.Maps;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace eBuddy
 {
@@ -40,6 +41,8 @@ namespace eBuddy
 
         public SocialRunManager() : base()
         {
+            _buddyWaypoints = new ObservableCollection<Geopoint>();
+
             LocationTracker.Instance.OnLocationChange += Instance_OnLocationChange;
         }
 
@@ -63,11 +66,14 @@ namespace eBuddy
         {
             _buddyWaypoints.Add(obj.GetGeoPoint());
 
-            var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(_buddyWaypoints);
-
-            if (routeFind.Status == MapRouteFinderStatus.Success)
+            if (_buddyWaypoints.Count > 1)
             {
-                BuddyRoute = routeFind.Route;
+                var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(_buddyWaypoints);
+
+                if (routeFind.Status == MapRouteFinderStatus.Success)
+                {
+                    BuddyRoute = routeFind.Route;
+                }
             }
         }
 
