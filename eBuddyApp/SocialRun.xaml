@@ -1,18 +1,10 @@
-<<<<<<< HEAD
 <UserControl x:Class="eBuddy.SocialRun"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-=======
-
-<UserControl x:Class="eBuddy.SocialRun"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
->>>>>>> ee401ae3bc6810330432c2f42f9e6d4b00d3cf15
+	xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     xmlns:local="using:eBuddy"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     d:DesignWidth="360" Height="500">
     <Grid Background='WhiteSmoke'>
@@ -99,20 +91,12 @@
                     <ColumnDefinition Width="65*"/>
                     <ColumnDefinition Width="7*"/>
                 </Grid.ColumnDefinitions>
-<<<<<<< HEAD
-                <Button x:Name="ButtonGo" Click="ButtonGo_OnClick" Height="43.253" FontSize="25" FontStyle="Italic" Foreground="WhiteSmoke" Background="CadetBlue" Content="Start" VerticalAlignment="Bottom" Grid.Column="1" Margin="244.477,-106.127,0,156.874" HorizontalAlignment="Left" Width="96.668" UseLayoutRounding="False" d:LayoutRounding="Auto" Grid.ColumnSpan="2">
-=======
                 <Button x:Name="ButtonGo" Click="ButtonGo_OnClick" Height="43.253" FontSize="25" FontStyle="Italic" Foreground="WhiteSmoke" Background="CadetBlue" Content="Start" VerticalAlignment="Bottom" Grid.Column="1" Margin="244.477,-106.127,0,156.874" HorizontalAlignment="Left" Width="96.668" UseLayoutRounding="False" Grid.ColumnSpan="2">
->>>>>>> ee401ae3bc6810330432c2f42f9e6d4b00d3cf15
                     <Button.RenderTransform>
                         <CompositeTransform Rotation="0.455"/>
                     </Button.RenderTransform>
                 </Button>
-<<<<<<< HEAD
-                <Button x:Name="ButtonStop" Click="ButtonStop_OnClick" Height="43.434" FontSize="25" FontStyle="Italic" Foreground="Maroon" Background="CadetBlue" Content="Stop" VerticalAlignment="Bottom" Grid.Column="2" Margin="30.18,-105.652,-79.593,156.218" HorizontalAlignment="Stretch" UseLayoutRounding="False" d:LayoutRounding="Auto">
-=======
                 <Button x:Name="ButtonStop" Click="ButtonStop_OnClick" Height="43.434" FontSize="25" FontStyle="Italic" Foreground="Maroon" Background="CadetBlue" Content="Stop" VerticalAlignment="Bottom" Grid.Column="2" Margin="30.18,-105.652,-79.593,156.218" HorizontalAlignment="Stretch" UseLayoutRounding="False">
->>>>>>> ee401ae3bc6810330432c2f42f9e6d4b00d3cf15
                     <Button.RenderTransform>
                         <CompositeTransform Rotation="0.246" TranslateX="-0.043" TranslateY="0.126"/>
                     </Button.RenderTransform>
