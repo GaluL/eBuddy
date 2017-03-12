@@ -30,6 +30,12 @@ namespace eBuddyService.Models
                 new AttributeToColumnAnnotationConvention<TableColumnAttribute, string>(
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
+
+        public System.Data.Entity.DbSet<eBuddyService.DataObjects.RunItem> RunItems { get; set; }
+
+        public System.Data.Entity.DbSet<eBuddyService.DataObjects.ScheduledRunItem> ScheduledRunItems { get; set; }
+
+        public System.Data.Entity.DbSet<eBuddyService.DataObjects.ScoreItem> ScoreItems { get; set; }
     }
 
 }
