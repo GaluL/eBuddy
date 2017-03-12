@@ -16,5 +16,6 @@ namespace eBuddyService.DataObjects
         public Boolean Gender { get; set; }
         public String Email { get; set; }
         public String FacebookId { get; set; }
+        public Double Score { get; set; }
     }
 }

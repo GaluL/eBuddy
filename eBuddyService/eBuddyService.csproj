@@ -165,13 +165,11 @@
     <Compile Include="App_Start\Startup.MobileApp.cs" />
     <Compile Include="Controllers\RunItemController.cs" />
     <Compile Include="Controllers\ScheduledRunItemController.cs" />
-    <Compile Include="Controllers\ScoreItemController.cs" />
     <Compile Include="Controllers\UserItemController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataObjects\LocationMessage.cs" />
     <Compile Include="DataObjects\ScheduledRunItem.cs" />
     <Compile Include="DataObjects\RunItem.cs" />
-    <Compile Include="DataObjects\ScoreItem.cs" />
     <Compile Include="DataObjects\UserItem.cs" />
     <Compile Include="Hubs\SocialRunsHub.cs" />
     <Compile Include="Migrations\201701211035314_Initial.cs" />
@@ -201,6 +199,10 @@
     <Compile Include="Migrations\201703041537316_scoreItem.cs" />
     <Compile Include="Migrations\201703041537316_scoreItem.Designer.cs">
       <DependentUpon>201703041537316_scoreItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703121543042_removedScoreTable.cs" />
+    <Compile Include="Migrations\201703121543042_removedScoreTable.Designer.cs">
+      <DependentUpon>201703121543042_removedScoreTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\eBuddyContext.cs" />
@@ -243,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703041537316_scoreItem.resx">
       <DependentUpon>201703041537316_scoreItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703121543042_removedScoreTable.resx">
+      <DependentUpon>201703121543042_removedScoreTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
