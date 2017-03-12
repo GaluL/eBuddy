@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Web;
 using eBuddyService.DataObjects;
 using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace eBuddyService.Hubs
 {
@@ -26,7 +27,15 @@ namespace eBuddyService.Hubs
             {
                 Trace.TraceInformation(String.Format("Sending to user: {0} connectionId {1}", msg.DestUserId, mapUidToConnection[msg.DestUserId]));
 
-                Clients.Client(mapUidToConnection[msg.DestUserId]).buddyLocationUpdate(msg);
+                try
+                {
+                    Clients.Client(mapUidToConnection[msg.DestUserId]).buddyLocationUpdate(msg);
+                }
+                catch (Exception e)
+                {
+                    string deadConnectionId;
+                    mapUidToConnection.TryRemove(msg.DestUserId, out deadConnectionId);
+                }
             }
             else
             {
