@@ -7,13 +7,13 @@ using System.Runtime.Remoting.Contexts;
 using System.Web;
 using eBuddyService.DataObjects;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 
 namespace eBuddyService.Hubs
 {
     public class SocialRunsHub : Hub
     {
         public static ConcurrentDictionary<string, string> mapUidToConnection = new ConcurrentDictionary<string, string>();
+        public static ConcurrentDictionary<string, List<string>> mapRunIDToConnection = new ConcurrentDictionary<string, List<string>>();
 
         public void Register(string facebookId)
         {
@@ -42,5 +42,24 @@ namespace eBuddyService.Hubs
                 Trace.TraceInformation(String.Format("User {0} doesn't exist", msg.DestUserId));
             }
         }
+
+        public void HandShake(String runId, String userId)
+        {
+            if (mapRunIDToConnection.ContainsKey(runId))
+            {
+                mapRunIDToConnection[runId].Add(userId);
+                foreach (string user in mapRunIDToConnection[runId])
+                {
+                    Clients.Client(user).runStart("start");
+                }
+            }
+            else
+            {
+                mapRunIDToConnection[runId] = new List<string>();
+                mapRunIDToConnection[runId].Add(userId);
+            }
+        }
+
     }
+
 }
