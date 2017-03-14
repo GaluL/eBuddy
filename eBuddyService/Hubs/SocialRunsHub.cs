@@ -50,7 +50,15 @@ namespace eBuddyService.Hubs
                 mapRunIDToConnection[runId].Add(userId);
                 foreach (string user in mapRunIDToConnection[runId])
                 {
-                    Clients.Client(user).runStart("start");
+                    try
+                    {
+                        Clients.Client(mapUidToConnection[user]).runStart("start");
+                    }
+                    catch (Exception e)
+                    {
+                        string deadConnectionId;
+                        mapUidToConnection.TryRemove(user, out deadConnectionId);
+                    }
                 }
             }
             else
