@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="Template10.Samples.SearchSample.Controls.SignUpPart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Width="300" x:Name="ThisPage"
+             mc:Ignorable="d" Height="455.629">
+    <UserControl.Resources>
+        <Image x:Key="FBLogin" Source="../Images/fblogin.png"/>
+    </UserControl.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- header -->
+        <Rectangle Fill="Orange" />
+        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20,0" FontSize="24">Registration</TextBlock>
+        <Button Margin="12" Foreground="White" Click="CloseClicked" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}">
+            <SymbolIcon Symbol="Clear" />
+        </Button>
+
+        <StackPanel x:Name="stackone" Grid.Row="1"  HorizontalAlignment="Stretch" Margin="0,0,0,9.667" Grid.RowSpan="2">
+
+            <TextBox PlaceholderText="Enter Email" Width="300"  
+            Margin="0,50,0,0" Text="{x:Bind UserData.Email, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Enter first name"  
+            Width="300" Margin="0,10,0,0" Text="{x:Bind UserData.PrivateName, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Enter lastname"  
+            Width="300" Margin="0,10,0,0" Text="{x:Bind UserData.SurName, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Enter your age"  
+            Width="300" Margin="0,10,0,0" Text="{x:Bind UserData.Age, Mode=TwoWay}"></TextBox>
+
+            <TextBox PlaceholderText="Enter your weight"  
+            Width="300" Margin="0,10,0,0" Text="{x:Bind UserData.Weight, Mode=TwoWay}"/>
+
+            <TextBox PlaceholderText="Enter your height"  
+            Width="300" Margin="0,10,0,0" Text="{x:Bind UserData.Height, Mode=TwoWay}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <RadioButton GroupName="gender" Content="Male" IsChecked="{x:Bind UserData.Gender, Mode=TwoWay}"  Height="16" Margin="1,5,0,0" />
+                <RadioButton GroupName="gender" Content="female" Height="16" Margin="1,5,0,0" />
+            </StackPanel>
+
+
+            <RelativePanel HorizontalAlignment="Center"  
+            Margin="0,10,0,0" RenderTransformOrigin="-0.649,0.523">
+
+                <Button x:Name="SignUp" Content="SignUp"  
+                Height="35" Width="65" Click="SignUpbtn_Click"></Button>
+
+            </RelativePanel>
+
+        </StackPanel>
+        <!-- login form -->
+        <!--<StackPanel Grid.Row="1" Margin="20, 16" DataContext="{Binding ElementName=ThisPage}">
+            <Button Background="Transparent" HorizontalAlignment="Center" Click="LoginClicked"/>
+        </StackPanel>-->
+
+    </Grid>
+</UserControl>
