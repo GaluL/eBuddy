@@ -16,7 +16,7 @@ namespace eBuddyApp.Services.Azure
         // This MobileServiceClient has been configured to communicate with the Azure Mobile Service and
         // Azure Gateway using the application key. You're all set to start working with your Mobile Service!
         public MobileServiceClient Service = new MobileServiceClient(
-            "https://ebuddy.azurewebsites.net"
+            "https://ebuddyapp.azurewebsites.net"
         );
 
         private static MobileService _Instance;

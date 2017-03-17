@@ -223,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\eBuddy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ebuddyapp - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201701211035314_Initial.resx">
