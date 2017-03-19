@@ -20,7 +20,7 @@ namespace Template10.Samples.SearchSample.Controls
 
         public event EventHandler SignUpHideRequested;
         public event EventHandler SignedUp;
-       
+
 
         private async void LoginClicked(object sender, RoutedEventArgs e)
         {
@@ -51,6 +51,9 @@ namespace Template10.Samples.SearchSample.Controls
             }
 
             Busy.SetBusy(false);
+            SignUpHideRequested?.Invoke(this, EventArgs.Empty);
+
+
         }
 
         private void cancelbtn_Click(object sender, RoutedEventArgs e)

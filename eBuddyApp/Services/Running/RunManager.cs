@@ -28,7 +28,7 @@ namespace eBuddy
             {
                 if (_Instance == null)
                 {
-                    _Instance = new RunManager();   
+                    _Instance = new RunManager();
                 }
 
                 return _Instance;
@@ -48,7 +48,7 @@ namespace eBuddy
 
         protected ManualResetEvent _DataUpdateSyncEvent;
 
-        internal event EventHandler<MapRoute> OnRouteUpdate; 
+        internal event EventHandler<MapRoute> OnRouteUpdate;
 
         public RunManager()
         {
@@ -64,7 +64,7 @@ namespace eBuddy
         internal virtual void Start()
         {
             InRun = true;
-            aTimer = new Timer(Callback, null, 0, 1); 
+            aTimer = new Timer(Callback, null, 0, 1);
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
 
             RunData.Date = DateTime.Now;
@@ -113,6 +113,6 @@ namespace eBuddy
                 _lastLocationTimeSeconds = RunData.Time.Seconds;
 
             }
-}
+        }
     }
 }

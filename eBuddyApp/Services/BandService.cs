@@ -36,6 +36,10 @@ namespace eBuddy
         }
 
         private int _heartRate;
+        private static int TEN = 10;
+        private int avg_heartRate = 0;
+
+
         public int HeartRate
         {
             get { return _heartRate; }
@@ -46,11 +50,14 @@ namespace eBuddy
             }
         }
 
+        public int RestHeartRate { get; private set; }
+
         public event Action<bool> OnConnectionStatusChange;
         public event EventHandler<int> OnHeartRateChange;
 
         private BandService()
         {
+            OnHeartRateChange += CalculateRestHeartRate;
         }
 
         public async Task<bool> Connect()
@@ -97,6 +104,11 @@ namespace eBuddy
 
                 IsConnected = true;
 
+                while (TEN > 0) { }  /*wait for 10 heartRate change events*/
+                RestHeartRate = avg_heartRate / 10;
+                OnHeartRateChange -= CalculateRestHeartRate;  //no need
+                avg_heartRate = 0;
+                TEN = 10;
                 return true;
             }
             catch (Exception ex)
@@ -104,6 +116,12 @@ namespace eBuddy
                 return false;
                 //this.viewModel.StatusMessage = ex.ToString();
             }
+        }
+
+
+        public void CalculateRestHeartRate(object sender, int e)
+        {
+            avg_heartRate += e;
         }
     }
 }

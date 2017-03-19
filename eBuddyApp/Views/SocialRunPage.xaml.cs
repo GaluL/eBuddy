@@ -10,6 +10,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Services.Maps;
 using Windows.Storage;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -42,15 +43,20 @@ namespace eBuddyApp.Views
             if (e.PropertyName.Equals("MyRoute"))
             {
                 myMap.Routes.Clear();
-                myMap.Routes.Add(new MapRouteView(ViewModel.MyRoute));
-            }
+                myMap.Routes.Add(new MapRouteView(ViewModel.MyRoute));            }
             if (e.PropertyName.Equals("BuddyRoute"))
             {
                 myMap2.Routes.Clear();
                 myMap2.Routes.Add(new MapRouteView(ViewModel.BuddyRoute));
             }
+            if (e.PropertyName.Equals("SocialColor"))
+            {
+                textBlock.Foreground = new SolidColorBrush(ViewModel.SocialColor);
+            }
+
 
         }
+
     }
 }
 
