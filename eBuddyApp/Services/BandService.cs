@@ -138,6 +138,7 @@ namespace eBuddy
         public void CalculateRestHeartRate(object sender, int e)
         {
             avg_heartRate += e;
+            TEN--;
         }
     }
 }

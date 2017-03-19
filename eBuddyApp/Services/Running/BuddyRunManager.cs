@@ -172,7 +172,10 @@ namespace eBuddy
                     if (BuddyRunData.Distance >= RUN_KM && winner.Equals(""))
                     {
                         winner = "buddy";
-                        SocialMsg = ("Buddy: " + BuddyData.PrivateName + " has completed his run and he is the winner!");
+                        OnMsgColorUpdate?.Invoke(Colors.LightCoral);
+                        string he_she = BuddyData.Gender == true ? "he" : "she";
+                        SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
+                        OnMsgSizeUpdate?.Invoke(18);
                     }
                     else
                     {
@@ -188,19 +191,39 @@ namespace eBuddy
         {
             OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
             string he_she = BuddyData.Gender == true ? "he" : "she";
-            if (RunData.Distance < BuddyRunData.Distance)
+
+             if ((RunData.Distance < BuddyRunData.Distance) &&
+                     (RunData.Speed > BuddyRunData.Speed))
             {
-                double time_seconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed))*60*60;
+                double time_seconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
                 double tip_kmh = RUN_KM - RunData.Distance / time_seconds;
-                SocialMsg = BuddyData.PrivateName + " is currently the first! fasten up to " + tip_kmh +
-                            " in order to win!";
+                OnMsgColorUpdate?.Invoke(Colors.Black);
+                OnMsgSizeUpdate?.Invoke(17);
+                if (tip_kmh < BuddyRunData.Speed)
+                    SocialMsg = BuddyData.PrivateName + " is currently the first! fasten up to " + tip_kmh +
+                                " in order to win!";
+                else
+
+                    SocialMsg = BuddyData.PrivateName + " is currently the first! your speed is great and you're on the right track to win this race!";
+
+
             }
-            else if ((RunData.Distance < BuddyRunData.Distance) && BandService.Instance.HeartRate < BandService.Instance.RestHeartRate) //TODO
+            else if ((RunData.Distance >= BuddyRunData.Distance) && (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate))
             {
+                OnMsgColorUpdate?.Invoke(Colors.White);
+                OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
-                            "! you are currently first! but you are not in your target Heart rate..";
+                            "! you are currently first! but you are not in your target Heart rate (that is " + BandService.Instance.MinTargetZoneHeartRate + " and up). fasten up!";
             }
-            OnMsgSizeUpdate?.Invoke(18);
+            else if ((RunData.Distance >= BuddyRunData.Distance) &&
+                     (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate))
+            {
+                OnMsgColorUpdate?.Invoke(Colors.LightGreen);
+                OnMsgSizeUpdate?.Invoke(15);
+                SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
+                            "! you are currently first! and you are in your target Heart Rate!";
+            }
+
         }
 
         internal async Task<bool> ConnectHub()
@@ -255,8 +278,6 @@ namespace eBuddy
             SocialMsg = "RUN!";
             OnMsgColorUpdate?.Invoke(Colors.Green);
             OnMsgSizeUpdate?.Invoke(28);
-
-
 
         }
 
