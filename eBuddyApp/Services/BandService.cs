@@ -37,7 +37,7 @@ namespace eBuddy
         }
 
         private int _heartRate;
-        private static int TEN = 10;
+        private static int TEN = 0;
         private int avg_heartRate = 0;
 
 
@@ -109,11 +109,11 @@ namespace eBuddy
 
                 IsConnected = true;
 
-                while (TEN > 0) { }  /*wait for 10 heartRate change events*/
-                RestHeartRate = avg_heartRate / 10;
+                while (TEN < 10) { }  /*wait for 10 heartRate change events*/
+                RestHeartRate = avg_heartRate / TEN;
                 OnHeartRateChange -= CalculateRestHeartRate;  //no need
-                avg_heartRate = 0;
-                TEN = 10;
+                avg_heartRate = 0; // reset
+                TEN = 0; // reset
 
                 CalculateTargetZoneHeartRate();
 
@@ -138,7 +138,7 @@ namespace eBuddy
         public void CalculateRestHeartRate(object sender, int e)
         {
             avg_heartRate += e;
-            TEN--;
+            TEN++;
         }
     }
 }
