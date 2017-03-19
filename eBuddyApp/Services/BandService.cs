@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using eBuddyApp.Services.Azure;
 using Microsoft.Band;
 
 namespace eBuddy
@@ -51,6 +52,10 @@ namespace eBuddy
         }
 
         public int RestHeartRate { get; private set; }
+        public int MinTargetZoneHeartRate { get; private set; }
+        public int MaxTargetZoneHeartRate { get; private set; }
+
+
 
         public event Action<bool> OnConnectionStatusChange;
         public event EventHandler<int> OnHeartRateChange;
@@ -109,6 +114,9 @@ namespace eBuddy
                 OnHeartRateChange -= CalculateRestHeartRate;  //no need
                 avg_heartRate = 0;
                 TEN = 10;
+
+                CalculateTargetZoneHeartRate();
+
                 return true;
             }
             catch (Exception ex)
@@ -116,6 +124,14 @@ namespace eBuddy
                 return false;
                 //this.viewModel.StatusMessage = ex.ToString();
             }
+        }
+
+        private void CalculateTargetZoneHeartRate()
+        {
+            int maxHeartRate = 220 - (int) MobileService.Instance.UserData.Age;
+            int HHR = maxHeartRate - RestHeartRate;
+            MinTargetZoneHeartRate = (int) (HHR * (0.7) + RestHeartRate);
+            MaxTargetZoneHeartRate = (int) (HHR * 0.85 + RestHeartRate); 
         }
 
 
