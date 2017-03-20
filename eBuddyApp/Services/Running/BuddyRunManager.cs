@@ -210,7 +210,7 @@ namespace eBuddy
             }
             else if ((RunData.Distance >= BuddyRunData.Distance) && (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate))
             {
-                OnMsgColorUpdate?.Invoke(Colors.White);
+                OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! but you are not in your target Heart rate (that is " + BandService.Instance.MinTargetZoneHeartRate + " and up). fasten up!";
@@ -218,7 +218,7 @@ namespace eBuddy
             else if ((RunData.Distance >= BuddyRunData.Distance) &&
                      (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate))
             {
-                OnMsgColorUpdate?.Invoke(Colors.LightGreen);
+                OnMsgColorUpdate?.Invoke(Colors.DarkGreen);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";

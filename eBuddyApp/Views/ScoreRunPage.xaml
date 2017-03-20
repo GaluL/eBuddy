@@ -12,11 +12,11 @@
     xmlns:vm="using:eBuddyApp.ViewModels"
     mc:Ignorable="d"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
-    
+
     <Page.DataContext>
         <vm:ScoreRunViewModel x:Name="ViewModel" />
     </Page.DataContext>
-    
+
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
@@ -56,15 +56,15 @@
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
                              Text="Score Run"/>
-        
-        
+
+
         <RelativePanel EntranceNavigationTransitionInfo.IsTargetElement="True"
                        RelativePanel.AlignBottomWithPanel="True"
                        RelativePanel.AlignLeftWithPanel="True"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.Below="pageHeader">
 
-                <Grid>
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="*"/>
@@ -82,14 +82,14 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: "/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: "/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: "/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: "/>
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}" />
                 </Grid>
 
                 <Grid Grid.Row="1"  Margin="10,389,-10,10.333">
@@ -97,13 +97,21 @@
                                      TiltInteractionMode="GestureAndControl"
                                      ZoomInteractionMode="GestureAndControl"
                                      Center="{x:Bind ViewModel.CurrentLocation, Mode=OneWay}"
-                                     MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Margin="-40,-380,0,48" Height="Auto" Width="385"
+                                     MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Margin="-8,-375,-32,-25" Height="Auto" Width="Auto"
                                      ZoomLevel="15"/>
                 </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,145.667,15,-145.667">
-                    <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange" HorizontalAlignment="Left">Start</Button>
-                    <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange">Stop</Button>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="73,184.667,-57,-361.667"
+                            RenderTransformOrigin="0.514,2.354">
+                    <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange"
+                            FontWeight="SemiBold" HorizontalAlignment="Left" Margin="11,59,11,49" Width="99"
+                            Height="69">
+                        Start
+                    </Button>
+                    <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange"
+                            FontWeight="SemiBold" Height="62" Margin="0,66,11,49" Width="72">
+                        Stop
+                    </Button>
                 </StackPanel>
             </Grid>
         </RelativePanel>

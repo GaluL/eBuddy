@@ -82,14 +82,14 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: "/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: "/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: "/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: "/>
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: " FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}" />
                 </Grid>
 
                 <Grid Grid.Row="1"  Margin="10,389,-10,10.333">
@@ -101,9 +101,17 @@
                                      ZoomLevel="15"/>
                 </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,145.667,15,-145.667">
-                    <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange" HorizontalAlignment="Left">Start</Button>
-                    <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange">Stop</Button>
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,154.667,0,-329.667"
+                            RenderTransformOrigin="0.514,2.354">
+                    <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange"
+                            FontWeight="SemiBold" HorizontalAlignment="Left" Margin="11,33,11,10" Width="70"
+                            Height="55">
+                        Start
+                    </Button>
+                    <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange"
+                            FontWeight="SemiBold" Height="55" Margin="0,33,11,10" Width="65">
+                        Stop
+                    </Button>
                 </StackPanel>
             </Grid>
         </RelativePanel>
