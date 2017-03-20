@@ -102,12 +102,6 @@
                                 <TextBlock Text=", " />
                                 <TextBlock Text="Distance: " />
                                 <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold" />
-                                <TextBlock Text=", " />
-                                <TextBlock Text="Time: " />
-                                <TextBlock Text="{Binding Time, Mode=OneWay}" FontWeight="Bold"/>
-                                <TextBlock Text=", " />
-                                <TextBlock Text="Speed: " />
-                                <TextBlock Text="{Binding Speed, Mode=OneWay}" FontWeight="Bold"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

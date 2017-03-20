@@ -43,5 +43,9 @@ namespace eBuddyApp.Models
         private String _FacebookId = default(string);
         [JsonProperty(PropertyName = "FacebookId")]
         public string FacebookId { get { return _FacebookId; } set { Set(ref _FacebookId, value); } }
+
+        private double _Score = default(double);
+        [JsonProperty(PropertyName = "score")]
+        public double Score { get { return _Score; } set { Set(ref _Score, value); } }
     }
 }

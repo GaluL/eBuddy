@@ -48,6 +48,8 @@ namespace eBuddy
         public event Action<MapRoute> OnBuddyRouteUpdate;
         private MapRoute _buddyRoute;
 
+        public event EventHandler RunAboutToStart;
+
         public MapRoute BuddyRoute
         {
             get { return _buddyRoute; }
@@ -106,8 +108,6 @@ namespace eBuddy
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
-            GetBuddyData(BUDDY_USER_ID);
-
         }
 
         private async void GetBuddyData(string buddyUserId)
@@ -200,7 +200,7 @@ namespace eBuddy
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
                 if (tip_kmh < BuddyRunData.Speed)
-                    SocialMsg = BuddyData.PrivateName + " is currently the first! fasten up to " + tip_kmh +
+                    SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tip_kmh +
                                 " in order to win!";
                 else
 
@@ -291,6 +291,15 @@ namespace eBuddy
             winner = "";
 
 
+        }
+
+        public void OnUpcomingRun(string facebookId)
+        {
+            BUDDY_USER_ID = facebookId;
+
+            GetBuddyData(BUDDY_USER_ID);
+
+            RunAboutToStart?.Invoke(this, null);
         }
     }
 }

@@ -55,7 +55,6 @@ namespace eBuddy
             _DataUpdateSyncEvent = new ManualResetEvent(true);
 
             RunData = new RunItem();
-            RunData.FacebookId = MobileService.Instance.UserData.FacebookId;
         }
 
         public Timer aTimer;

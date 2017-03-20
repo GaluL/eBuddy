@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
 using Windows.UI.Popups;
+using eBuddy;
 using eBuddyApp.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -50,6 +52,14 @@ namespace eBuddyApp.Services.Azure
         {
             get { return _ScheduledRuns; }
         }
+
+        private List<UserItem> _Suggestions;
+        public List<UserItem> Suggestions
+        {
+            get { return _Suggestions; }
+        }
+
+        private Timer _SocialRunTimer;
 
         internal event EventHandler UserDataLoaded; 
 
@@ -147,6 +157,7 @@ namespace eBuddyApp.Services.Azure
         {
             await CollectFinishedRuns();
             await CollectScheduledRuns();
+            await GetSuggestions();
         }
 
         private async Task CollectScheduledRuns()
@@ -155,19 +166,44 @@ namespace eBuddyApp.Services.Azure
 
             try
             {
-                scheduledRuns = await Service.GetTable<ScheduledRunItem>().Where(
-                    x => x.User1FacebookId == Service.CurrentUser.UserId ||
-                         x.User2FacebookId == Service.CurrentUser.UserId).ToEnumerableAsync();
+                scheduledRuns = await Service.GetTable<ScheduledRunItem>().ToEnumerableAsync();
 
                 foreach (var run in scheduledRuns)
                 {
-                    ScheduledRuns.Add(run);
+                    if ((run.User1FacebookId == Service.CurrentUser.UserId ||
+                        run.User2FacebookId == Service.CurrentUser.UserId) && run.Date >= DateTime.Now)
+                    {
+                        ScheduledRuns.Add(run);
+                    }
                 }
+
+                StartTimer();
             }
             catch (Exception e)
             {
                 return;
             }
+        }
+
+        private void StartTimer()
+        {
+            var closestRun = ScheduledRuns.First(x => x.Date == ScheduledRuns.Min(y => y.Date));
+
+            if (_SocialRunTimer != null)
+            {
+                _SocialRunTimer.Dispose();    
+            }
+
+            _SocialRunTimer = new Timer(SocialRunInitializer, null, closestRun.Date - DateTime.Now, new TimeSpan(-1));
+        }
+
+        private void SocialRunInitializer(object state)
+        {
+            var closestRun = ScheduledRuns.First(x => x.Date == ScheduledRuns.Min(y => y.Date));
+
+            BuddyRunManager.Instance.OnUpcomingRun(closestRun.User1FacebookId == UserData.FacebookId
+                ? closestRun.User2FacebookId
+                : closestRun.User1FacebookId);
         }
 
         private async Task CollectFinishedRuns()
@@ -222,13 +258,39 @@ namespace eBuddyApp.Services.Azure
         }
 		
 		public async void SaveRunData(RunItem runData)
-        {
+		{
+		    runData.FacebookId = UserData.FacebookId;
             await Service.GetTable<RunItem>().InsertAsync(runData);
         }
 
         public void SaveUserScore(double score)
         {
 
+        }
+
+        public async Task GetSuggestions()
+        {
+            const int suggestionsAmplitude = 5;
+
+            _Suggestions = await Service.GetTable<UserItem>().Where(user => (user.FacebookId != UserData.FacebookId) && (user.Score <= UserData.Score + suggestionsAmplitude) &&
+                   (user.Score >= UserData.Score - suggestionsAmplitude)).ToListAsync();
+        }
+
+        public async void ScheduleARun(string userid, double distance, DateTime date)
+        {
+            await Service.GetTable<ScheduledRunItem>()
+                .InsertAsync(new ScheduledRunItem()
+                {
+                    Date = date,
+                    Distance = distance,
+                    Finished = false,
+                    User1FacebookId = UserData.FacebookId,
+                    User2FacebookId = userid,
+                    User1Approved = true,
+                    User2Approved = false
+                });
+
+            await CollectScheduledRuns();
         }
     }
 }

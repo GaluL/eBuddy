@@ -37,6 +37,15 @@ namespace eBuddyApp.Views
         public Shell(INavigationService navigationService) : this()
         {
             SetNavigationService(navigationService);
+
+            BuddyRunManager.Instance.RunAboutToStart += Instance_RunAboutToStart; 
+        }
+
+        private async void Instance_RunAboutToStart(object sender, EventArgs e)
+        {
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                HamburgerMenu.NavigationService.Navigate(typeof(SocialRunPage));
+            });
         }
 
         public void SetNavigationService(INavigationService navigationService)
