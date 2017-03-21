@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Networking.NetworkOperators;
+using eBuddyApp.Services.Azure;
+using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using Template10.Mvvm;
 
@@ -19,21 +22,12 @@ namespace eBuddyApp.Models
     {
         public string Id { get; set; }
 
-        private String _User1FacebookId = default(string);
-        [JsonProperty(PropertyName = "user1facebookid")]
-        public String User1FacebookId { get { return _User1FacebookId; } set { Set(ref _User1FacebookId, value); } }
-
-        private String _User2FacebookId = default(string);
-        [JsonProperty(PropertyName = "user2facebookid")]
-        public String User2FacebookId { get { return _User2FacebookId; } set { Set(ref _User2FacebookId, value); } }
-
-        private bool _User1Approved = default(bool);
-        [JsonProperty(PropertyName = "user1approved")]
-        public bool User1Approved { get { return _User1Approved; } set { Set(ref _User1Approved, value); } }
-
-        private bool _User2Approved = default(bool);
-        [JsonProperty(PropertyName = "user2approved")]
-        public bool User2Approved { get { return _User2Approved; } set { Set(ref _User2Approved, value); } }
+        [JsonProperty(PropertyName = "InitializerFacebookId")]
+        public String InitializerFacebookId { get; set; }
+        [JsonProperty(PropertyName = "BuddyFacebookId")]
+        public String BuddyFacebookId { get; set; }
+        [JsonProperty(PropertyName = "BuddyApproval")]
+        public bool BuddyApproval { get; set; }
 
         private DateTime _Date = default(DateTime);
         [JsonProperty(PropertyName = "date")]
@@ -50,5 +44,21 @@ namespace eBuddyApp.Models
         private string _Winner = default(string);
         [JsonProperty(PropertyName = "winner")]
         public String Winner { get { return _Winner; } set { Set(ref _Winner, value); } }
+
+        [JsonIgnore]
+        public bool WaitingForMyApproval { get; set; }
+
+        [JsonIgnore]
+        public RelayCommand Approve { get; set; }
+
+        public ScheduledRunItem()
+        {
+            Approve = new RelayCommand(async () =>
+            {
+                BuddyApproval = true;
+                await MobileService.Instance.Service.GetTable<ScheduledRunItem>().UpdateAsync(this);
+                await MobileService.Instance.CollectScheduledRuns();
+            });
+        }
     }
 }
