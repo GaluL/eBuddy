@@ -54,6 +54,7 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
+                             FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"
                              Text="Home Page">
         </controls:PageHeader>
 
@@ -71,37 +72,37 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}"/>
-                <TextBlock Grid.Row="1" Text="Your previous runs:"/>
-                <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}">
+                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="1" Text="Your previous runs:" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <!--<TextBlock Text="Date: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Date, Mode=OneWay}" FontWeight="Bold"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />-->
                                 <!--<TextBlock Text="Distance: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />
                                 <TextBlock Text="Time: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Time, Mode=OneWay}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Time, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />
                                 <TextBlock Text="Speed: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Speed, Mode=OneWay}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Speed, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                             </StackPanel>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <TextBlock Grid.Row="3" Text="Your upcoming runs:"/>
-                <ListView Grid.Row="4" ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}">
+                <TextBlock Grid.Row="3" Text="Your upcoming runs:" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <ListView Grid.Row="4" ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Date: " />
-                                <TextBlock Text="{Binding Date, Mode=OneWay}"/>
-                                <TextBlock Text=", " />
-                                <TextBlock Text="Distance: " />
-                                <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold" />
+                                <TextBlock Text="Date: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                                <TextBlock Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                                <TextBlock Text=", " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                                <TextBlock Text="Distance: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                                <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

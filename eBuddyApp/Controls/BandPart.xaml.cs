@@ -23,8 +23,8 @@ namespace Template10.Samples.SearchSample.Controls
 
             if (await BandService.Instance.Connect())
             {
-                LoggedIn?.Invoke(this, null);
-                HideRequested?.Invoke(this, null);
+                    LoggedIn?.Invoke(this, null);
+                    HideRequested?.Invoke(this, null);
             }
 
             Busy.SetBusy(false);

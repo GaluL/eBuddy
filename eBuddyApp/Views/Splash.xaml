@@ -29,7 +29,7 @@
                       VerticalAlignment="Center"
                       Foreground="{StaticResource ExtendedSplashForeground}"
                       IsActive="True"
-                      RenderTransformOrigin="0.5,0.5">
+                      RenderTransformOrigin="0.5,0.5" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
             <ProgressRing.RenderTransform>
                 <CompositeTransform x:Name="ProgressTransform" TranslateY="120" />
             </ProgressRing.RenderTransform>

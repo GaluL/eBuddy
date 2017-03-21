@@ -53,7 +53,7 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="User Profile" />
+                             Text="User Profile" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
 
         <!--  content  -->
         <ScrollViewer EntranceNavigationTransitionInfo.IsTargetElement="True"
@@ -78,20 +78,20 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Name: " />
-                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.PrivateName, Mode=OneWay}" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Gender: " />
-                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Gender, Mode=OneWay}" />
-                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Age: " />
-                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Age, Mode=OneWay}" />
-                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Weight: " />
-                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Weight, Mode=OneWay}" />
-                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Height: " />
-                <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Height, Mode=OneWay}" />
-                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Mail: " />
-                <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Email, Mode=OneWay}"/>
-                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Score: " />
-                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Score, Mode=OneWay}"/>
+                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Name: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.PrivateName, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Gender: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Gender, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Age: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Age, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Weight: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Weight, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Height: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Height, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Mail: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Email, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Score: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
+                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Score, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
             </Grid>
 
         </ScrollViewer>

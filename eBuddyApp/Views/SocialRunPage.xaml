@@ -63,7 +63,7 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Social Run" />
+                             Text="Social Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
 
 
         <RelativePanel EntranceNavigationTransitionInfo.IsTargetElement="True"
@@ -90,17 +90,17 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
                     <!--<TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay, Converter={StaticResource DistanceStringFormatConverter},ConverterParameter='{}{0:hh\\:mm}'}" />-->
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
                     <!--<TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay, Converter={StaticResource DateStringFormatConverter}}"/>-->
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: "  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                     <!--<TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay, Converter={StaticResource SpeedStringFormatConverter}}"/>-->
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Margin="10,389,-10,10.333">
@@ -122,11 +122,11 @@
                             RenderTransformOrigin="0.514,2.354">
                     <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange"
                             FontWeight="SemiBold" HorizontalAlignment="Left" Margin="11,33,11,10" Width="70"
-                            Height="55">
+                            Height="55" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand">
                         Start
                     </Button>
                     <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange"
-                            FontWeight="SemiBold" Height="55" Margin="0,33,11,10" Width="65">
+                            FontWeight="SemiBold" Height="55" Margin="0,33,11,10" Width="65" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand">
                         Stop
                     </Button>
                 </StackPanel>
@@ -136,7 +136,7 @@
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextAlignment="Center" Height="63"
                        IsColorFontEnabled="True" FontSize="{x:Bind ViewModel.SocialSize, Mode=OneWay}"
                        Foreground="DarkGray" TextWrapping="Wrap" Text="{x:Bind ViewModel.SocialMsg, Mode=OneWay}"
-                       VerticalAlignment="Center" Margin="0,10,0,2" Width="329" />
+                       VerticalAlignment="Center" Margin="0,10,0,2" Width="329" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
         </Grid>
         <Grid Background="SteelBlue" Margin="170,372,-289.333,-548" VerticalAlignment="Center" HorizontalAlignment="Center" Height="176" Width="435" >
             <Grid.ColumnDefinitions>

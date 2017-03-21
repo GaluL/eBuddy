@@ -12,11 +12,11 @@
     xmlns:vm="using:eBuddyApp.ViewModels"
     mc:Ignorable="d"
     xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
-    
+
     <Page.DataContext>
         <vm:SoloRunViewModel x:Name="ViewModel" />
     </Page.DataContext>
-    
+
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
@@ -52,19 +52,21 @@
         </VisualStateManager.VisualStateGroups>
 
         <controls:PageHeader x:Name="pageHeader"
+                             FontWeight="SemiBold"
+                             FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
                              Text="Solo Run"/>
-        
-        
+
+
         <RelativePanel EntranceNavigationTransitionInfo.IsTargetElement="True"
                        RelativePanel.AlignBottomWithPanel="True"
                        RelativePanel.AlignLeftWithPanel="True"
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.Below="pageHeader">
 
-                <Grid>
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition Height="*"/>
@@ -82,36 +84,32 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" />
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" />
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Speed: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}" />
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Heartrate: " FontWeight="SemiBold" />
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}" />
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: "  FontWeight="SemiBold"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="SemiBold"  Text="Speed:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}"  FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" FontWeight="SemiBold" Text="HeartRate:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" />
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}"  FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
                 </Grid>
 
-                <Grid Grid.Row="1"  Margin="10,389,-10,10.333">
+                <Grid Grid.Row="1"  Margin="5,389,-10,10.333">
                     <maps:MapControl x:Name="myMap"  
                                      TiltInteractionMode="GestureAndControl"
                                      ZoomInteractionMode="GestureAndControl"
                                      Center="{x:Bind ViewModel.CurrentLocation, Mode=OneWay}"
-                                     MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Margin="-40,-380,0,48" Height="Auto" Width="385"
+                                     MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Margin="-17,-381,-18,-1" Height="Auto" Width="Auto"
                                      ZoomLevel="15"/>
                 </Grid>
 
-                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,154.667,0,-329.667"
-                            RenderTransformOrigin="0.514,2.354">
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="-5,173.667,-2,-348.667"
+                            RenderTransformOrigin="0.514,2.354" HorizontalAlignment="Left" Width="367">
                     <Button Command="{x:Bind ViewModel.StartRun}" Foreground="WhiteSmoke" Background="Orange"
-                            FontWeight="SemiBold" HorizontalAlignment="Left" Margin="11,33,11,10" Width="70"
-                            Height="55">
-                        Start
-                    </Button>
-                    <Button Command="{x:Bind ViewModel.StopRun}" Foreground="WhiteSmoke" Background="Orange"
-                            FontWeight="SemiBold" Height="55" Margin="0,33,11,10" Width="65">
-                        Stop
-                    </Button>
+                            FontWeight="SemiBold"  Margin="4,60" Width="172"
+                            Height="55" FontSize="20"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Content="Start"/>
+                    <Button Command="{x:Bind ViewModel.StopRun}"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Foreground="WhiteSmoke" Background="Orange"
+                            FontWeight="SemiBold" Height="55" Margin="0,60" Width="186" FontSize="20" Content="Stop"/>
                 </StackPanel>
             </Grid>
         </RelativePanel>

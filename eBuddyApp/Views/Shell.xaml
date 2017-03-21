@@ -26,7 +26,7 @@
                                 Symbol="Home" />
                         <TextBlock Margin="12,0,0,0"
                                VerticalAlignment="Center"
-                               Text="Home" />
+                               Text="Home" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                     </StackPanel>
                 </Controls:HamburgerButtonInfo>
                 <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:RunPage">
@@ -36,7 +36,7 @@
                             Symbol="Contact" />
                     <TextBlock Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            Text="Solo Run" />
+                            Text="Solo Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
                 <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:ScoreRunPage">
@@ -46,7 +46,7 @@
                             Symbol="Flag" />
                         <TextBlock Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            Text="Score Run" />
+                            Text="Score Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                     </StackPanel>
                 </Controls:HamburgerButtonInfo>
                 <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:SocialRunPage">
@@ -56,7 +56,7 @@
                     Symbol="People"/>
                     <TextBlock Margin="12,0,0,0"
                     VerticalAlignment="Center"
-                    Text="Social Run" />
+                    Text="Social Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
             <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:SuggestionsPage">
@@ -66,7 +66,7 @@
                     Symbol="Calendar" />
                 <TextBlock Margin="12,0,0,0"
                     VerticalAlignment="Center"
-                    Text="Schedule Social Run" />
+                    Text="Schedule Social Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
             </StackPanel>
         </Controls:HamburgerButtonInfo>
             </Controls:HamburgerMenu.PrimaryButtons>
@@ -79,7 +79,7 @@
                                 Symbol="Contact2" />
                         <TextBlock Margin="12,0,0,0"
                                VerticalAlignment="Center"
-                               Text="User profile" />
+                               Text="User profile" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                     </StackPanel>
                 </Controls:HamburgerButtonInfo>
                 <Controls:HamburgerButtonInfo ButtonType="Command" Command="{x:Bind PairBand}">
@@ -89,7 +89,7 @@
                             Symbol="MapDrive" />
                         <TextBlock Margin="12,0,0,0"
                             VerticalAlignment="Center"
-                            Text="Band" />
+                            Text="Band" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                     </StackPanel>
                 </Controls:HamburgerButtonInfo>
             </Controls:HamburgerMenu.SecondaryButtons>

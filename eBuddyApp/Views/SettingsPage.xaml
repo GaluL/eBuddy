@@ -125,12 +125,12 @@
                                  Header="Busy text"
                                  RelativePanel.AlignLeftWithPanel="True"
                                  RelativePanel.Below="IsFullScreenToggleSwitch"
-                                 Text="{Binding BusyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding BusyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
 
                         <Button Margin="12,0,0,0"
                                 Command="{x:Bind ViewModel.SettingsPartViewModel.ShowBusyCommand}"
                                 Content="Show Busy"
-                                RelativePanel.AlignBottomWith="BusyTextTextBox"
+                                RelativePanel.AlignBottomWith="BusyTextTextBox" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"
                                 RelativePanel.RightOf="BusyTextTextBox" />
 
                     </RelativePanel>
@@ -145,7 +145,7 @@
                 <ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
                     <TextBlock Margin="0,12,24,12"
                                LineHeight="24"
-                               TextWrapping="Wrap">
+                               TextWrapping="Wrap" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pharetra dictum nibh vel ornare. Donec sem urna, rhoncus sed cursus ac, aliquet at nisl. Pellentesque cursus et lacus vel porta. Morbi iaculis efficitur volutpat. Curabitur sit amet cursus nisl, ac suscipit mauris. Nulla a tellus a odio tincidunt maximus. Maecenas non eros lacus. Donec aliquam libero nec ex ullamcorper, in lobortis nibh dapibus. Mauris vehicula, tellus quis congue tincidunt, neque massa auctor ante, ut laoreet felis nisi id tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc sed dapibus quam, in viverra arcu. Vivamus ut metus non magna viverra porttitor a ultrices dui.
                         <LineBreak />
                         <LineBreak />
@@ -205,18 +205,18 @@
                                RelativePanel.AlignLeftWithPanel="True"
                                RelativePanel.AlignRightWith="LogoImage"
                                RelativePanel.AlignTopWithPanel="True"
-                               Text="{Binding DisplayName}" />
+                               Text="{Binding DisplayName}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
 
                     <TextBlock x:Name="PublisherTextBlock"
                                RelativePanel.AlignLeftWithPanel="True"
                                RelativePanel.Below="DisplayNameTextBlock"
-                               Text="{Binding Publisher}" />
+                               Text="{Binding Publisher}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
 
                     <TextBlock x:Name="VersionTextBlock"
                                RelativePanel.AlignLeftWithPanel="True"
-                               RelativePanel.Below="PublisherTextBlock">
+                               RelativePanel.Below="PublisherTextBlock" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                         <Run>Version</Run>
-                        <Run Text="{Binding Version}" />
+                        <Run Text="{Binding Version}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
                     </TextBlock>
 
                 </RelativePanel>

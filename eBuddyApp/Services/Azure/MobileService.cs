@@ -235,7 +235,6 @@ namespace eBuddyApp.Services.Azure
                 return false;
             }
 
-
             return true;
         }
 

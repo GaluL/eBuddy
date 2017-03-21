@@ -62,13 +62,16 @@ namespace eBuddy
 
         private BandService()
         {
-            OnHeartRateChange += CalculateRestHeartRate;
+            MinTargetZoneHeartRate = 180;
+            MaxTargetZoneHeartRate = 200;
         }
 
         public async Task<bool> Connect()
         {
             try
             {
+                OnHeartRateChange += CalculateRestHeartRate;
+
                 // Get the list of Microsoft Bands paired to the phone.
                 IBandInfo[] pairedBands = await BandClientManager.Instance.GetBandsAsync();
                 if (pairedBands.Length < 1)
@@ -109,14 +112,6 @@ namespace eBuddy
 
                 IsConnected = true;
 
-                while (TEN < 10) { }  /*wait for 10 heartRate change events*/
-                RestHeartRate = avg_heartRate / TEN;
-                OnHeartRateChange -= CalculateRestHeartRate;  //no need
-                avg_heartRate = 0; // reset
-                TEN = 0; // reset
-
-                CalculateTargetZoneHeartRate();
-
                 return true;
             }
             catch (Exception ex)
@@ -131,7 +126,7 @@ namespace eBuddy
             int maxHeartRate = 220 - (int) MobileService.Instance.UserData.Age;
             int HHR = maxHeartRate - RestHeartRate;
             MinTargetZoneHeartRate = (int) (HHR * (0.7) + RestHeartRate);
-            MaxTargetZoneHeartRate = (int) (HHR * 0.85 + RestHeartRate); 
+            MaxTargetZoneHeartRate = (int) (HHR * 0.85 + RestHeartRate);
         }
 
 
@@ -139,6 +134,15 @@ namespace eBuddy
         {
             avg_heartRate += e;
             TEN++;
+            if (TEN >= 10)
+            {
+                /*wait for 10 heartRate change events*/
+                RestHeartRate = avg_heartRate / TEN;
+                OnHeartRateChange -= CalculateRestHeartRate; //no need
+                CalculateTargetZoneHeartRate();
+                avg_heartRate = 0; // reset
+                TEN = 0; // reset
+            }
         }
     }
 }

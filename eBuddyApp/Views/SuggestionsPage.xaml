@@ -54,31 +54,31 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Schedule A Run" />
+                             Text="Schedule A Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
 
-        <RelativePanel Below="pageHeader">
+        <RelativePanel Below="pageHeader" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Here are your buddies suggestions:"/>
-                <FlipView Name="suggestionsFlipView" Grid.Row="1" ItemsSource="{x:Bind ViewModel.Suggestions, Mode=OneWay}">
+                <TextBlock Grid.Row="0" Text="Here are your buddies suggestions:" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <FlipView Name="suggestionsFlipView" Grid.Row="1" ItemsSource="{x:Bind ViewModel.Suggestions, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <!--<TextBlock Text="Date: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding PrivateName, Mode=OneWay}" FontWeight="Bold"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PrivateName, Mode=OneWay}" FontWeight="Bold" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />-->
                                 <!--<TextBlock Text="Distance: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Age, Mode=OneWay}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Age, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />
                                     <TextBlock Text="Time: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Score, Mode=OneWay}"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Score, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />
                                     <TextBlock Text="Speed: " />-->
-                                <Button HorizontalAlignment="Center" Click="ButtonBase_OnClick">Schedule</Button>
+                                <Button HorizontalAlignment="Center" Click="ButtonBase_OnClick" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Schedule</Button>
                             </StackPanel>
                         </DataTemplate>
                     </FlipView.ItemTemplate>

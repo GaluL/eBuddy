@@ -90,7 +90,13 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Fonts\Quicksand_Dash.otf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="eBuddyApp_TemporaryKey.pfx" />
+    <Content Include="Fonts\Quicksand-Light.otf" />
+    <Content Include="Fonts\Quicksand-Regular.otf" />
+    <Content Include="Fonts\Quicksand-Bold.otf" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
