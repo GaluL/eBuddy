@@ -271,8 +271,13 @@ namespace eBuddyApp.Services.Azure
             await Service.GetTable<RunItem>().InsertAsync(runData);
         }
 
-        public void SaveUserScore(double score)
+        public async Task SaveUserScore(double score)
         {
+            _UserData.Score = score;
+            await Service.GetTable<UserItem>().UpdateAsync(_UserData);
+
+
+
 
         }
 

@@ -151,7 +151,7 @@ namespace eBuddy
             }
         }
 
-        internal  void Stop()
+        internal async Task Stop()
         {
             InRun = false;
             aTimer.Dispose();
@@ -164,7 +164,7 @@ namespace eBuddy
             if (RunPhase == ERunPhase.Finished)
             {
                 MobileService.Instance.SaveRunData(RunData);
-                MobileService.Instance.SaveUserScore(finalScore);
+             await MobileService.Instance.SaveUserScore(finalScore);
 
             }
             RunPhase = ERunPhase.NotStarted;
@@ -197,7 +197,7 @@ namespace eBuddy
             }
         }
 
-        private void UpdateTestPhase()
+        private async Task UpdateTestPhase()
         {
             switch (RunPhase)
             {
@@ -242,7 +242,7 @@ namespace eBuddy
                     }
                 case ERunPhase.Intense:
                     {
-                        if (RunData.Time.TotalSeconds >= 50)
+                        if (RunData.Time.TotalSeconds >= 80)
                         {
                             RunData.Distance = 1610;
                         }
@@ -250,32 +250,23 @@ namespace eBuddy
                         {
 
                             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
+
                             RunPhase++;
 
                             LocationService.Instance.Stop();
-
                             finalScore = CalculateScore();
-                            Stop();
+
+                           await Stop();
+                            
 
                         }
-
+                        
                         break;
                     }
                 case ERunPhase.Finished:
                     {
-                        if (RunData.Distance >= INTENSE_DISTANCE)
-                        {
-
-                            BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
-                            RunPhase++;
-
-                            LocationService.Instance.Stop();
-
-                            CalculateScore();
-                            Stop();
-
-                        }
-
+                       
+                        
                         break;
                     }
             }
@@ -306,8 +297,8 @@ namespace eBuddy
 
             double mas_avg = (mas_run_based + mas_vo2max_based) / 2;
 
-            score_by_mas = mas_avg / 6.22 * 100;
-            score_by_vo2max = vo2max_avg / 70.0 * 100;
+            score_by_mas = (mas_avg / 6.22) * 100;
+            score_by_vo2max = (vo2max_avg / 70.0) * 100;
 
             
             return (score_by_mas + score_by_vo2max) / 2;
