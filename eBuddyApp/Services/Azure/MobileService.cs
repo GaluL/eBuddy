@@ -160,8 +160,9 @@ namespace eBuddyApp.Services.Azure
             await GetSuggestions();
         }
 
-        private async Task CollectScheduledRuns()
+        public async Task CollectScheduledRuns()
         {
+            ScheduledRuns.Clear();
             IEnumerable<ScheduledRunItem> scheduledRuns;
 
             try
@@ -171,9 +172,14 @@ namespace eBuddyApp.Services.Azure
 
                 foreach (var run in scheduledRuns)
                 {
-                    if ((run.User1FacebookId == Service.CurrentUser.UserId ||
-                        run.User2FacebookId == Service.CurrentUser.UserId) && run.Date >= DateTime.Now)
+                    if ((run.BuddyFacebookId.Equals(UserData.FacebookId) || run.InitializerFacebookId.Equals(UserData.FacebookId))
+                        && run.Date >= DateTime.Now)
                     {
+                        if (run.BuddyFacebookId.Equals(UserData.FacebookId) && !run.BuddyApproval)
+                        {
+                            run.WaitingForMyApproval = true;
+                        }
+
                         ScheduledRuns.Add(run);
                     }
                 }
@@ -201,9 +207,8 @@ namespace eBuddyApp.Services.Azure
         {
             var closestRun = ScheduledRuns.First(x => x.Date == ScheduledRuns.Min(y => y.Date));
 
-            BuddyRunManager.Instance.OnUpcomingRun(closestRun.User1FacebookId == UserData.FacebookId
-                ? closestRun.User2FacebookId
-                : closestRun.User1FacebookId);
+            BuddyRunManager.Instance.OnUpcomingRun(closestRun.InitializerFacebookId.Equals(
+                UserData.FacebookId) ? closestRun.BuddyFacebookId : closestRun.InitializerFacebookId);
         }
 
         private async Task CollectFinishedRuns()
@@ -270,8 +275,13 @@ namespace eBuddyApp.Services.Azure
             await Service.GetTable<RunItem>().InsertAsync(runData);
         }
 
-        public void SaveUserScore(double score)
+        public async Task SaveUserScore(double score)
         {
+            _UserData.Score = score;
+            await Service.GetTable<UserItem>().UpdateAsync(_UserData);
+
+
+
 
         }
 
@@ -285,17 +295,17 @@ namespace eBuddyApp.Services.Azure
 
         public async void ScheduleARun(string userid, double distance, DateTime date)
         {
-            await Service.GetTable<ScheduledRunItem>()
-                .InsertAsync(new ScheduledRunItem()
-                {
-                    Date = date,
-                    Distance = distance,
-                    Finished = false,
-                    User1FacebookId = UserData.FacebookId,
-                    User2FacebookId = userid,
-                    User1Approved = true,
-                    User2Approved = false
-                });
+            var scheduledRun = new ScheduledRunItem()
+            {
+                Date = date,
+                Distance = distance,
+                Finished = false,
+                InitializerFacebookId = UserData.FacebookId,
+                BuddyFacebookId = userid,
+                BuddyApproval = false
+            };
+
+            await Service.GetTable<ScheduledRunItem>().InsertAsync(scheduledRun);
 
             await CollectScheduledRuns();
         }

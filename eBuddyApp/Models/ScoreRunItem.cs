@@ -9,8 +9,6 @@ namespace eBuddyApp.Models
 {
     class ScoreRunItem : RunItem
     {
-
-
         ERunPhase _RunPhase = ERunPhase.NotStarted;
         [JsonProperty(PropertyName = "runPhase")]
         public ERunPhase RunPhase { get { return _RunPhase; } set { Set(ref _RunPhase, value); } }

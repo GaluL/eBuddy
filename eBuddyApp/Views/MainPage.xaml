@@ -10,8 +10,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:eBuddyApp.ViewModels"
       xmlns:system="using:System"
+      xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
       mc:Ignorable="d">
 
+    <Page.Resources>
+        <converters:BoolToVisibilityConverter x:Name="boolToVis"/>
+    </Page.Resources>
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
@@ -26,7 +30,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for narrow view  -->
-                        <Setter Target="stateTextBox.Text" Value="Narrow Visual State" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateNormal">
@@ -35,7 +38,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for normal view  -->
-                        <Setter Target="stateTextBox.Text" Value="Normal Visual State" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="VisualStateWide">
@@ -44,7 +46,6 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <!--  TODO: change properties for wide view  -->
-                        <Setter Target="stateTextBox.Text" Value="Wide Visual State" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -102,7 +103,8 @@
                                 <TextBlock Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <TextBlock Text=", " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
                                 <TextBlock Text="Distance: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
-                                <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                                    <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                                    <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource boolToVis}}" Command="{Binding Approve}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Approve</Button>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

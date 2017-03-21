@@ -7,11 +7,10 @@ using Microsoft.Azure.Mobile.Server;
 namespace eBuddyService.DataObjects
 {
     public class ScheduledRunItem : EntityData
-    {        
-        public String User1FacebookId { get; set; }
-        public String User2FacebookId { get; set; }
-        public bool User1Approved { get; set; }
-        public bool User2Approved { get; set; }
+    {
+        public String InitializerFacebookId { get; set; }
+        public String BuddyFacebookId { get; set; }
+        public bool BuddyApproval { get; set; }
         public DateTime Date { get; set; }
         public double Distance { get; set; }
         public bool Finished { get; set; }

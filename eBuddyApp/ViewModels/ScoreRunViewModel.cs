@@ -51,9 +51,11 @@ namespace eBuddyApp.ViewModels
         public ScoreRunViewModel(): base()
         {
             StartRun = new RelayCommand(() => {
+                
                 ScoreRunManager.scoreRunInstance.Start();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
+                
             },
             () => { return (!ScoreRunManager.scoreRunInstance.InRun /*&& BandService.Instance.IsConnected*/); });
 
@@ -62,6 +64,7 @@ namespace eBuddyApp.ViewModels
                 ScoreRunManager.scoreRunInstance.Stop();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
+                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
             },
             () => { return ScoreRunManager.scoreRunInstance.InRun; });
 
@@ -116,7 +119,7 @@ namespace eBuddyApp.ViewModels
                  {
                      case ScoreRunManager.ERunPhase.NotStarted:
                          {
-                             ReadText("Score mode");
+                            // ReadText("Score mode");
                              break;
                          }
                      case ScoreRunManager.ERunPhase.Chill:
@@ -142,7 +145,7 @@ namespace eBuddyApp.ViewModels
                          }
                      case ScoreRunManager.ERunPhase.Finished:
                          {
-                             ReadText("good job!, we are calculating your score");
+                             ReadText("good job!..... we are calculating your score");
                              break;
                          }
                  }

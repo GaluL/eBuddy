@@ -204,6 +204,30 @@
     <Compile Include="Migrations\201703121543042_removedScoreTable.Designer.cs">
       <DependentUpon>201703121543042_removedScoreTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201703211340488_scheduleRunDictionary.cs" />
+    <Compile Include="Migrations\201703211340488_scheduleRunDictionary.Designer.cs">
+      <DependentUpon>201703211340488_scheduleRunDictionary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211343366_fixScheduleRun.cs" />
+    <Compile Include="Migrations\201703211343366_fixScheduleRun.Designer.cs">
+      <DependentUpon>201703211343366_fixScheduleRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211513571_scheduleUserToList.cs" />
+    <Compile Include="Migrations\201703211513571_scheduleUserToList.Designer.cs">
+      <DependentUpon>201703211513571_scheduleUserToList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211522504_scheduleUserToListPublic.cs" />
+    <Compile Include="Migrations\201703211522504_scheduleUserToListPublic.Designer.cs">
+      <DependentUpon>201703211522504_scheduleUserToListPublic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211523389_scheduleUserToListPublic1.cs" />
+    <Compile Include="Migrations\201703211523389_scheduleUserToListPublic1.Designer.cs">
+      <DependentUpon>201703211523389_scheduleUserToListPublic1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703211535561_scheduleRunFinal.cs" />
+    <Compile Include="Migrations\201703211535561_scheduleRunFinal.Designer.cs">
+      <DependentUpon>201703211535561_scheduleRunFinal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\eBuddyContext.cs" />
     <Compile Include="Startup.cs" />
@@ -249,6 +273,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201703121543042_removedScoreTable.resx">
       <DependentUpon>201703121543042_removedScoreTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211340488_scheduleRunDictionary.resx">
+      <DependentUpon>201703211340488_scheduleRunDictionary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211343366_fixScheduleRun.resx">
+      <DependentUpon>201703211343366_fixScheduleRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211513571_scheduleUserToList.resx">
+      <DependentUpon>201703211513571_scheduleUserToList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211522504_scheduleUserToListPublic.resx">
+      <DependentUpon>201703211522504_scheduleUserToListPublic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211523389_scheduleUserToListPublic1.resx">
+      <DependentUpon>201703211523389_scheduleUserToListPublic1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703211535561_scheduleRunFinal.resx">
+      <DependentUpon>201703211535561_scheduleRunFinal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
