@@ -91,7 +91,7 @@
                 <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Mail: " />
                 <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Email, Mode=OneWay}"/>
                 <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Score: " />
-                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Score, Mode=OneWay}"/>
+                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Score, Mode= OneWay}"/>
             </Grid>
 
         </ScrollViewer>

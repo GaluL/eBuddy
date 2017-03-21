@@ -31,7 +31,7 @@ namespace eBuddyApp.Views
        public ScoreRunPage()
         {
             this.InitializeComponent();
-
+            ViewModel.page = this;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 

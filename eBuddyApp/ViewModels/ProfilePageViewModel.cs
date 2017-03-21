@@ -28,7 +28,7 @@ namespace eBuddyApp.ViewModels
 
         internal Double Score
         {
-            get { return 100; }
+            get { return MobileService.Instance.UserData.Score; }
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)

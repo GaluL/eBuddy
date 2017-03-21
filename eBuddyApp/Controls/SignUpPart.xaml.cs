@@ -48,6 +48,7 @@ namespace Template10.Samples.SearchSample.Controls
             if (await MobileService.Instance.AuthenticateWithFacebook())
             {
                 MobileService.Instance.RegisterUser(UserData);
+                SignedUp?.Invoke(this, EventArgs.Empty);
             }
 
             Busy.SetBusy(false);
