@@ -25,10 +25,16 @@ namespace Template10.Samples.SearchSample.Controls
 
             if (await MobileService.Instance.FacebookLogIn())
             {
-                LoggedIn?.Invoke(this, EventArgs.Empty);
-                HideRequested?.Invoke(this, EventArgs.Empty);
+                if (await MobileService.Instance.CheckRegistation())
+                {
+                    LoggedIn?.Invoke(this, EventArgs.Empty);
+                    HideRequested?.Invoke(this, EventArgs.Empty);
+                }
+                else
+                {
+                    SignUpRequested?.Invoke(this, null);
+                }
             }
-
             Busy.SetBusy(false);
         }
 

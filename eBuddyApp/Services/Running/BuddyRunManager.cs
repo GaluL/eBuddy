@@ -107,7 +107,6 @@ namespace eBuddy
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
-            LocationService.Instance.OnLocationChange += My_OnLocationChange;
         }
 
         private async void GetBuddyData(string buddyUserId)
@@ -273,6 +272,7 @@ namespace eBuddy
         internal override async void Start()
         {
             InRun = true;
+            LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");
             await ConnectHub();
             SocialMsg = "RUN!";

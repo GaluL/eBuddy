@@ -31,9 +31,9 @@
                 <Image Source="../Images/fblogin.png"/>
             </Button>
             
-            <Button Background="Transparent" HorizontalAlignment="Center" Click="fbSignup_OnClick">
+       <!--     <Button Background="Transparent" HorizontalAlignment="Center" Click="fbSignup_OnClick">
                 <Image Source="../Images/fbsignup.png"/>
-            </Button>
+           </Button> -->
         </StackPanel>
 
     </Grid>

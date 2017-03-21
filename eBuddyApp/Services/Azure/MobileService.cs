@@ -4,10 +4,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using eBuddy;
+
+
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
 using Windows.UI.Popups;
-using eBuddy;
 using eBuddyApp.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -28,7 +30,7 @@ namespace eBuddyApp.Services.Azure
             {
                 if (_Instance == null)
                 {
-                    _Instance = new MobileService();    
+                    _Instance = new MobileService();
                 }
 
                 return _Instance;
@@ -52,7 +54,6 @@ namespace eBuddyApp.Services.Azure
         {
             get { return _ScheduledRuns; }
         }
-
         private List<UserItem> _Suggestions;
         public List<UserItem> Suggestions
         {
@@ -60,8 +61,7 @@ namespace eBuddyApp.Services.Azure
         }
 
         private Timer _SocialRunTimer;
-
-        internal event EventHandler UserDataLoaded; 
+        internal event EventHandler UserDataLoaded;
 
         private MobileService()
         {
@@ -119,7 +119,7 @@ namespace eBuddyApp.Services.Azure
                     credential = new PasswordCredential(provider.ToString(),
                         user.UserId, user.MobileServiceAuthenticationToken);
                     vault.Add(credential);
-                    
+
                     success = true;
                     message = string.Format("You are now logged in - {0}", user.UserId);
                 }
@@ -168,6 +168,7 @@ namespace eBuddyApp.Services.Azure
             {
                 scheduledRuns = await Service.GetTable<ScheduledRunItem>().ToEnumerableAsync();
 
+
                 foreach (var run in scheduledRuns)
                 {
                     if ((run.User1FacebookId == Service.CurrentUser.UserId ||
@@ -184,14 +185,13 @@ namespace eBuddyApp.Services.Azure
                 return;
             }
         }
-
         private void StartTimer()
         {
             var closestRun = ScheduledRuns.First(x => x.Date == ScheduledRuns.Min(y => y.Date));
 
             if (_SocialRunTimer != null)
             {
-                _SocialRunTimer.Dispose();    
+                _SocialRunTimer.Dispose();
             }
 
             _SocialRunTimer = new Timer(SocialRunInitializer, null, closestRun.Date - DateTime.Now, new TimeSpan(-1));
@@ -235,18 +235,24 @@ namespace eBuddyApp.Services.Azure
                 return false;
             }
 
-            if (!await IsRegistered())
-            {
-                return false;
-            }
-
-            await CollectUserData();
-
-            UserDataLoaded?.Invoke(this, null);
 
             return true;
         }
 
+        public async Task<bool> CheckRegistation()
+        {
+            if (!await IsRegistered())
+            {
+                return false;
+            }
+            await CollectUserData();
+
+            UserDataLoaded?.Invoke(this, null);
+
+
+            return true;
+
+        }
 
         public async void RegisterUser(UserItem userData)
         {
@@ -256,10 +262,12 @@ namespace eBuddyApp.Services.Azure
 
             _UserData = userData;
         }
-		
-		public async void SaveRunData(RunItem runData)
-		{
-		    runData.FacebookId = UserData.FacebookId;
+
+
+
+        public async void SaveRunData(RunItem runData)
+        {
+            runData.FacebookId = UserData.FacebookId;
             await Service.GetTable<RunItem>().InsertAsync(runData);
         }
 
