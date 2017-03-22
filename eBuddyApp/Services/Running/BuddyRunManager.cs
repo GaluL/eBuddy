@@ -9,9 +9,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.Media.SpeechSynthesis;
 using Windows.Services.Maps;
 using Windows.UI;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using eBuddyApp;
 using eBuddyApp.Models;
@@ -87,6 +89,8 @@ namespace eBuddy
         }
 
         private UserItem _buddyData;
+        private bool inTalk;
+
         public UserItem BuddyData
         {
             get { return _buddyData; }
@@ -107,6 +111,8 @@ namespace eBuddy
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
+            ReadText(SocialMsg);
+
         }
 
         private async void GetBuddyData(string buddyUserId)
@@ -128,7 +134,7 @@ namespace eBuddy
             if (RunData.Distance >= RUN_KM && winner.Equals(""))
             {
                 winner = "me";
-                MessageDialog dialog = new MessageDialog("You are the winner!");
+                MessageDialog dialog = new MessageDialog("You are the winner!"); //TODO
 
             }
             var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
@@ -153,6 +159,7 @@ namespace eBuddy
                 OnMsgColorUpdate?.Invoke(Colors.White);
                 string he_she = BuddyData.Gender == true ?"he" : "she";
                 SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
+                await ReadText(SocialMsg);
                 OnMsgSizeUpdate?.Invoke(18);
             }
 
@@ -174,6 +181,7 @@ namespace eBuddy
                         OnMsgColorUpdate?.Invoke(Colors.LightCoral);
                         string he_she = BuddyData.Gender == true ? "he" : "she";
                         SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
+                        await ReadText(SocialMsg);
                         OnMsgSizeUpdate?.Invoke(18);
                     }
                     else
@@ -186,13 +194,28 @@ namespace eBuddy
             _routeFinderEvent.Set();
         }
 
-        private void UpdateTipMsg()
+        public async Task ReadText(string text)
+        {
+            inTalk = true;
+            MediaElement mediaPlayer = new MediaElement();
+            using (var speach = new SpeechSynthesizer())
+            {
+                speach.Voice = SpeechSynthesizer.AllVoices.First(i => (i.Gender == VoiceGender.Female));
+                SpeechSynthesisStream stream = await speach.SynthesizeTextToStreamAsync(text);
+                mediaPlayer.SetSource(stream, stream.ContentType);
+                mediaPlayer.Play();
+            }
+            inTalk = false;
+        }
+
+
+        private async void UpdateTipMsg()
         {
             OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
             string he_she = BuddyData.Gender == true ? "he" : "she";
 
-             if ((RunData.Distance < BuddyRunData.Distance) &&
-                     (RunData.Speed > BuddyRunData.Speed))
+            if ((RunData.Distance < BuddyRunData.Distance) &&
+                    (RunData.Speed > BuddyRunData.Speed))
             {
                 double time_seconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
                 double tip_kmh = RUN_KM - RunData.Distance / time_seconds;
@@ -204,7 +227,6 @@ namespace eBuddy
                 else
 
                     SocialMsg = BuddyData.PrivateName + " is currently the first! your speed is great and you're on the right track to win this race!";
-
 
             }
             else if ((RunData.Distance >= BuddyRunData.Distance) && (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate))
@@ -222,6 +244,8 @@ namespace eBuddy
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
             }
+            await ReadText(SocialMsg);
+
 
         }
 

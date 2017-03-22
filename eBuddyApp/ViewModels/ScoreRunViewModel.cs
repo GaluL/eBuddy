@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace eBuddyApp.ViewModels
 {
-    class ScoreRunViewModel: ViewModelBase
+    class ScoreRunViewModel : ViewModelBase
     {
         #region Commands
 
@@ -31,7 +31,7 @@ namespace eBuddyApp.ViewModels
 
         public Page page;
         public bool IsScoreRun { get; set; }
-        public  RunItem RunData { get { return ScoreRunManager.scoreRunInstance.RunData; } }
+        public RunItem RunData { get { return ScoreRunManager.scoreRunInstance.RunData; } }
 
 
         public int _Heartrate;
@@ -48,14 +48,16 @@ namespace eBuddyApp.ViewModels
         }
         #endregion
 
-        public ScoreRunViewModel(): base()
+        private bool inTalk = false;
+        public ScoreRunViewModel() : base()
         {
-            StartRun = new RelayCommand(() => {
-                
+            StartRun = new RelayCommand(() =>
+            {
+
                 ScoreRunManager.scoreRunInstance.Start();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
-                
+
             },
             () => { return (!ScoreRunManager.scoreRunInstance.InRun /*&& BandService.Instance.IsConnected*/); });
 
@@ -95,10 +97,10 @@ namespace eBuddyApp.ViewModels
         {
             StartRun.RaiseCanExecuteChanged();
         }
-        public async void ReadText(string text)
+        public async Task ReadText(string text)
         {
-             
-             MediaElement mediaPlayer = new MediaElement();
+            inTalk = true;
+            MediaElement mediaPlayer = new MediaElement();
             using (var speach = new SpeechSynthesizer())
             {
                 speach.Voice = SpeechSynthesizer.AllVoices.First(i => (i.Gender == VoiceGender.Female));
@@ -106,52 +108,57 @@ namespace eBuddyApp.ViewModels
                 mediaPlayer.SetSource(stream, stream.ContentType);
                 mediaPlayer.Play();
             }
+            inTalk = false;
         }
 
 
         public async void Instance_OnRunPhaseChange(object sender, ScoreRunManager.ERunPhase value)
         {
-            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-             {
+            if (!inTalk)
+            {
+                await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    switch (value)
+                    {
+                        case ScoreRunManager.ERunPhase.NotStarted:
+                            {
+                                //  await ReadText("Score mode");
+                                break;
+                            }
+                        case ScoreRunManager.ERunPhase.Chill:
+                            {
 
+                                await ReadText(
+                                    "You are now in chill mode, please chill for twenty second while we take some measurement");
+                                break;
+                            }
+                        case ScoreRunManager.ERunPhase.WarmUp:
+                            {
+                                await ReadText("You are now in warmup mode, go for 1.5 kilometers walk as fast as you can");
+                                break;
+                            }
+                        case ScoreRunManager.ERunPhase.PreRun:
+                            {
+                                await ReadText(
+                                    "prepare yourself, in ten seconds your about to go for inetnse run for 1.2 kilometers");
+                                break;
+                            }
+                        case ScoreRunManager.ERunPhase.Intense:
+                            {
+                                await ReadText("Go go go! Run as fast as you can for 1.2 kilometers");
+                                break;
+                            }
+                        case ScoreRunManager.ERunPhase.Finished:
+                            {
+                                await ReadText("good job!..... we are calculating your score");
+                                break;
+                            }
+                    }
 
-                 switch (value)
-                 {
-                     case ScoreRunManager.ERunPhase.NotStarted:
-                         {
-                            // ReadText("Score mode");
-                             break;
-                         }
-                     case ScoreRunManager.ERunPhase.Chill:
-                         {
-                             ReadText(
-                                "You are now in chill mode, please chill for twenty second while we take some measurement");
-                             break;
-                         }
-                     case ScoreRunManager.ERunPhase.WarmUp:
-                         {
-                             ReadText("You are now in warmup mode, go for 1.5 kilometers walk as fast as you can");
-                             break;
-                         }
-                     case ScoreRunManager.ERunPhase.PreRun:
-                         {
-                             ReadText("prepare yourself, in ten seconds your about to go for inetnse run for 1.2 kilometers");
-                             break;
-                         }
-                     case ScoreRunManager.ERunPhase.Intense:
-                         {
-                             ReadText("Gooooo! Run as fast as you can for 1.2 kilometers");
-                             break;
-                         }
-                     case ScoreRunManager.ERunPhase.Finished:
-                         {
-                             ReadText("good job!..... we are calculating your score");
-                             break;
-                         }
-                 }
-             });
+                });
+            }
         }
 
     }
-  }
+}
 
