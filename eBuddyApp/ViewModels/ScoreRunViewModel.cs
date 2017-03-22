@@ -52,33 +52,48 @@ namespace eBuddyApp.ViewModels
         private bool inTalk = false;
 
         private ManualResetEvent speechEvent;
+        MediaElement mediaPlayer = new MediaElement();
+
 
         public ScoreRunViewModel() : base()
         {
             StartRun = new RelayCommand(() =>
             {
+                BandService.Instance.OnConnectionStatusChange += Instance_OnConnectionStatusChange;
+                ScoreRunManager.scoreRunInstance.OnRunPhaseChange += Instance_OnRunPhaseChange;
+                ScoreRunManager.scoreRunInstance.OnRouteUpdate += Instance_OnRouteUpdate;
+                LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
+                BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
 
                 ScoreRunManager.scoreRunInstance.Start();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
 
             },
-            () => { return (!ScoreRunManager.scoreRunInstance.InRun /*&& BandService.Instance.IsConnected*/); });
+                () =>
+                {
+                    return !ScoreRunManager.scoreRunInstance.InRun; /*&& BandService.Instance.IsConnected*/
+
+                });
 
             StopRun = new RelayCommand(() =>
             {
+                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
+                BandService.Instance.OnConnectionStatusChange -= Instance_OnConnectionStatusChange;
+                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
+                ScoreRunManager.scoreRunInstance.OnRouteUpdate -= Instance_OnRouteUpdate;
+                LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
+                BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
+
                 ScoreRunManager.scoreRunInstance.Stop();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
-                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
             },
-            () => { return ScoreRunManager.scoreRunInstance.InRun; });
+                () =>
+                {
+                    return ScoreRunManager.scoreRunInstance.InRun;
 
-            BandService.Instance.OnConnectionStatusChange += Instance_OnConnectionStatusChange;
-            ScoreRunManager.scoreRunInstance.OnRunPhaseChange += Instance_OnRunPhaseChange;
-            ScoreRunManager.scoreRunInstance.OnRouteUpdate += Instance_OnRouteUpdate;
-            LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
-            BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
+                });
 
             CurrentLocation = ExtentionMethods.GetDefaultPoint();
 
@@ -105,9 +120,10 @@ namespace eBuddyApp.ViewModels
         }
         public async Task ReadText(string text)
         {
+            speechEvent.WaitOne();
             speechEvent.Reset();
+            mediaPlayer.Stop();
 
-            MediaElement mediaPlayer = new MediaElement();
             using (var speach = new SpeechSynthesizer())
             {
                 speach.Voice = SpeechSynthesizer.AllVoices.First(i => (i.Gender == VoiceGender.Female));
