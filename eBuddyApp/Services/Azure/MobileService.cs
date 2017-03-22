@@ -240,6 +240,7 @@ namespace eBuddyApp.Services.Azure
                 return false;
             }
 
+
             return true;
         }
 
@@ -253,9 +254,7 @@ namespace eBuddyApp.Services.Azure
 
             UserDataLoaded?.Invoke(this, null);
 
-
             return true;
-
         }
 
         public async void RegisterUser(UserItem userData)
@@ -267,8 +266,6 @@ namespace eBuddyApp.Services.Azure
             _UserData = userData;
         }
 
-
-
         public async void SaveRunData(RunItem runData)
         {
             runData.FacebookId = UserData.FacebookId;
@@ -279,10 +276,6 @@ namespace eBuddyApp.Services.Azure
         {
             _UserData.Score = score;
             await Service.GetTable<UserItem>().UpdateAsync(_UserData);
-
-
-
-
         }
 
         public async Task GetSuggestions()

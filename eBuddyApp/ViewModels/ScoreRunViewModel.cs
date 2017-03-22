@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Geolocation;
@@ -49,6 +50,9 @@ namespace eBuddyApp.ViewModels
         #endregion
 
         private bool inTalk = false;
+
+        private ManualResetEvent speechEvent;
+
         public ScoreRunViewModel() : base()
         {
             StartRun = new RelayCommand(() =>
@@ -77,6 +81,8 @@ namespace eBuddyApp.ViewModels
             BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
 
             CurrentLocation = ExtentionMethods.GetDefaultPoint();
+
+            speechEvent = new ManualResetEvent(true);
         }
 
         public void Instance_OnHeartRateChange(object sender, int e)
@@ -99,7 +105,8 @@ namespace eBuddyApp.ViewModels
         }
         public async Task ReadText(string text)
         {
-            inTalk = true;
+            speechEvent.Reset();
+
             MediaElement mediaPlayer = new MediaElement();
             using (var speach = new SpeechSynthesizer())
             {
@@ -108,55 +115,53 @@ namespace eBuddyApp.ViewModels
                 mediaPlayer.SetSource(stream, stream.ContentType);
                 mediaPlayer.Play();
             }
-            inTalk = false;
+
+            speechEvent.Set();
         }
 
 
         public async void Instance_OnRunPhaseChange(object sender, ScoreRunManager.ERunPhase value)
         {
-            if (!inTalk)
+            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
-                await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                switch (value)
                 {
-                    switch (value)
-                    {
-                        case ScoreRunManager.ERunPhase.NotStarted:
-                            {
-                                //  await ReadText("Score mode");
-                                break;
-                            }
-                        case ScoreRunManager.ERunPhase.Chill:
-                            {
+                    case ScoreRunManager.ERunPhase.NotStarted:
+                        {
+                            //  await ReadText("Score mode");
+                            break;
+                        }
+                    case ScoreRunManager.ERunPhase.Chill:
+                        {
 
-                                await ReadText(
-                                    "You are now in chill mode, please chill for twenty second while we take some measurement");
-                                break;
-                            }
-                        case ScoreRunManager.ERunPhase.WarmUp:
-                            {
-                                await ReadText("You are now in warmup mode, go for 1.5 kilometers walk as fast as you can");
-                                break;
-                            }
-                        case ScoreRunManager.ERunPhase.PreRun:
-                            {
-                                await ReadText(
-                                    "prepare yourself, in ten seconds your about to go for inetnse run for 1.2 kilometers");
-                                break;
-                            }
-                        case ScoreRunManager.ERunPhase.Intense:
-                            {
-                                await ReadText("Go go go! Run as fast as you can for 1.2 kilometers");
-                                break;
-                            }
-                        case ScoreRunManager.ERunPhase.Finished:
-                            {
-                                await ReadText("good job!..... we are calculating your score");
-                                break;
-                            }
-                    }
+                            await ReadText(
+                                "You are now in chill mode, please chill for twenty second while we take some measurement");
+                            break;
+                        }
+                    case ScoreRunManager.ERunPhase.WarmUp:
+                        {
+                            await ReadText("You are now in warmup mode, go for 1.5 kilometers walk as fast as you can");
+                            break;
+                        }
+                    case ScoreRunManager.ERunPhase.PreRun:
+                        {
+                            await ReadText(
+                                "prepare yourself, in ten seconds your about to go for inetnse run for 1.2 kilometers");
+                            break;
+                        }
+                    case ScoreRunManager.ERunPhase.Intense:
+                        {
+                            await ReadText("Go go go! Run as fast as you can for 1.2 kilometers");
+                            break;
+                        }
+                    case ScoreRunManager.ERunPhase.Finished:
+                        {
+                            await ReadText("good job!..... we are calculating your score");
+                            break;
+                        }
+                }
 
-                });
-            }
+            });
         }
 
     }
