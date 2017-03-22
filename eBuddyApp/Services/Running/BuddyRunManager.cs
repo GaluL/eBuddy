@@ -111,8 +111,6 @@ namespace eBuddy
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
-            ReadText(SocialMsg);
-
         }
 
         private async void GetBuddyData(string buddyUserId)
@@ -157,9 +155,8 @@ namespace eBuddy
             {
                 winner = "buddy";
                 OnMsgColorUpdate?.Invoke(Colors.White);
-                string he_she = BuddyData.Gender == true ?"he" : "she";
+                string he_she = "she";
                 SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
-                await ReadText(SocialMsg);
                 OnMsgSizeUpdate?.Invoke(18);
             }
 
@@ -295,6 +292,7 @@ namespace eBuddy
 
         internal override async void Start()
         {
+            GetBuddyData(BUDDY_USER_ID);
             InRun = true;
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");
