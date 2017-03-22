@@ -178,7 +178,6 @@ namespace eBuddy
                         OnMsgColorUpdate?.Invoke(Colors.LightCoral);
                         string he_she = BuddyData.Gender == true ? "he" : "she";
                         SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
-                        await ReadText(SocialMsg);
                         OnMsgSizeUpdate?.Invoke(18);
                     }
                     else
@@ -241,7 +240,6 @@ namespace eBuddy
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
             }
-            await ReadText(SocialMsg);
 
 
         }
