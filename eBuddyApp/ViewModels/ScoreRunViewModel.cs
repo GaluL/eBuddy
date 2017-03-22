@@ -72,7 +72,7 @@ namespace eBuddyApp.ViewModels
             },
                 () =>
                 {
-                    return !ScoreRunManager.scoreRunInstance.InRun; /*&& BandService.Instance.IsConnected*/
+                    return (!ScoreRunManager.scoreRunInstance.InRun); /*&& BandService.Instance.IsConnected*/
 
                 });
 
@@ -91,7 +91,7 @@ namespace eBuddyApp.ViewModels
             },
                 () =>
                 {
-                    return ScoreRunManager.scoreRunInstance.InRun;
+                    return (ScoreRunManager.scoreRunInstance.InRun);
 
                 });
 

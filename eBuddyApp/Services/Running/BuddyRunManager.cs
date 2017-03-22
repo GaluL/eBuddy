@@ -151,14 +151,14 @@ namespace eBuddy
 
             _buddyWaypoints.Add(obj.GetGeoPoint());
 
-            if (BuddyRunData.Distance >= RUN_KM && winner.Equals("") || true)
-            {
-                winner = "buddy";
-                OnMsgColorUpdate?.Invoke(Colors.White);
-                string he_she = "she";
-                SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
-                OnMsgSizeUpdate?.Invoke(18);
-            }
+            //if (BuddyRunData.Distance >= RUN_KM && winner.Equals("") || true)
+            //{
+            //    winner = "buddy";
+            //    OnMsgColorUpdate?.Invoke(Colors.White);
+            //    string he_she = "she";
+            //    SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
+            //    OnMsgSizeUpdate?.Invoke(18);
+            //}
 
             if (_buddyWaypoints.Count > 1)
             {
@@ -292,7 +292,6 @@ namespace eBuddy
 
         internal override async void Start()
         {
-            GetBuddyData(BUDDY_USER_ID);
             InRun = true;
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");

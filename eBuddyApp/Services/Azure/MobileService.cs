@@ -264,6 +264,9 @@ namespace eBuddyApp.Services.Azure
             await Service.GetTable<UserItem>().InsertAsync(userData);
 
             _UserData = userData;
+
+            UserDataLoaded?.Invoke(this, null);
+
         }
 
         public async void SaveRunData(RunItem runData)
