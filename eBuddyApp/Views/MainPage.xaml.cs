@@ -14,5 +14,6 @@ namespace eBuddyApp.Views
             InitializeComponent();
             NavigationCacheMode = Windows.UI.Xaml.Navigation.NavigationCacheMode.Enabled;
         }
+
     }
 }

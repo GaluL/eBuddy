@@ -33,7 +33,7 @@ namespace eBuddyApp.Views
        public SocialRunPage()
         {
             this.InitializeComponent();
-
+            ViewModel.page = this;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
         }

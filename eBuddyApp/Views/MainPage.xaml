@@ -14,7 +14,7 @@
       mc:Ignorable="d">
 
     <Page.Resources>
-        <converters:BoolToVisibilityConverter x:Name="boolToVis"/>
+        <converters:BoolToVisibilityConverter x:Name="BoolToVis"/>
     </Page.Resources>
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
@@ -65,7 +65,7 @@
                        RelativePanel.AlignRightWithPanel="True"
                        RelativePanel.Below="pageHeader">
 
-            <Grid>
+            <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -73,39 +73,57 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                <TextBlock Grid.Row="1" Text="Your previous runs:" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="26" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="4,15,1,20.667"/>
+                <TextBlock Grid.Row="1" FontSize="20" Text="Your previous runs:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="5,8,0,28"/>
                 <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Vertical">
-                                <!--<TextBlock Text="Date: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                                <!--<TextBlock Text=", " />-->
-                                <!--<TextBlock Text="Distance: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                                <!--<TextBlock Text=", " />
-                                <TextBlock Text="Time: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Time, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                                <!--<TextBlock Text=", " />
-                                <TextBlock Text="Speed: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Speed, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Date: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="0" Grid.Column="0"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="0" Grid.Column="1"/>
+                                <TextBlock Text="Distance: " Grid.Row="1" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="1" Grid.Column="1"/>
+                                <TextBlock Text="Time: "   FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="2" Grid.Column="0"></TextBlock>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Time, Mode=OneWay}"  Grid.Row="2" Grid.Column="1" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                                <TextBlock Text="Speed: " Grid.Row="3" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="3" Grid.Column="1"/>
+                            </Grid>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <TextBlock Grid.Row="3" Text="Your upcoming runs:" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                <ListView Grid.Row="4" ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
+                <TextBlock Grid.Row="3" FontSize="20" Text="Your upcoming runs:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="0,21.333,0,16.667"/>
+                <ListView Grid.Row="4" ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Date: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
-                                <TextBlock Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                                <TextBlock Text=", " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
-                                <TextBlock Text="Distance: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
-                                    <TextBlock Text="{Binding Distance, Mode=OneWay}" FontWeight="Bold"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
-                                    <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource boolToVis}}" Command="{Binding Approve}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Approve</Button>
-                            </StackPanel>
+                            <Grid HorizontalAlignment="Center" Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition  />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Date: " Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="{Binding Date, Mode=OneWay}"  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="Distance: "  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="1" Grid.Row="0" />
+                                <TextBlock Text="{Binding Distance, Mode=OneWay}"  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="1" Grid.Row="1" />
+                                <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource BoolToVis}}" Command="{Binding Approve}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="2">Approve</Button>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

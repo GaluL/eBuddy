@@ -69,7 +69,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <!--<TextBlock Text="Date: " />-->
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding PrivateName, Mode=OneWay}" FontWeight="Bold" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding PrivateName, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <!--<TextBlock Text=", " />-->
                                 <!--<TextBlock Text="Distance: " />-->
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding Age, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>

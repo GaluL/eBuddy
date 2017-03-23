@@ -136,7 +136,7 @@
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextAlignment="Center" Height="63"
                        IsColorFontEnabled="True" FontSize="{x:Bind ViewModel.SocialSize, Mode=OneWay}"
                        Foreground="DarkGray" TextWrapping="Wrap" Text="{x:Bind ViewModel.SocialMsg, Mode=OneWay}"
-                       VerticalAlignment="Center" Margin="0,10,0,2" Width="329" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                       VerticalAlignment="Center" Margin="0,10,0,2" Width="329" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
         </Grid>
         <Grid Background="SteelBlue" Margin="170,372,-289.333,-548" VerticalAlignment="Center" HorizontalAlignment="Center" Height="176" Width="435" >
             <Grid.ColumnDefinitions>

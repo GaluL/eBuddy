@@ -20,14 +20,14 @@
 
         <!-- header -->
         <Rectangle Fill="Orange" />
-        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20,0" FontSize="24">Login</TextBlock>
+        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20,0" FontSize="24" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Login</TextBlock>
         <Button Margin="12" Foreground="White" Click="CloseClicked" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}">
             <SymbolIcon Symbol="Clear" />
         </Button>
 
         <!-- login form -->
-        <StackPanel Grid.Row="1" Margin="20, 16" DataContext="{Binding ElementName=ThisPage}">
-            <Button Background="Transparent" HorizontalAlignment="Center" Click="LoginClicked">
+        <StackPanel Grid.Row="1" Margin="20, 16" DataContext="{Binding ElementName=ThisPage}" >
+            <Button Background="Transparent" HorizontalAlignment="Center" Click="LoginClicked" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
                 <Image Source="../Images/fblogin.png"/>
             </Button>
             

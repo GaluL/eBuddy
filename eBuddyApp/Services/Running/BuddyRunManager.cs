@@ -97,12 +97,11 @@ namespace eBuddy
             private set { _buddyData = value; }
         }
 
+        public event Action<Geopoint> OnBuddyLocationUpdate;
+        public event Action<Geopoint> OnBuddyFinish;
         public event Action<string> OnMsgUpdate;
         public event Action<Color> OnMsgColorUpdate;
         public event Action<int> OnMsgSizeUpdate;
-
-        public event Action<Geopoint> OnBuddyLocationUpdate;
-        public event Action<Geopoint> OnBuddyFinish;
 
 
 
@@ -151,14 +150,7 @@ namespace eBuddy
 
             _buddyWaypoints.Add(obj.GetGeoPoint());
 
-            //if (BuddyRunData.Distance >= RUN_KM && winner.Equals("") || true)
-            //{
-            //    winner = "buddy";
-            //    OnMsgColorUpdate?.Invoke(Colors.White);
-            //    string he_she = "she";
-            //    SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
-            //    OnMsgSizeUpdate?.Invoke(18);
-            //}
+            UpdateTipMsg();
 
             if (_buddyWaypoints.Count > 1)
             {
@@ -180,36 +172,16 @@ namespace eBuddy
                         SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
                         OnMsgSizeUpdate?.Invoke(18);
                     }
-                    else
-                    {
-                        UpdateTipMsg();
-                    }
+
                 }
             }
 
             _routeFinderEvent.Set();
         }
 
-        public async Task ReadText(string text)
-        {
-            inTalk = true;
-            MediaElement mediaPlayer = new MediaElement();
-            using (var speach = new SpeechSynthesizer())
-            {
-                speach.Voice = SpeechSynthesizer.AllVoices.First(i => (i.Gender == VoiceGender.Female));
-                SpeechSynthesisStream stream = await speach.SynthesizeTextToStreamAsync(text);
-                mediaPlayer.SetSource(stream, stream.ContentType);
-                mediaPlayer.Play();
-            }
-            inTalk = false;
-        }
-
-
-        private async void UpdateTipMsg()
+        public void UpdateTipMsg()
         {
             OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
-            string he_she = BuddyData.Gender == true ? "he" : "she";
-
             if ((RunData.Distance < BuddyRunData.Distance) &&
                     (RunData.Speed > BuddyRunData.Speed))
             {
@@ -308,7 +280,6 @@ namespace eBuddy
             //await RunnersHubProxy.Invoke("Stop",
                 //eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId); //Todo implement server logic
             winner = "";
-
 
         }
 

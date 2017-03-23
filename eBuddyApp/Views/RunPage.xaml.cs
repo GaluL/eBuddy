@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using eBuddy;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -28,9 +29,11 @@ namespace eBuddyApp.Views
 {
     public sealed partial class RunPage : Page
    {
-       public RunPage()
+
+        public RunPage()
         {
             this.InitializeComponent();
+            ViewModel.page = this;
 
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
@@ -43,6 +46,7 @@ namespace eBuddyApp.Views
                 myMap.Routes.Add(new MapRouteView(ViewModel.MyRoute));
             }
         }
+
     }
 }
 

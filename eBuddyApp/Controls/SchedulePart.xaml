@@ -15,17 +15,17 @@
 
         <!-- header -->
         <Rectangle Fill="Orange" />
-        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20,0" FontSize="24">Pick a Time</TextBlock>
+        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="20,0" FontSize="24" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Pick a Time</TextBlock>
         <Button Margin="12" Foreground="White" Click="CloseClicked" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}">
             <SymbolIcon Symbol="Clear" />
         </Button>
 
         <!-- login form -->
         <StackPanel Grid.Row="1" DataContext="{Binding ElementName=ThisPage}">
-            <DatePicker Name="datePicker" HorizontalAlignment="Center"></DatePicker>
-            <TimePicker Name="timePicker" HorizontalAlignment="Center"></TimePicker>
-            <TextBox Name="distanceTextBox" TextAlignment="Center" PlaceholderText="Distance in KM"/>
-            <Button HorizontalAlignment="Center" Click="ButtonBase_OnClick">Invite</Button>
+            <DatePicker Name="datePicker" HorizontalAlignment="Center" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"></DatePicker>
+            <TimePicker Name="timePicker" HorizontalAlignment="Center" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"></TimePicker>
+            <TextBox Name="distanceTextBox" TextAlignment="Center" PlaceholderText="Distance in KM" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+            <Button HorizontalAlignment="Center" Click="ButtonBase_OnClick" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Invite</Button>
         </StackPanel>
 
     </Grid>

@@ -154,17 +154,20 @@ namespace eBuddy
         internal async Task Stop()
         {
             InRun = false;
+            RunData.Time = TimeSpan.Zero;
             aTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
-
             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
             
         
             if (RunPhase == ERunPhase.Finished)
             {
+                RunData.Speed = RunData.Time.Seconds != 0 ? RunData.Distance / (RunData.Time.Seconds / 60.0 / 60) : 0;
+                if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
                 MobileService.Instance.SaveRunData(RunData);
              await MobileService.Instance.SaveUserScore(finalScore);
+                RunData = new RunItem();
 
             }
             RunPhase = ERunPhase.NotStarted;
