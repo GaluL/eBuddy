@@ -18,10 +18,9 @@ namespace eBuddyService.Hubs
         public void Register(string facebookId)
         {
             string deadConnectionId;
-            //mapUidToConnection.TryRemove(facebookId, out deadConnectionId);
+            mapUidToConnection.TryRemove(facebookId, out deadConnectionId);
             mapUidToConnection[facebookId] = Context.ConnectionId;
             Trace.TraceInformation(String.Format("Added user: {0} connectionId {1}", facebookId, mapUidToConnection[facebookId]));
-            //TODO DELETE THIS LINE ^^
         }
 
         public void SendLocation(LocationMessage msg)
