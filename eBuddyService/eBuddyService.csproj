@@ -247,6 +247,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\eBuddy - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ebuddyapp - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ebuddyapp - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>

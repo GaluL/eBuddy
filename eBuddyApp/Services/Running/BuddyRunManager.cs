@@ -40,13 +40,7 @@ namespace eBuddy
 
         private ManualResetEvent _routeFinderEvent;
 
-        private int _buddyLastLocationTimeSeconds = 1;
-
-
-        public ObservableCollection<Geopoint> BuddyWaypoints
-        {
-            get { return _buddyWaypoints; }
-        }
+        public ObservableCollection<Geopoint> BuddyWaypoints => _buddyWaypoints;
 
         public event Action<MapRoute> OnBuddyRouteUpdate;
         private MapRoute _buddyRoute;
@@ -74,13 +68,13 @@ namespace eBuddy
             }
         }
 
-        private static BuddyRunManager _Instance;
-        public static BuddyRunManager Instance => _Instance ?? (_Instance = new BuddyRunManager());
+        private static BuddyRunManager _instance;
+        public static BuddyRunManager Instance => _instance ?? (_instance = new BuddyRunManager());
 
-        private double RUN_KM = 1200;
-        private string winner = "";
+        private readonly double RUN_KM = 10;
+        private string _winner = "";
         //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
-        string BUDDY_USER_ID = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
+        string _buddyUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
 
         private RunItem _buddyRunData;
         public RunItem BuddyRunData
@@ -90,9 +84,8 @@ namespace eBuddy
         }
 
         private UserItem _buddyData;
-        private bool inTalk;
-        private bool handshakeOnce = false;
-        private int tip = 0;
+        private bool _handshakeOnce = false;
+        private int _tip = 0;
 
         public UserItem BuddyData
         {
@@ -101,7 +94,6 @@ namespace eBuddy
         }
 
         public event Action<Geopoint> OnBuddyLocationUpdate;
-        public event Action<Geopoint> OnBuddyFinish;
         public event Action<string> OnMsgUpdate;
         public event Action<Color> OnMsgColorUpdate;
         public event Action<int> OnMsgSizeUpdate;
@@ -110,6 +102,7 @@ namespace eBuddy
 
         public BuddyRunManager() : base()
         {
+            RunId = "shiran6"; //TODO change to real value
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
@@ -129,57 +122,82 @@ namespace eBuddy
             }
         }
 
-        private void My_OnLocationChange(Windows.Devices.Geolocation.Geoposition obj)
+        private async void My_OnLocationChange(Windows.Devices.Geolocation.Geoposition obj)
         {
-            if (RunData.Distance >= RUN_KM && winner.Equals(""))
+            if (InRun)
             {
-                winner = "me";
-                MessageDialog dialog = new MessageDialog("You are the winner!"); //TODO
+                if (RunData.Distance >= RUN_KM && _winner.Equals(""))
+                {
+                    _winner = "me";
+                    await RunnersHubProxy.Invoke("BuddyFinish", RunId,
+                        eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
+                    SocialMsg ="Great job " + MobileService.Instance.UserData.PrivateName + " you have completed the run first and you are the winner!";
+                    OnMsgSizeUpdate?.Invoke(15);
+                    OnMsgColorUpdate?.Invoke(Colors.RoyalBlue);
+                    Stop();
+                }
+                var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
+                msg.SourceUserId = eBuddyApp.Services.Azure.MobileService.Instance.UserData.FacebookId;
+                msg.DestUserId = _buddyUserId;
 
+                await RunnersHubProxy.Invoke("SendLocation", msg);
             }
-            var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
-            msg.SourceUserId = eBuddyApp.Services.Azure.MobileService.Instance.UserData.FacebookId;
-            msg.DestUserId = BUDDY_USER_ID;
-
-            RunnersHubProxy.Invoke("SendLocation", msg);
         }
+
+        public string RunId { get; set; }
 
 
         private async void OnLocationMessage(BuddyRunInfo obj)
         {
-            OnBuddyLocationUpdate?.Invoke(obj.GetGeoPoint());
-
-            _routeFinderEvent.Reset();
-
-            _buddyWaypoints.Add(obj.GetGeoPoint());
-
-            UpdateTipMsg();
-
-            if (_buddyWaypoints.Count > 1)
+            if (InRun)
             {
-                var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(_buddyWaypoints);
+                OnBuddyLocationUpdate?.Invoke(obj.GetGeoPoint());
 
-                if (routeFind.Status == MapRouteFinderStatus.Success)
+                _routeFinderEvent.Reset();
+
+                _buddyWaypoints.Add(obj.GetGeoPoint());
+
+                UpdateTipMsg();
+
+                if (_buddyWaypoints.Count > 1)
                 {
-                    BuddyRoute = routeFind.Route;
-                    double distanceDiff = BuddyRoute.LengthInMeters - BuddyRunData.Distance;
-                    BuddyRunData.Distance = BuddyRoute.LengthInMeters;
-                    BuddyRunData.Speed = (distanceDiff / 1000) / ((BuddyRunData.Time.Subtract(DateTime.Now.TimeOfDay)).TotalSeconds / 60.0 / 60.0);
-                    BuddyRunData.Time = DateTime.Now - BuddyRunData.Date;
+                    var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(_buddyWaypoints);
 
-                    if (BuddyRunData.Distance >= RUN_KM && winner.Equals(""))
+                    if (routeFind.Status == MapRouteFinderStatus.Success)
                     {
-                        winner = "buddy";
-                        OnMsgColorUpdate?.Invoke(Colors.LightCoral);
-                        string he_she = BuddyData.Gender == true ? "he" : "she";
-                        SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she + " is the winner!";
-                        OnMsgSizeUpdate?.Invoke(18);
-                    }
+                        BuddyRoute = routeFind.Route;
+                        double distanceDiff = BuddyRoute.LengthInMeters - BuddyRunData.Distance;
+                        BuddyRunData.Distance = BuddyRoute.LengthInMeters;
+                        BuddyRunData.Speed = (distanceDiff / 1000) /
+                                             ((BuddyRunData.Time.Subtract(DateTime.Now.TimeOfDay)).TotalSeconds / 60.0 /
+                                              60.0);
+                        BuddyRunData.Time = DateTime.Now - BuddyRunData.Date;
 
+                        if (BuddyRunData.Distance >= RUN_KM && _winner.Equals(""))
+                        {
+                            _winner = "buddy";
+                            OnMsgColorUpdate?.Invoke(Colors.LightCoral);
+                            string he_she = BuddyData.Gender == true ? "he" : "she";
+                            SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she +
+                                        " is the winner!";
+                            OnMsgSizeUpdate?.Invoke(18);
+                        }
+
+                    }
                 }
+
+                _routeFinderEvent.Set();
+            }
+        }
+
+        private void OnBuddyFinish(BuddyRunInfo obj)
+        {
+            if (InRun)
+            {
+                SocialMsg = "Buddy has finished his run";
             }
 
-            _routeFinderEvent.Set();
+
         }
 
         public void UpdateTipMsg()
@@ -187,43 +205,43 @@ namespace eBuddy
             if ((RunData.Distance < BuddyRunData.Distance) &&
                 (RunData.Speed > BuddyRunData.Speed))
             {
-                double time_seconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
-                double tip_kmh = RUN_KM - RunData.Distance / time_seconds;
+                double timeSeconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
+                double tipKmh = RUN_KM - RunData.Distance / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
-                if (tip_kmh < BuddyRunData.Speed && tip != 1)
+                if (tipKmh < BuddyRunData.Speed && _tip != 1)
                 {
-                    SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tip_kmh +
+                    SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tipKmh +
                                 " in order to win!";
-                    tip = 1;
+                    _tip = 1;
                 }
-                else if (tip_kmh >= BuddyRunData.Speed && tip != 2)
+                else if (tipKmh >= BuddyRunData.Speed && _tip != 2)
                 {
 
                     SocialMsg = BuddyData.PrivateName +
                                 " is currently the first! your speed is great and you're on the right track to win this race!";
-                    tip = 2;
+                    _tip = 2;
 
                 }
             }
             else if ((RunData.Distance >= BuddyRunData.Distance) &&
-                     (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate) && tip != 3)
+                     (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate) && _tip != 3)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! but you are not in your target Heart rate (that is " +
                             BandService.Instance.MinTargetZoneHeartRate + " and up). speed up!";
-                tip = 3;
+                _tip = 3;
             }
             else if ((RunData.Distance >= BuddyRunData.Distance) &&
-                     (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate) && tip != 4)
+                     (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate) && _tip != 4)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkGreen);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
-                tip = 4;
+                _tip = 4;
             }
 
 
@@ -257,6 +275,9 @@ namespace eBuddy
 
             RunnersHubProxy.On<BuddyRunInfo>("buddyLocationUpdate", OnLocationMessage);
 
+            RunnersHubProxy.On<BuddyRunInfo>("BuddyFinish", OnBuddyFinish);
+
+
             await RunnersHubProxy.Invoke("Register",
                 eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
 
@@ -268,7 +289,7 @@ namespace eBuddy
 
         private void OnHandShake(string obj)
         {
-            if (!handshakeOnce)
+            if (!_handshakeOnce)
             {
                 Busy.SetBusy(false);
                 base.Start();
@@ -276,16 +297,16 @@ namespace eBuddy
                 SocialMsg = "Social run started";
                 OnMsgColorUpdate?.Invoke(Colors.White);
 
-                handshakeOnce = true;
+                _handshakeOnce = true;
             }
         }
 
 
         internal override async void Start()
         {
-            handshakeOnce = false;
+            _handshakeOnce = false;
             solorun = false;
-            tip = 0;
+            _tip = 0;
             InRun = true;
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");
@@ -301,7 +322,7 @@ namespace eBuddy
             base.Stop();
             //await RunnersHubProxy.Invoke("Stop",
             //eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId); //Todo implement server logic
-            winner = "";
+            _winner = "";
             solorun = true;
 
 
@@ -309,9 +330,9 @@ namespace eBuddy
 
         public void OnUpcomingRun(string facebookId)
         {
-            BUDDY_USER_ID = facebookId;
+            _buddyUserId = facebookId;
 
-            GetBuddyData(BUDDY_USER_ID);
+            GetBuddyData(_buddyUserId);
 
             RunAboutToStart?.Invoke(this, null);
         }

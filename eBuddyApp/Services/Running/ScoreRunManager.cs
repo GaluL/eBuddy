@@ -154,20 +154,18 @@ namespace eBuddy
         internal async Task Stop()
         {
             InRun = false;
-            RunData.Time = TimeSpan.Zero;
             aTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
+
             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
             
         
             if (RunPhase == ERunPhase.Finished)
             {
-                RunData.Speed = RunData.Time.Seconds != 0 ? RunData.Distance / (RunData.Time.Seconds / 60.0 / 60) : 0;
-                if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
+                finalScore = CalculateScore();
                 MobileService.Instance.SaveRunData(RunData);
-             await MobileService.Instance.SaveUserScore(finalScore);
-                RunData = new RunItem();
+                await MobileService.Instance.SaveUserScore(finalScore);
 
             }
             RunPhase = ERunPhase.NotStarted;
@@ -216,11 +214,6 @@ namespace eBuddy
                 }
                 case ERunPhase.WarmUp:
                     {
-                        if (RunData.Time.TotalSeconds >= 50)
-                        {
-                            RunData.Distance = 1610;
-                        }
-
 
                         if (RunData.Distance >= _DistanceBeforeWarmUp + WARM_UP_DISTANCE)
                         {
@@ -245,31 +238,18 @@ namespace eBuddy
                     }
                 case ERunPhase.Intense:
                     {
-                        if (RunData.Time.TotalSeconds >= 80)
-                        {
-                            RunData.Distance = 1610;
-                        }
                         if (RunData.Distance >= INTENSE_DISTANCE)
                         {
 
                             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
-
                             RunPhase++;
-
                             LocationService.Instance.Stop();
-                            finalScore = CalculateScore();
-
                            await Stop();
-                            
-
-                        }
-                        
+                        }                    
                         break;
                     }
                 case ERunPhase.Finished:
                     {
-                       
-                        
                         break;
                     }
             }
@@ -280,25 +260,25 @@ namespace eBuddy
             double vo2max_hr_based = 15.3 * (_MaxHeartrate / (double)_MinHeartrate);
             double avg_hr_prerun = _HeartratePreRunList.Average();
             double vo2max_measures_based = 132.853 - (0.0769 * 2.204 * MobileService.Instance.UserData.Weight) -
-                                           (0.387 * MobileService.Instance.UserData.Weight) +
+                                           (0.387 * MobileService.Instance.UserData.Age) +
                                            (6.315 * (MobileService.Instance.UserData.Gender.Value ? 1 : 0) -
                                            (3.2649 * (_TimeBeforeIntense.Seconds - _TimeBeforePreRun.Seconds) / 60.0) -
                                            0.1565 * avg_hr_prerun);
 
             double vo2max_avg = (vo2max_measures_based + vo2max_hr_based) / 2;
-            double mas_vo2max_based = vo2max_avg / 3.5;
-            double mas_run_based;
+        //    double mas_vo2max_based = vo2max_avg / 3.5;
+            double mas_run_based = 0;
 
             if (MobileService.Instance.UserData.Weight > 100)
             {
-                mas_run_based = INTENSE_DISTANCE / (double)(RunData.Time.Seconds - 29);
+                mas_run_based = INTENSE_DISTANCE / (double)(RunData.Time.TotalSeconds - 29);
             }
             else
             {
-                mas_run_based = INTENSE_DISTANCE / (RunData.Time.Seconds - 20.3);
+                mas_run_based = INTENSE_DISTANCE / (RunData.Time.TotalSeconds - 20.3);
             }
 
-            double mas_avg = (mas_run_based + mas_vo2max_based) / 2;
+            double mas_avg = mas_run_based; // + mas_vo2max_based) / 2;
 
             score_by_mas = (mas_avg / 6.22) * 100;
             score_by_vo2max = (vo2max_avg / 70.0) * 100;
