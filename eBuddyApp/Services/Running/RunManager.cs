@@ -79,48 +79,57 @@ namespace eBuddy
         }
 
         public Timer aTimer;
-        private Timer bTimer;
+        public Timer bTimer;
+        public bool solorun = true;
 
 
-        internal virtual async void Start()
+        internal virtual void Start()
         {
             InRun = true;
-            aTimer = new Timer(Callback, null, 0, 1);
+            RunData.Date = DateTime.Now;
             bTimer = new Timer(CallbackB, null, 0, 30000);
             //  bTimer = new Timer(Callback, null, 0, 300000); TODO CHANGE TO THIS IN PROD
+            aTimer = new Timer(Callback, null, 0, 1);
 
 
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
             changed = false;
-            RunData.Date = DateTime.Now;
             _Waypoints = new List<Geopoint>();
 
             LocationService.Instance.Start();
-            await ReadText("activity started");
+            if (solorun)
+            {
+                VoiceMsg = "activity started";
+            }
         }
 
-        private void Callback(object state)
+        public void Callback(object state)
         {
             RunData.Time = DateTime.Now - RunData.Date;
         }
 
-        private void CallbackB(object state)
+        public virtual void CallbackB(object state)
         {
-                VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " + RunData.Distance
-                + " kilometer. Speed: " + RunData.Speed
-                + "kilometer per hour";
+            if (InRun)
+            {
 
+                VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
+                           RunData.Distance
+                           + " kilometer. Speed: " + RunData.Speed
+                           + "kilometer per hour";
+            }
         }
 
         internal virtual void Stop()
         {
             RunData.Speed = RunData.Time.Seconds != 0 ? RunData.Distance / (RunData.Time.Seconds / 60 / 60) : 0;
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
-            VoiceMsg = "activity stopped. Solo run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " + RunData.Distance
-                + " kilometer. Average speed: " + RunData.Speed
-                + "kilometer per hour";
+            VoiceMsg = "activity stopped. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " + RunData.Distance
+            + " kilometer. Average speed: " + RunData.Speed
+            + "kilometer per hour";
             InRun = false;
             RunData.Time = TimeSpan.Zero;
+
             aTimer.Dispose();
             bTimer.Dispose();
             LocationService.Instance.Stop();

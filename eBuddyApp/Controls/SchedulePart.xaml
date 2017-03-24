@@ -24,7 +24,7 @@
         <StackPanel Grid.Row="1" DataContext="{Binding ElementName=ThisPage}">
             <DatePicker Name="datePicker" HorizontalAlignment="Center" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"></DatePicker>
             <TimePicker Name="timePicker" HorizontalAlignment="Center" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"></TimePicker>
-            <TextBox Name="distanceTextBox" TextAlignment="Center" PlaceholderText="Distance in KM" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+            <TextBox Name="distanceTextBox" TextAlignment="Center"  PlaceholderText="Distance in KM - default 5" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Height="34" Margin="66,0"/>
             <Button HorizontalAlignment="Center" Click="ButtonBase_OnClick" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">Invite</Button>
         </StackPanel>
 

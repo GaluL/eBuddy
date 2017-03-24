@@ -33,31 +33,31 @@ namespace eBuddyApp.ViewModels
 
         private void Instance_UserDataLoaded(object sender, EventArgs e)
         {
-            WelcomeText = String.Format("Welcome back {0}!", MobileService.Instance.UserData.PrivateName);
+            WelcomeText = String.Format("Welcome back \n{0}!", MobileService.Instance.UserData.PrivateName);
             FinishedRuns = MobileService.Instance.FinishedRuns;
             UpcomingRuns = MobileService.Instance.ScheduledRuns;
         }
 
-        public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
-        {
-            WelcomeText = (suspensionState.ContainsKey(nameof(WelcomeText))) ? suspensionState[nameof(WelcomeText)]?.ToString() : parameter?.ToString();
-            await Task.CompletedTask;
-        }
+    //    public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
+    //    {
+    //        WelcomeText = (suspensionState.ContainsKey(nameof(WelcomeText))) ? suspensionState[nameof(WelcomeText)]?.ToString() : parameter?.ToString();
+    //        await Task.CompletedTask;
+    //    }
 
-        public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
-        {
-            if (suspending)
-            {
-                suspensionState[nameof(WelcomeText)] = WelcomeText;
-            }
-            await Task.CompletedTask;
-        }
+    //    public override async Task OnNavigatedFromAsync(IDictionary<string, object> suspensionState, bool suspending)
+    //    {
+    //        if (suspending)
+    //        {
+    //            suspensionState[nameof(WelcomeText)] = WelcomeText;
+    //        }
+    //        await Task.CompletedTask;
+    //    }
 
-        public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
-        {
-            args.Cancel = false;
-            await Task.CompletedTask;
-        }
+    //    public override async Task OnNavigatingFromAsync(NavigatingEventArgs args)
+    //    {
+    //        args.Cancel = false;
+    //        await Task.CompletedTask;
+    //    }
     }
 }
 

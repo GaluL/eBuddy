@@ -88,7 +88,7 @@ namespace eBuddyApp.ViewModels
                     BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
                     BuddyRunManager.Instance.OnBuddyRouteUpdate += Instance_OnBuddyRouteUpdate;
                     BuddyRunManager.Instance.OnBuddyLocationUpdate += Instance_OnBuddyLocationUpdate;
-                    BuddyRunManager.Instance.OnMsgUpdate += Instance_OnMsgUpdate;
+                    BuddyRunManager.Instance.OnMsgUpdate += Instance_OnMsgVUpdate;
                     BuddyRunManager.Instance.OnMsgColorUpdate += Instance_OnMsgColorUpdate;
                     BuddyRunManager.Instance.OnMsgSizeUpdate += Instance_OnMsgSizeUpdate;
                 },
@@ -104,7 +104,7 @@ namespace eBuddyApp.ViewModels
                     BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
                     BuddyRunManager.Instance.OnBuddyRouteUpdate -= Instance_OnBuddyRouteUpdate;
                     BuddyRunManager.Instance.OnBuddyLocationUpdate -= Instance_OnBuddyLocationUpdate;
-                    BuddyRunManager.Instance.OnMsgUpdate -= Instance_OnMsgUpdate;
+                    BuddyRunManager.Instance.OnMsgUpdate -= Instance_OnMsgVUpdate;
                     BuddyRunManager.Instance.OnMsgColorUpdate -= Instance_OnMsgColorUpdate;
                     BuddyRunManager.Instance.OnMsgSizeUpdate -= Instance_OnMsgSizeUpdate;
                 },
@@ -126,9 +126,18 @@ namespace eBuddyApp.ViewModels
             SocialColor = obj;
         }
 
-        private async void Instance_OnMsgUpdate(string obj)
+        private async void Instance_OnMsgVUpdate(string obj)
         {
             SocialMsg = obj;
+            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            {
+                await RunManager.Instance.ReadText(obj);
+            });
+
+        }
+
+        private async void Instance_OnVoiceUpdate(string obj)
+        {
             await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
                 await RunManager.Instance.ReadText(obj);

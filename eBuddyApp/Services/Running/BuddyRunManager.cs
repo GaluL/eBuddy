@@ -25,6 +25,7 @@ using eBuddyApp.Views;
 using Microsoft.WindowsAzure.MobileServices;
 using Template10.Common;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.Band;
 using ConnectionState = Microsoft.AspNet.SignalR.Client.ConnectionState;
 
 namespace eBuddy
@@ -78,7 +79,7 @@ namespace eBuddy
 
         private double RUN_KM = 1200;
         private string winner = "";
- //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
+        //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
         string BUDDY_USER_ID = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
 
         private RunItem _buddyRunData;
@@ -90,6 +91,8 @@ namespace eBuddy
 
         private UserItem _buddyData;
         private bool inTalk;
+        private bool handshakeOnce = false;
+        private int tip = 0;
 
         public UserItem BuddyData
         {
@@ -181,36 +184,46 @@ namespace eBuddy
 
         public void UpdateTipMsg()
         {
-            OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
             if ((RunData.Distance < BuddyRunData.Distance) &&
-                    (RunData.Speed > BuddyRunData.Speed))
+                (RunData.Speed > BuddyRunData.Speed))
             {
                 double time_seconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
                 double tip_kmh = RUN_KM - RunData.Distance / time_seconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
-                if (tip_kmh < BuddyRunData.Speed)
+                if (tip_kmh < BuddyRunData.Speed && tip != 1)
+                {
                     SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tip_kmh +
                                 " in order to win!";
-                else
+                    tip = 1;
+                }
+                else if (tip_kmh >= BuddyRunData.Speed && tip != 2)
+                {
 
-                    SocialMsg = BuddyData.PrivateName + " is currently the first! your speed is great and you're on the right track to win this race!";
+                    SocialMsg = BuddyData.PrivateName +
+                                " is currently the first! your speed is great and you're on the right track to win this race!";
+                    tip = 2;
 
+                }
             }
-            else if ((RunData.Distance >= BuddyRunData.Distance) && (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate))
+            else if ((RunData.Distance >= BuddyRunData.Distance) &&
+                     (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate) && tip != 3)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
-                            "! you are currently first! but you are not in your target Heart rate (that is " + BandService.Instance.MinTargetZoneHeartRate + " and up). fasten up!";
+                            "! you are currently first! but you are not in your target Heart rate (that is " +
+                            BandService.Instance.MinTargetZoneHeartRate + " and up). speed up!";
+                tip = 3;
             }
             else if ((RunData.Distance >= BuddyRunData.Distance) &&
-                     (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate))
+                     (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate) && tip != 4)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkGreen);
                 OnMsgSizeUpdate?.Invoke(15);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
+                tip = 4;
             }
 
 
@@ -255,31 +268,42 @@ namespace eBuddy
 
         private void OnHandShake(string obj)
         {
-            Busy.SetBusy(false);
-            base.Start();
+            if (!handshakeOnce)
+            {
+                Busy.SetBusy(false);
+                base.Start();
+                OnMsgSizeUpdate?.Invoke(28);
+                SocialMsg = "Social run started";
+                OnMsgColorUpdate?.Invoke(Colors.White);
+
+                handshakeOnce = true;
+            }
         }
 
 
         internal override async void Start()
         {
+            handshakeOnce = false;
+            solorun = false;
+            tip = 0;
             InRun = true;
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");
             await ConnectHub();
-            SocialMsg = "RUN!";
-            OnMsgColorUpdate?.Invoke(Colors.Green);
-            OnMsgSizeUpdate?.Invoke(28);
-
+            //SocialMsg = "RUN!";
+            //OnMsgColorUpdate?.Invoke(Colors.Green);
+            //OnMsgSizeUpdate?.Invoke(28);
         }
 
-        internal override async void Stop()
+        internal override void Stop()
         {
             InRun = false;
             base.Stop();
-            LocationService.Instance.OnLocationChange -= My_OnLocationChange;
             //await RunnersHubProxy.Invoke("Stop",
-                //eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId); //Todo implement server logic
+            //eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId); //Todo implement server logic
             winner = "";
+            solorun = true;
+
 
         }
 
@@ -291,5 +315,6 @@ namespace eBuddy
 
             RunAboutToStart?.Invoke(this, null);
         }
+
     }
 }

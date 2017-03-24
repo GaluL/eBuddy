@@ -73,9 +73,9 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="26" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="4,15,1,20.667"/>
-                <TextBlock Grid.Row="1" FontSize="20" Text="Your previous runs:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="5,8,0,28"/>
-                <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand">
+                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="35" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Width="360" Height="88" Margin="0,19,1,5"/>
+                <TextBlock Grid.Row="1" TextAlignment="Center" FontSize="24" Text="Your previous runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-8,18,13,12.333"/>
+                <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="0,0,0,8">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Center">
@@ -101,11 +101,18 @@
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <TextBlock Grid.Row="3" FontSize="20" Text="Your upcoming runs:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="0,21.333,0,16.667"/>
-                <ListView Grid.Row="4" ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" >
+                <TextBlock TextAlignment="Center" Grid.Row="2" FontSize="24" Text="Your upcoming social runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-12,111.667,12,6.667" Grid.RowSpan="2"/>
+            </Grid>
+
+            <Grid Margin="-20,311,-486,-525" RenderTransformOrigin="0.5,0.5" Background="#DCDCDC">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="245*"/>
+                    <ColumnDefinition Width="341*"/>
+                </Grid.ColumnDefinitions>
+                <ListView ItemsSource="{x:Bind ViewModel.UpcomingRuns, Mode=OneWay}" Foreground="LightGray" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" SelectionChanged="ListView_SelectionChanged" Margin="20,5,69,-64" RenderTransformOrigin="1.012,0.511" Grid.ColumnSpan="2" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid HorizontalAlignment="Center" Background="Gray">
+                            <Grid HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition  />
                                     <ColumnDefinition />
@@ -118,11 +125,11 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Date: " Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="0"/>
-                                <TextBlock Text="{Binding Date, Mode=OneWay}"  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="0" Grid.Row="1"/>
-                                <TextBlock Text="Distance: "  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="1" Grid.Row="0" />
-                                <TextBlock Text="{Binding Distance, Mode=OneWay}"  Foreground="SteelBlue" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="1" Grid.Row="1" />
-                                <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource BoolToVis}}" Command="{Binding Approve}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="2">Approve</Button>
+                                <TextBlock Text="Date: " FontSize="12" Foreground="Black" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="{Binding Date, Mode=OneWay}" FontSize="12"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"/>
+                                <TextBlock Text="Distance: "  FontSize="12" Foreground="Black" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="1" />
+                                <TextBlock Text="{Binding Distance, Mode=OneWay}" FontSize="12" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="1" />
+                                <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource BoolToVis}}" Command="{Binding Approve}" FontSize="10" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="2" Margin="65,4,0,0" Grid.RowSpan="1" Foreground="White"  Content="Approve"/>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

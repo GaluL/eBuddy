@@ -67,7 +67,6 @@ namespace eBuddyApp.ViewModels
 
             StopRun = new RelayCommand(() =>
                 {
-                    RunManager.Instance.ReadText("Stoped");
                     RunManager.Instance.Stop();  
                     StopRun.RaiseCanExecuteChanged();
                     StartRun.RaiseCanExecuteChanged();
@@ -105,22 +104,6 @@ namespace eBuddyApp.ViewModels
                 await RunManager.Instance.ReadText(obj);
             });
 
-        }
-
-        public async Task ReadText(string text)
-        {
-            speechEvent.Reset();
-            mediaPlayer.Stop();
-
-            using (var speach = new SpeechSynthesizer())
-            {
-                speach.Voice = SpeechSynthesizer.AllVoices.First(i => (i.Gender == VoiceGender.Female));
-                SpeechSynthesisStream stream = await speach.SynthesizeTextToStreamAsync(text);
-                mediaPlayer.SetSource(stream, stream.ContentType);
-                mediaPlayer.Play();
-            }
-
-            speechEvent.Set();
         }
     }
 }
