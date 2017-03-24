@@ -9,12 +9,17 @@
       xmlns:local="using:eBuddyApp.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:eBuddyApp.ViewModels"
+      xmlns:converter="using:eBuddyApp.Converter"
       x:Name="ThisPage"
       mc:Ignorable="d">
 
     <Page.DataContext>
         <vm:ProfilePageViewModel x:Name="ViewModel" />
     </Page.DataContext>
+
+    <Page.Resources>
+        <converter:BoolToGenderConverter x:Key="genderConverter" />
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -81,7 +86,7 @@
                 <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Name: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
                 <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.PrivateName, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Gender: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Gender, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Gender, Converter = {StaticResource genderConverter} , Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Age: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.UserData.Age, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                 <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource TitleTextBlockStyle}" Text="Weight: " FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>

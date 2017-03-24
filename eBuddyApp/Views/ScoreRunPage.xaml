@@ -11,11 +11,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:eBuddyApp.ViewModels"
     mc:Ignorable="d"
-    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps">
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:converter="using:eBuddyApp.Converter">
 
     <Page.DataContext>
         <vm:ScoreRunViewModel x:Name="ViewModel" />
     </Page.DataContext>
+    <Page.Resources>
+        <converter:TimeToStringConverter x:Key="TimeFormatter"/>
+        <converter:DistanceAndSpeedConverter x:Key="DoubleFormatter"/>
+    </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -85,11 +90,11 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Distance: "  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0"  Text="Speed:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Mode=OneWay}"  FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Distance, Converter={StaticResource DoubleFormatter}, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Time: " FontWeight="SemiBold" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.RunData.Time, Converter={StaticResource TimeFormatter}, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="SemiBold"  Text="Speed:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.RunData.Speed, Converter={StaticResource DoubleFormatter}, Mode=OneWay}"  FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
                     <TextBlock Grid.Row="1" Grid.Column="2" Text="HeartRate:" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" />
                     <TextBlock Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.Heartrate, Mode=OneWay}"  FontFamily="/Fonts/Quicksand-Light.otf#Quicksand" />
                 </Grid>

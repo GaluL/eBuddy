@@ -115,6 +115,10 @@
     <Compile Include="Controls\LoginPart.xaml.cs">
       <DependentUpon>LoginPart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\BoolToGenderConverter.cs" />
+    <Compile Include="Converter\DistanceAndSpeedConverter.cs" />
+    <Compile Include="Converter\StringFormatConverter.cs" />
+    <Compile Include="Converter\TimeToStringConverter.cs" />
     <Compile Include="Models\BuddyRunInfo.cs" />
     <Compile Include="Models\RunItem.cs" />
     <Compile Include="Models\LiveRunStats.cs" />
