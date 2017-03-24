@@ -35,6 +35,8 @@ namespace eBuddy
             private set { _finalScore = value; }
         }
 
+
+
         private double _score_by_mas = 0;
         public double score_by_mas
         {
@@ -71,7 +73,7 @@ namespace eBuddy
             private set { _RunData = value; }
         }
 
-        public bool InRun = false;
+        private bool _InRun;
 
         private IList<Geopoint> _Waypoints;
 
@@ -90,6 +92,8 @@ namespace eBuddy
         }
 
         public Timer aTimer;
+        public Timer bTimer;
+        public Boolean isChilledCalled = false;
         public enum ERunPhase
         {
             NotStarted,
@@ -101,6 +105,7 @@ namespace eBuddy
         }
 
         public event EventHandler<ERunPhase> OnRunPhaseChange;
+        public event EventHandler <bool> OnInRunChange;
         private ERunPhase _RunPhase;
         public ERunPhase RunPhase
         {
@@ -113,14 +118,26 @@ namespace eBuddy
             }
         }
 
-        internal  void Start()
-        { 
-            RunPhase = ERunPhase.Chill;
+        public bool InRun
+        {
+            get { return _InRun; }
+            set
+            {
+                _InRun = value;
+                OnInRunChange?.Invoke(this, value);
+            }
+        }
 
+        internal  void Start()
+        {
+            RunData = new RunItem();
+            RunData.FacebookId = MobileService.Instance.UserData.FacebookId;
+            RunPhase = ERunPhase.Chill;
             InRun = true;
             aTimer = new Timer(Callback, null, 0, 1);
+            bTimer = new Timer(CallbackB, null, 0, 10000);
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
-
+            isChilledCalled = false;
             RunData.Date = DateTime.Now;
             _Waypoints = new List<Geopoint>();
 
@@ -134,6 +151,15 @@ namespace eBuddy
             RunData.Time = DateTime.Now - RunData.Date;
 
         }
+        public virtual void CallbackB(object state)
+        {
+            if (!isChilledCalled)
+            {
+                UpdateTestPhase();
+            }
+
+        }
+
 
         private void Instance_OnHeartRateChange(object sender, int e)
         {
@@ -154,6 +180,9 @@ namespace eBuddy
         internal async Task Stop()
         {
             InRun = false;
+            RunData.Time = TimeSpan.Zero;
+            RunData.Distance = 0;
+            RunData.Speed = 0;
             aTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
@@ -166,8 +195,11 @@ namespace eBuddy
                 finalScore = CalculateScore();
                 MobileService.Instance.SaveRunData(RunData);
                 await MobileService.Instance.SaveUserScore(finalScore);
+                
 
             }
+            isChilledCalled = true;
+
             RunPhase = ERunPhase.NotStarted;
         }
 
@@ -206,18 +238,31 @@ namespace eBuddy
                 {
                     if (RunData.Time.TotalSeconds >= CHILL_TIME)
                     {
-                        _DistanceBeforeWarmUp = RunData.Distance;
-                        RunPhase++;
+                        if (!isChilledCalled)
+                        {
+                            _DistanceBeforeWarmUp = RunData.Distance;
+                            bTimer.Dispose();
+                            isChilledCalled = true;
+                            RunPhase++;
+                            RunData.Distance = 0;
+                            RunData.Time = TimeSpan.Zero;
+                            RunData.Date = DateTime.Now;
+                            
+                        }
                     }
 
                     break;
                 }
                 case ERunPhase.WarmUp:
                     {
-
+                        if (RunData.Time.TotalSeconds >= 40)
+                        {
+                            RunData.Distance = 1600;
+                        }
                         if (RunData.Distance >= _DistanceBeforeWarmUp + WARM_UP_DISTANCE)
                         {
                             _TimeBeforePreRun = RunData.Time;
+
                             RunPhase++;
                         }
 
@@ -232,12 +277,17 @@ namespace eBuddy
                             //_DistanceBeforeIntense = RunData.Distance;
                             RunData.Distance = 0;
                             RunData.Time = TimeSpan.Zero;
+                            RunData.Date = DateTime.Now;
                         }
 
                         break;
                     }
                 case ERunPhase.Intense:
                     {
+                        if (RunData.Time.TotalSeconds >= 10)
+                        {
+                            RunData.Distance = 1600;
+                        }
                         if (RunData.Distance >= INTENSE_DISTANCE)
                         {
 

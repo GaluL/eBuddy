@@ -64,6 +64,7 @@ namespace eBuddyApp.ViewModels
                 ScoreRunManager.scoreRunInstance.OnRouteUpdate += Instance_OnRouteUpdate;
                 LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
                 BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
+               
 
                 ScoreRunManager.scoreRunInstance.Start();
                 StopRun.RaiseCanExecuteChanged();
@@ -78,12 +79,7 @@ namespace eBuddyApp.ViewModels
 
             StopRun = new RelayCommand(() =>
             {
-                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
-                BandService.Instance.OnConnectionStatusChange -= Instance_OnConnectionStatusChange;
-                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
-                ScoreRunManager.scoreRunInstance.OnRouteUpdate -= Instance_OnRouteUpdate;
-                LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
-                BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
+
 
                 ScoreRunManager.scoreRunInstance.Stop();
                 StopRun.RaiseCanExecuteChanged();
@@ -98,7 +94,31 @@ namespace eBuddyApp.ViewModels
             CurrentLocation = ExtentionMethods.GetDefaultPoint();
 
             speechEvent = new ManualResetEvent(true);
+            ScoreRunManager.scoreRunInstance.OnInRunChange += ScoreRunInstance_OnInRunChange;
         }
+
+        private void ScoreRunInstance_OnInRunChange(object sender, bool e)
+        {
+            if (e)
+            {
+                StopRun.RaiseCanExecuteChanged();
+                StartRun.RaiseCanExecuteChanged();
+            }
+            else
+            {
+                ScoreRunManager.scoreRunInstance.OnRunPhaseChange -= Instance_OnRunPhaseChange;
+                BandService.Instance.OnConnectionStatusChange -= Instance_OnConnectionStatusChange;
+                ScoreRunManager.scoreRunInstance.OnRouteUpdate -= Instance_OnRouteUpdate;
+                LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
+                BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
+                StopRun.RaiseCanExecuteChanged();
+                StartRun.RaiseCanExecuteChanged();
+            }
+            
+            
+        }
+
+
 
         public void Instance_OnHeartRateChange(object sender, int e)
         {
