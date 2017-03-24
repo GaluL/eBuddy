@@ -103,6 +103,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SummaryRun.xaml.cs">
+      <DependentUpon>SummaryRun.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SchedulePart.xaml.cs">
       <DependentUpon>SchedulePart.xaml</DependentUpon>
     </Compile>
@@ -134,7 +137,8 @@
     <Compile Include="Services\Running\RunManager.cs" />
     <Compile Include="Services\Running\ScoreRunManager.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
-    <Compile Include="Converter\DataConverter.cs" />
+    <Compile Include="Controls\Converter\DataConverter.cs" />
+    <Compile Include="ViewModels\SummaryViewModel.cs" />
     <Compile Include="ViewModels\SuggestionsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
     <Compile Include="ViewModels\ProfilePageViewModel.cs" />
@@ -199,6 +203,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BandPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SummaryRun.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

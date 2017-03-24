@@ -74,10 +74,10 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.Update}">Update</Button>
-                <TextBlock Grid.Row="1" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="35" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Width="360" Height="88" Margin="0,19,1,5"/>
-                <TextBlock Grid.Row="2" TextAlignment="Center" FontSize="24" Text="Your previous runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-8,18,13,12.333"/>
-                <FlipView Grid.Row="3" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="0,0,0,8">
+
+                <TextBlock Grid.Row="1" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="28" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Width="360" Margin="0,19,0,22.667"/>
+                <TextBlock Grid.Row="2" TextAlignment="Center" FontSize="22" Text="Your previous runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-12,9.333,17,19.333"/>
+                <FlipView Grid.Row="3" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="0,0.333,0,2.333">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Center">
@@ -103,10 +103,14 @@
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <TextBlock TextAlignment="Center" Grid.Row="3" FontSize="24" Text="Your upcoming social runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-12,111.667,12,6.667" Grid.RowSpan="2"/>
+                <TextBlock TextAlignment="Center" Grid.Row="4" FontSize="22" Text="Your upcoming social runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-28,10.333,15,9.333" Grid.Column="0"/>
+                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.Update}" Background="White" VerticalAlignment="Bottom" Grid.Row="4" Margin="0,0,5,21.667">
+                    <SymbolIcon 
+                            Symbol="Sync" />
+                </Button>
             </Grid>
 
-            <Grid Margin="-20,311,-486,-525" RenderTransformOrigin="0.5,0.5" Background="#DCDCDC">
+            <Grid Margin="-20,287,-486,-501" RenderTransformOrigin="0.5,0.5" Background="#DCDCDC">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="245*"/>
                     <ColumnDefinition Width="341*"/>

@@ -48,7 +48,7 @@ namespace eBuddyApp.ViewModels
 
         private void Instance_UserDataLoaded(object sender, EventArgs e)
         {
-            WelcomeText = String.Format("Welcome back \n{0}!", MobileService.Instance.UserData.PrivateName);
+            WelcomeText = String.Format("Welcome back {0}!", MobileService.Instance.UserData.PrivateName);
             FinishedRuns = MobileService.Instance.FinishedRuns;
             UpcomingRuns = MobileService.Instance.ScheduledRuns;
         }

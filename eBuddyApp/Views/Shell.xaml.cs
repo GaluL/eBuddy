@@ -110,6 +110,16 @@ namespace eBuddyApp.Views
             PairBand.RaiseCanExecuteChanged();
         }
 
+        private void Summary_OnHideRequested(object sender, EventArgs e)
+        {
+            SummaryRunModal.IsModal = false;
+        }
+
+        private void Summary(object sender, System.EventArgs e)
+        {
+            SummaryRunModal.IsModal = true;
+        }
+
         #endregion
     }
 }

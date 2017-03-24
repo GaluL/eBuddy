@@ -57,8 +57,11 @@
                              Text="Schedule A Run" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
 
         <RelativePanel Below="pageHeader" >
+            <Button Command="{x:Bind ViewModel.Update}" Background="White" VerticalAlignment="Bottom" Grid.Row="4" Margin="310,0,-309,-34" Height="34" Width="44">
+                <SymbolIcon 
+                            Symbol="Sync" />
+            </Button>
             <Grid Margin="0,28,0,0">
-                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.Update}">Update</Button>
                 <TextBlock Grid.Row="0" Text="Buddies suggestions" TextAlignment="Center" FontSize="33" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="2,15,-2,128"/>
                 <FlipView Name="suggestionsFlipView" ItemsSource="{x:Bind ViewModel.Suggestions, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="-2,84,0,241">
                     <FlipView.ItemTemplate>

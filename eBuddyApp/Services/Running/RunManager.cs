@@ -18,13 +18,15 @@ using eBuddyApp.Services.Azure;
 using eBuddyApp.Services.Location;
 using Microsoft.WindowsAzure.MobileServices;
 using Template10.Common;
+using Template10.Samples.SearchSample.Controls;
 
 namespace eBuddy
 {
     class RunManager
     {
-        private int _lastLocationTimeSeconds = 1;
+        private double _lastLocationTimeSeconds = 1;
         private static RunManager _Instance;
+
         public static RunManager Instance
         {
             get
@@ -40,6 +42,7 @@ namespace eBuddy
 
 
         private string _voiceMsg;
+
         public string VoiceMsg
         {
             get { return _voiceMsg; }
@@ -51,11 +54,14 @@ namespace eBuddy
         }
 
         private RunItem _RunData;
+
         public RunItem RunData
         {
             get { return _RunData; }
             private set { _RunData = value; }
         }
+
+        public int MaxHeartRate { get; internal set; }
 
         public bool InRun = false;
 
@@ -65,6 +71,7 @@ namespace eBuddy
 
         internal event EventHandler<MapRoute> OnRouteUpdate;
         public event Action<string> OnVoiceMsgUpdate;
+        public event Action<object> OnPopped;
         private ManualResetEvent speechEvent;
         MediaElement mediaPlayer = new MediaElement();
         private bool changed;
@@ -75,7 +82,6 @@ namespace eBuddy
 
             RunData = new RunItem();
             speechEvent = new ManualResetEvent(true);
-
         }
 
         public Timer aTimer;
@@ -83,36 +89,41 @@ namespace eBuddy
         public bool solorun = true;
 
 
-        internal virtual void Start()
+        internal virtual async void Start()
         {
+            RunData.Distance = 0;
+            RunData.Speed = 0;
+            RunData.Time = TimeSpan.Zero;
             InRun = true;
             RunData.Date = DateTime.Now;
             bTimer = new Timer(CallbackB, null, 0, 30000);
             //  bTimer = new Timer(Callback, null, 0, 300000); TODO CHANGE TO THIS IN PROD
             aTimer = new Timer(Callback, null, 0, 1);
 
-
+            MaxHeartRate = 0;
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
             changed = false;
             _Waypoints = new List<Geopoint>();
 
             LocationService.Instance.Start();
-            if (solorun)
-            {
-                VoiceMsg = "activity started";
-            }
+
+            await ReadText("activity started");
+
         }
 
         public void Callback(object state)
         {
             RunData.Time = DateTime.Now - RunData.Date;
+            if (MaxHeartRate < BandService.Instance.HeartRate)
+            {
+                MaxHeartRate = BandService.Instance.HeartRate;
+            }
         }
 
         public virtual void CallbackB(object state)
         {
             if (InRun)
             {
-
                 VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
                            + " kilometer. Speed: " + RunData.Speed
@@ -122,20 +133,21 @@ namespace eBuddy
 
         internal virtual void Stop()
         {
-            RunData.Speed = RunData.Time.Seconds != 0 ? RunData.Distance / (RunData.Time.Seconds / 60 / 60) : 0;
+            RunData.Speed = RunData.Time.Seconds != 0 ? (RunData.Distance/1000) / (RunData.Time.Seconds / 60.0 / 60) : 0;
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
-            VoiceMsg = "activity stopped. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " + RunData.Distance
-            + " kilometer. Average speed: " + RunData.Speed
-            + "kilometer per hour";
+            VoiceMsg = "activity completed. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
+                       "seconds . Distance: " + RunData.Distance
+                       + " kilometer. Average speed: " + RunData.Speed
+                       + "kilometer per hour";
             InRun = false;
-            RunData.Time = TimeSpan.Zero;
-
+            OnPopped?.Invoke(true);
             aTimer.Dispose();
             bTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
             MobileService.Instance.SaveRunData(RunData);
-            RunData = new RunItem();
+
+            _lastLocationTimeSeconds = 1;
         }
 
         protected virtual async void Instance_OnLocationChange(Geoposition obj)
@@ -159,8 +171,7 @@ namespace eBuddy
                 double distanceDiff = route.LengthInMeters - RunData.Distance;
                 RunData.Distance = route.LengthInMeters;
                 RunData.Speed = (distanceDiff / 1000) / (_lastLocationTimeSeconds / 60.0 / 60.0);
-                _lastLocationTimeSeconds = RunData.Time.Seconds;
-
+                _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
             }
 
             UpdateVoiceMsg();
@@ -179,12 +190,10 @@ namespace eBuddy
             {
                 changed = false;
                 VoiceMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
-                            "! you are in your target Heart Rate!  .the minimum target Heart rate is " + BandService.Instance.MinTargetZoneHeartRate.ToString() + " beats per seconds and up";
+                           "! you are in your target Heart Rate!  .the minimum target Heart rate is " +
+                           BandService.Instance.MinTargetZoneHeartRate.ToString() + " beats per seconds and up";
             }
-
-
         }
-
 
 
         public async Task ReadText(string text)
