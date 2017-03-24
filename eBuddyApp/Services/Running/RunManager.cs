@@ -170,7 +170,7 @@ namespace eBuddy
                 OnRouteUpdate?.Invoke(this, route);
                 double distanceDiff = route.LengthInMeters - RunData.Distance;
                 RunData.Distance = route.LengthInMeters;
-                RunData.Speed = (distanceDiff / 1000) / (_lastLocationTimeSeconds / 60.0 / 60.0);
+                RunData.Speed = (distanceDiff / 1000) / ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
                 _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
             }
 

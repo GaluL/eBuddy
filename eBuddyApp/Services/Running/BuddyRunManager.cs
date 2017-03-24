@@ -71,7 +71,7 @@ namespace eBuddy
         private static BuddyRunManager _instance;
         public static BuddyRunManager Instance => _instance ?? (_instance = new BuddyRunManager());
 
-        private readonly double RUN_KM = 10;
+        private readonly double RUN_KM = 10/1000;
         private string _winner = "";
         //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
         string _buddyUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
@@ -134,6 +134,9 @@ namespace eBuddy
                     SocialMsg ="Great job " + MobileService.Instance.UserData.PrivateName + " you have completed the run first and you are the winner!";
                     OnMsgSizeUpdate?.Invoke(15);
                     OnMsgColorUpdate?.Invoke(Colors.RoyalBlue);
+                    SocialMsg = "WINNER!!";
+                    OnMsgSizeUpdate?.Invoke(20);
+                    OnMsgColorUpdate?.Invoke(Colors.GreenYellow);
                     Stop();
                 }
                 var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
@@ -316,12 +319,12 @@ namespace eBuddy
             //OnMsgSizeUpdate?.Invoke(28);
         }
 
-        internal override void Stop()
+        internal override async void Stop()
         {
             InRun = false;
             base.Stop();
-            //await RunnersHubProxy.Invoke("Stop",
-            //eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId); //Todo implement server logic
+            await RunnersHubProxy.Invoke("BuddyFinish", RunId,
+                eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
             _winner = "";
             solorun = true;
 
