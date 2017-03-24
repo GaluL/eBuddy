@@ -18,7 +18,7 @@ namespace eBuddyService.Hubs
         public void Register(string facebookId)
         {
             string deadConnectionId;
-            mapUidToConnection.TryRemove(facebookId, out deadConnectionId);
+            //mapUidToConnection.TryRemove(facebookId, out deadConnectionId); //todo uncomment
             mapUidToConnection[facebookId] = Context.ConnectionId;
             Trace.TraceInformation(String.Format("Added user: {0} connectionId {1}", facebookId, mapUidToConnection[facebookId]));
         }
@@ -67,6 +67,26 @@ namespace eBuddyService.Hubs
             {
                 mapRunIDToConnection[runId] = new List<string>();
                 mapRunIDToConnection[runId].Add(userId);
+            }
+        }
+
+        public void BuddyFinish(String runId, String userId)
+        {
+            if (mapRunIDToConnection.ContainsKey(runId))
+            {
+                foreach (string user in mapRunIDToConnection[runId])
+                {
+                    try
+                    {
+                        if(!user.Equals(userId))
+                            Clients.Client(mapUidToConnection[user]).runStart("BuddyFinish");
+                    }
+                    catch (Exception e)
+                    {
+                        string deadConnectionId;
+                        mapUidToConnection.TryRemove(user, out deadConnectionId);
+                    }
+                }
             }
         }
 
