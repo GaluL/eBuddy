@@ -9,6 +9,7 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using eBuddyApp.Models;
 using eBuddyApp.Services.Azure;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace eBuddyApp.ViewModels
@@ -18,17 +19,31 @@ namespace eBuddyApp.ViewModels
         private string _WelcomeText = "Welcome Back!";
         public string WelcomeText { get { return _WelcomeText; } set { Set(ref _WelcomeText, value); } }
 
+        public string UserName
+        {
+            get { return MobileService.Instance.UserData.PrivateName; }
+        }
+
         internal ObservableCollection<RunItem> _FinishedRuns;
         internal ObservableCollection<RunItem> FinishedRuns { get { return _FinishedRuns; } set { Set(ref _FinishedRuns, value); } }
 
         internal ObservableCollection<ScheduledRunItem> _UpcomingRuns;
         internal ObservableCollection<ScheduledRunItem> UpcomingRuns { get { return _UpcomingRuns; } set { Set(ref _UpcomingRuns, value); } }
 
+        internal RelayCommand Update;
+
         public MainPageViewModel()
         {
+            Update = new RelayCommand(async () =>
+            {
+                await MobileService.Instance.CollectScheduledRuns();
+                RaisePropertyChanged("UpcomingRuns");
+
+                await MobileService.Instance.CollectFinishedRuns();
+                RaisePropertyChanged("FinishedRuns");
+            });
+
             MobileService.Instance.UserDataLoaded += Instance_UserDataLoaded;
-            //FinishedRuns.Add(new RunItem() { Date = DateTime.Now, Distance = 222.22, Speed = 97, Time = TimeSpan.FromSeconds(1000)});
-            //FinishedRuns.Add(new RunItem() { Date = DateTime.Now, Distance = 34.4, Speed = 57, Time = TimeSpan.FromSeconds(2000) });
         }
 
         private void Instance_UserDataLoaded(object sender, EventArgs e)

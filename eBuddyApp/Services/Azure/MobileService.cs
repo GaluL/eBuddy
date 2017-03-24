@@ -211,7 +211,7 @@ namespace eBuddyApp.Services.Azure
                 UserData.FacebookId) ? closestRun.BuddyFacebookId : closestRun.InitializerFacebookId);
         }
 
-        private async Task CollectFinishedRuns()
+        internal async Task CollectFinishedRuns()
         {
             IEnumerable<RunItem> finishedRuns;
 

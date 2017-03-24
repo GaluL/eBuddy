@@ -9,15 +9,26 @@ using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using eBuddyApp.Models;
 using eBuddyApp.Services.Azure;
+using GalaSoft.MvvmLight.Command;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace eBuddyApp.ViewModels
 {
     public class SuggestionsPageViewModel : ViewModelBase
     {
+        internal RelayCommand Update;
         internal List<UserItem> Suggestions
         {
             get { return MobileService.Instance.Suggestions; }
+        }
+
+        public SuggestionsPageViewModel()
+        {
+            Update = new RelayCommand(async () =>
+            {
+                await MobileService.Instance.GetSuggestions();
+                RaisePropertyChanged("Suggestions");
+            });
         }
     }
 }

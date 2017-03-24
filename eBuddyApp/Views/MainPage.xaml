@@ -72,10 +72,12 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="35" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Width="360" Height="88" Margin="0,19,1,5"/>
-                <TextBlock Grid.Row="1" TextAlignment="Center" FontSize="24" Text="Your previous runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-8,18,13,12.333"/>
-                <FlipView Grid.Row="2" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="0,0,0,8">
+                <Button HorizontalAlignment="Right" Command="{x:Bind ViewModel.Update}">Update</Button>
+                <TextBlock Grid.Row="1" Text="{x:Bind ViewModel.WelcomeText, Mode=OneWay}" TextAlignment="Center" Foreground="SteelBlue" FontSize="35" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Width="360" Height="88" Margin="0,19,1,5"/>
+                <TextBlock Grid.Row="2" TextAlignment="Center" FontSize="24" Text="Your previous runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-8,18,13,12.333"/>
+                <FlipView Grid.Row="3" ItemsSource="{x:Bind ViewModel.FinishedRuns, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="0,0,0,8">
                     <FlipView.ItemTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Center">
@@ -101,7 +103,7 @@
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
-                <TextBlock TextAlignment="Center" Grid.Row="2" FontSize="24" Text="Your upcoming social runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-12,111.667,12,6.667" Grid.RowSpan="2"/>
+                <TextBlock TextAlignment="Center" Grid.Row="3" FontSize="24" Text="Your upcoming social runs" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-12,111.667,12,6.667" Grid.RowSpan="2"/>
             </Grid>
 
             <Grid Margin="-20,311,-486,-525" RenderTransformOrigin="0.5,0.5" Background="#DCDCDC">
