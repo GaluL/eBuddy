@@ -138,6 +138,7 @@
     <Compile Include="Services\Running\ScoreRunManager.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
     <Compile Include="Controls\Converter\DataConverter.cs" />
+    <Compile Include="Services\Weather\WeatherService.cs" />
     <Compile Include="ViewModels\SummaryViewModel.cs" />
     <Compile Include="ViewModels\SuggestionsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
