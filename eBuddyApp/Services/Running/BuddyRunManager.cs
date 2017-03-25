@@ -371,7 +371,7 @@ namespace eBuddy
 
             RunId = runId;
 
-            RunDistance = distance;
+            RunDistance = distance * 1000;
 
             GetBuddyData(_buddyUserId);
 

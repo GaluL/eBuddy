@@ -11,7 +11,7 @@ namespace Template10.Samples.SearchSample.Controls
     public sealed partial class SchedulePart : UserControl
     {
         public DateTime Date { get { return datePicker.Date.Date + timePicker.Time; } }
-        public double Distance => (distanceTextBox?.Text) == null ? double.Parse(distanceTextBox?.Text) : 5; //default is 5
+        public double Distance { get { return distanceTextBox.Text.Length != 0 ? double.Parse(distanceTextBox.Text) : 5; } }
 
         public SchedulePart()
         {
