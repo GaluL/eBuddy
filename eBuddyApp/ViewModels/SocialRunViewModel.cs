@@ -16,8 +16,10 @@ using Windows.UI.Xaml.Media;
 using eBuddy;
 using eBuddyApp.Models;
 using eBuddyApp.Services.Location;
+using eBuddyApp.Services.Weather;
 using GalaSoft.MvvmLight.Command;
 using Template10.Mvvm;
+using WeatherNet.Model;
 
 namespace eBuddyApp.ViewModels
 {
@@ -72,6 +74,16 @@ namespace eBuddyApp.ViewModels
 
         public Page page;
 
+        private CurrentWeatherResult _CurrentBuddyWeather;
+        public CurrentWeatherResult CurrentBuddyWeather
+        {
+            get { return _CurrentBuddyWeather; }
+            set
+            {
+                _CurrentBuddyWeather = value;
+                RaisePropertyChanged("CurrentBuddyWeather");
+            }
+        }
 
         public SocialRunViewModel()
         {
@@ -153,6 +165,9 @@ namespace eBuddyApp.ViewModels
         private void Instance_OnBuddyLocationUpdate(Geopoint obj)
         {
             BuddyLocation = obj;
+
+            CurrentBuddyWeather = WeatherService.Instance.GetWeatherForLocation(obj.Position.Longitude,
+                obj.Position.Latitude).Result;
         }
 
 

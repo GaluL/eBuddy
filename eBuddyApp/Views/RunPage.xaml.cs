@@ -47,11 +47,11 @@ namespace eBuddyApp.Views
                 myMap.Routes.Add(new MapRouteView(ViewModel.MyRoute));
             }
 
-            if (e.PropertyName.Equals("Icon"))
+            if (e.PropertyName.Equals("CurrentWeather"))
             {
-                if (ViewModel.Icon != null && !ViewModel.Icon.Equals(String.Empty))
+                if (ViewModel.CurrentWeather.Icon != null && !ViewModel.CurrentWeather.Icon.Equals(String.Empty))
                 {
-                    weatherIcon.Source = new BitmapImage(new Uri(String.Format(@"http://openweathermap.org/img/w/{0}.png", ViewModel.Icon), UriKind.Absolute));
+                    weatherIcon.Source = new BitmapImage(new Uri(String.Format(@"http://openweathermap.org/img/w/{0}.png", ViewModel.CurrentWeather.Icon), UriKind.Absolute));
                 }
             }
         }
