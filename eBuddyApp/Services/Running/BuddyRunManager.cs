@@ -115,7 +115,7 @@ namespace eBuddy
 
         public BuddyRunManager() : base()
         {
-            RunId = ""; //TODO change to real value
+            RunId = "nobody"; //TODO change to real value
             RunDistance = 0;
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
@@ -228,11 +228,11 @@ namespace eBuddy
 
         public void UpdateTipMsg()
         {
-            if ((RunData.Distance < BuddyRunData.Distance) &&
-                (RunData.Speed < BuddyRunData.Speed))
+            if (RunData.Distance < BuddyRunData.Distance)
             {
-                double timeSeconds = ((((RunDistance - BuddyRunData.Distance)/1000) / (BuddyRunData.Speed)) * 60 * 60);
-                double tipKmh = RunDistance - RunData.Distance / timeSeconds;
+                
+                double timeSeconds = ((((RunDistance - BuddyRunData.Distance)/1000) / (BuddyRunData.Speed > 0.5 ? BuddyRunData.Speed : 1)) * 60 * 60);
+                double tipKmh = (RunDistance - RunData.Distance) / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
                 if (tipKmh < BuddyRunData.Speed && _tip != 1)
@@ -245,7 +245,7 @@ namespace eBuddy
                 {
 
                     SocialMsg = BuddyData.PrivateName +
-                                " is currently the first! your speed is great and you're on the right track to win this race!";
+                                " is currently first! your speed is great and you're on the right track to win this race!";
                     _tip = 2;
 
                 }
