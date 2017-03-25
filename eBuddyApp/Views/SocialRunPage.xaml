@@ -170,10 +170,10 @@
             </Grid>
         </RelativePanel>
         <Grid Background="LightGray" Width="368" Margin="0,88,-8,-67" HorizontalAlignment="Left" >
-            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextAlignment="Center" Height="59"
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextAlignment="Center" Height="57"
                        IsColorFontEnabled="True" FontSize="{x:Bind ViewModel.SocialSize, Mode=OneWay}"
                        Foreground="DarkGray" TextWrapping="Wrap" Text="{x:Bind ViewModel.SocialMsg, Mode=OneWay}"
-                       VerticalAlignment="Center" Margin="0,-1,0,-3" Width="363" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
+                       VerticalAlignment="Center" Margin="0,1,0,-3" Width="353" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
         </Grid>
         <Grid Margin="169,401,-389,-648" RenderTransformOrigin="0.5,0.5" Background="SteelBlue">
             <Canvas>

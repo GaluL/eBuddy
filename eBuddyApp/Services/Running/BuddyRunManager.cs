@@ -375,6 +375,8 @@ namespace eBuddy
 
             GetBuddyData(_buddyUserId);
 
+            SocialMsg = "Let's start running! press start as soon as you are ready";
+
             RunAboutToStart?.Invoke(this, null);
         }
 
