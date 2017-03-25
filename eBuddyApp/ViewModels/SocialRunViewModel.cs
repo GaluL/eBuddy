@@ -87,7 +87,7 @@ namespace eBuddyApp.ViewModels
 
         public SocialRunViewModel()
         {
-            SocialMsg = "Let's start running! press start as soon as you are ready";
+            SocialMsg = "You don't have any schedualed runs for now. Invite a buddy!";
             SocialColor = Colors.DarkGray;
             SocialSize = 18;
             StartRun = new RelayCommand(() =>
@@ -103,8 +103,10 @@ namespace eBuddyApp.ViewModels
                     BuddyRunManager.Instance.OnMsgUpdate += Instance_OnMsgVUpdate;
                     BuddyRunManager.Instance.OnMsgColorUpdate += Instance_OnMsgColorUpdate;
                     BuddyRunManager.Instance.OnMsgSizeUpdate += Instance_OnMsgSizeUpdate;
+                    BuddyRunManager.Instance.OnFinish += Instance_OnFinish;
+
                 },
-                () => { return (!BuddyRunManager.Instance.InRun /*&& BandService.Instance.IsConnected*/); });
+                () => { return (!BuddyRunManager.Instance.InRun && !BuddyRunManager.Instance.RunId.Equals("")); });
 
             StopRun = new RelayCommand(() =>
                 {
@@ -128,6 +130,21 @@ namespace eBuddyApp.ViewModels
 
         }
 
+        private void Instance_OnFinish(int obj)
+        {
+            BuddyRunManager.Instance.OnRouteUpdate -= Instance_OnRouteUpdate;
+            LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
+            BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
+            BuddyRunManager.Instance.OnBuddyRouteUpdate -= Instance_OnBuddyRouteUpdate;
+            BuddyRunManager.Instance.OnBuddyLocationUpdate -= Instance_OnBuddyLocationUpdate;
+            BuddyRunManager.Instance.OnMsgUpdate -= Instance_OnMsgVUpdate;
+            BuddyRunManager.Instance.OnMsgColorUpdate -= Instance_OnMsgColorUpdate;
+            BuddyRunManager.Instance.OnMsgSizeUpdate -= Instance_OnMsgSizeUpdate;
+            BuddyRunManager.Instance.InRun = false;
+            StopRun.RaiseCanExecuteChanged();
+            StartRun.RaiseCanExecuteChanged();
+        }
+
         private void Instance_OnMsgSizeUpdate(int obj)
         {
             SocialSize = obj;
@@ -140,22 +157,22 @@ namespace eBuddyApp.ViewModels
 
         private async void Instance_OnMsgVUpdate(string obj)
         {
-            SocialMsg = obj;
-            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+            if (!obj[0].Equals('0'))
             {
-                await RunManager.Instance.ReadText(obj);
-            });
-
+                SocialMsg = obj;
+            }
+            else
+            {
+                obj = obj.Remove(0, 1);
+            }
+            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+              {
+                  await RunManager.Instance.ReadText(obj);
+              });
+        
         }
 
-        private async void Instance_OnVoiceUpdate(string obj)
-        {
-            await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
-            {
-                await RunManager.Instance.ReadText(obj);
-            });
 
-        }
 
         private void Instance_OnBuddyRouteUpdate(MapRoute e)
         {

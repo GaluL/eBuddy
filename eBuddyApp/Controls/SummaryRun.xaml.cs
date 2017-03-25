@@ -13,13 +13,14 @@ namespace Template10.Samples.SearchSample.Controls
     {
 
         public event EventHandler SummaryPop;
+        public Page page;
 
 
         public SummaryRun()
         {
-
             this.InitializeComponent();
            RunManager.Instance.OnPopped += pop_Click;
+           BuddyRunManager.Instance.OnPopped += pop_Click;
         }
 
         public event EventHandler HideRequested;
@@ -28,11 +29,14 @@ namespace Template10.Samples.SearchSample.Controls
         {
             HideRequested?.Invoke(this, EventArgs.Empty);
         }
-        public void pop_Click(object c)
+        public async void pop_Click(object c)
         {
-            SummaryPop?.Invoke(this, EventArgs.Empty);
+            await this.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            {
+                SummaryPop?.Invoke(this, EventArgs.Empty);
+            });
         }
 
-    
+
     }
 }

@@ -32,7 +32,7 @@
 
         <!-- header -->
         <Rectangle Fill="Orange" Grid.ColumnSpan="3" Margin="0,0,0,204" />
-        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="25,8,15,214" FontSize="24" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="0" Grid.ColumnSpan="3" Height="28">Run Summery</TextBlock>
+        <TextBlock Foreground="White" VerticalAlignment="Center" Margin="25,8,15,214" FontSize="24" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="0" Grid.ColumnSpan="3" Height="28" Text="Run Summary"/>
         <Button Margin="0,12,12,0" Foreground="White" Click="CloseClicked" VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Grid.Column="2" Height="28" Width="36">
             <SymbolIcon Symbol="Clear" />
         </Button>
@@ -52,11 +52,10 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" TextAlignment="Center" FontSize="25" Text="Workout summery" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Margin="-1,-17,6,26.667" Grid.ColumnSpan="3"/>
-            <Grid HorizontalAlignment="Center" Margin="5,51,-2,13" Grid.RowSpan="6" Width="277" Grid.ColumnSpan="3">
+            <Grid HorizontalAlignment="Center" Margin="-2,29,5,35" Grid.RowSpan="6" Width="277" Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="160"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="12*" />
@@ -67,7 +66,7 @@
                     <RowDefinition Height="11*" />
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Date: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="0" Grid.Column="0"/>
+                <TextBlock Text="Date: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="0" Grid.Column="0" Margin="0,-1,159,1" Grid.ColumnSpan="2"/>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Date, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="0" Grid.ColumnSpan="2" Margin="76,0,-27,0"/>
                 <TextBlock Text="Distance: " Grid.Row="1" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Distance,Converter={StaticResource DoubleFormatter}, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Row="1" Grid.ColumnSpan="2" Margin="99,0,-3,0"/>

@@ -67,11 +67,10 @@ namespace eBuddy
                 OnMsgUpdate?.Invoke(value);
             }
         }
-
         private static BuddyRunManager _instance;
         public static BuddyRunManager Instance => _instance ?? (_instance = new BuddyRunManager());
 
-        private readonly double RUN_KM = 10/1000;
+       // private readonly double runDistance = 10 / 1000;
         private string _winner = "";
         //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
         string _buddyUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
@@ -82,6 +81,20 @@ namespace eBuddy
             get { return _buddyRunData; }
             private set { _buddyRunData = value; }
         }
+
+        private string _runId;
+
+        public string RunId
+        {
+            get { return _runId;} 
+           
+            set {
+                SocialMsg = "Let's start running! press start as soon as you are ready";
+                _runId = value;
+            }
+        }
+
+        public double RunDistance { get; set; }
 
         private UserItem _buddyData;
         private bool _handshakeOnce = false;
@@ -102,7 +115,8 @@ namespace eBuddy
 
         public BuddyRunManager() : base()
         {
-            RunId = "shiran6"; //TODO change to real value
+            RunId = ""; //TODO change to real value
+            RunDistance = 0;
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
             _routeFinderEvent = new ManualResetEvent(true);
@@ -124,31 +138,40 @@ namespace eBuddy
 
         private async void My_OnLocationChange(Windows.Devices.Geolocation.Geoposition obj)
         {
+
             if (InRun)
             {
-                if (RunData.Distance >= RUN_KM && _winner.Equals(""))
+                if (RunData.Distance >= RunDistance && _winner.Equals("")) //todo
                 {
-                    _winner = "me";
-                    await RunnersHubProxy.Invoke("BuddyFinish", RunId,
-                        eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
-                    SocialMsg ="Great job " + MobileService.Instance.UserData.PrivateName + " you have completed the run first and you are the winner!";
+                    OnMsgSizeUpdate?.Invoke(17);
+                    _winner = MobileService.Instance.UserData.PrivateName;
                     OnMsgSizeUpdate?.Invoke(15);
                     OnMsgColorUpdate?.Invoke(Colors.RoyalBlue);
-                    SocialMsg = "WINNER!!";
-                    OnMsgSizeUpdate?.Invoke(20);
-                    OnMsgColorUpdate?.Invoke(Colors.GreenYellow);
+                    SocialMsg = "Great job " + MobileService.Instance.UserData.PrivateName +
+                                " you have completed the run first and you are the winner! yay!";
                     Stop();
                 }
-                var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
-                msg.SourceUserId = eBuddyApp.Services.Azure.MobileService.Instance.UserData.FacebookId;
-                msg.DestUserId = _buddyUserId;
+                else
+                {
+                    var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
+                    msg.SourceUserId = eBuddyApp.Services.Azure.MobileService.Instance.UserData.FacebookId;
+                    msg.DestUserId = _buddyUserId;
 
-                await RunnersHubProxy.Invoke("SendLocation", msg);
+                    await RunnersHubProxy.Invoke("SendLocation", msg);
+                }
             }
         }
 
-        public string RunId { get; set; }
-
+        public override void CallbackB(object state)
+        {
+            if (InRun && !RunData.Time.Minutes.Equals(0))
+            {
+                SocialMsg = "0Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
+                           RunData.Distance
+                           + " kilometer. Speed: " + RunData.Speed
+                           + "kilometer per hour";
+            }
+        }
 
         private async void OnLocationMessage(BuddyRunInfo obj)
         {
@@ -176,9 +199,9 @@ namespace eBuddy
                                               60.0);
                         BuddyRunData.Time = DateTime.Now - BuddyRunData.Date;
 
-                        if (BuddyRunData.Distance >= RUN_KM && _winner.Equals(""))
+                        if (BuddyRunData.Distance >= RunDistance && _winner.Equals(""))
                         {
-                            _winner = "buddy";
+                            _winner = BuddyData.PrivateName;
                             OnMsgColorUpdate?.Invoke(Colors.LightCoral);
                             string he_she = BuddyData.Gender == true ? "he" : "she";
                             SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she +
@@ -208,8 +231,8 @@ namespace eBuddy
             if ((RunData.Distance < BuddyRunData.Distance) &&
                 (RunData.Speed > BuddyRunData.Speed))
             {
-                double timeSeconds = ((RUN_KM - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
-                double tipKmh = RUN_KM - RunData.Distance / timeSeconds;
+                double timeSeconds = ((RunDistance - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
+                double tipKmh = RunDistance - RunData.Distance / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
                 if (tipKmh < BuddyRunData.Speed && _tip != 1)
@@ -321,14 +344,25 @@ namespace eBuddy
 
         internal override async void Stop()
         {
+            RunData.Speed = RunData.Time.Seconds != 0 ? (RunData.Distance / 1000) / (RunData.Time.Seconds / 60.0 / 60) : 0;
+            if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
+            SocialMsg = "0activity completed." + _winner + "is the winner!. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
+           "seconds . Distance: " + RunData.Distance
+           + " kilometer. Average speed: " + RunData.Speed
+           + "kilometer per hour";
+            RunManager.Instance.RunData = RunData;
+            OnFinish?.Invoke(0);
             InRun = false;
-            base.Stop();
             await RunnersHubProxy.Invoke("BuddyFinish", RunId,
                 eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
             _winner = "";
             solorun = true;
-
-
+            BuddyWaypoints.Clear();
+            BuddyRunData.Distance = 0;
+            BuddyRunData.Speed = 0;
+            RunId = "";
+            RunDistance = 0; 
+            base.Stop();
         }
 
         public void OnUpcomingRun(string facebookId, string runId)
@@ -342,5 +376,6 @@ namespace eBuddy
             RunAboutToStart?.Invoke(this, null);
         }
 
+        public event Action<int> OnFinish;
     }
 }

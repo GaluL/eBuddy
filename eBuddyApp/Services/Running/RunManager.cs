@@ -12,6 +12,7 @@ using Windows.Media.SpeechSynthesis;
 using Windows.Services.Maps;
 using Windows.UI;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using eBuddyApp.Models;
 using eBuddyApp.Services;
 using eBuddyApp.Services.Azure;
@@ -58,7 +59,7 @@ namespace eBuddy
         public RunItem RunData
         {
             get { return _RunData; }
-            private set { _RunData = value; }
+             set { _RunData = value; }
         }
 
         public int MaxHeartRate { get; internal set; }
@@ -73,21 +74,23 @@ namespace eBuddy
         public event Action<string> OnVoiceMsgUpdate;
         public event Action<object> OnPopped;
         private ManualResetEvent speechEvent;
+        private ManualResetEvent msgChangeEvent;
         MediaElement mediaPlayer = new MediaElement();
         private bool changed;
 
         public RunManager()
         {
             _DataUpdateSyncEvent = new ManualResetEvent(true);
-
+            _Waypoints = new List<Geopoint>();
             RunData = new RunItem();
             speechEvent = new ManualResetEvent(true);
+            msgChangeEvent = new ManualResetEvent(true);
+
         }
 
         public Timer aTimer;
         public Timer bTimer;
         public bool solorun = true;
-
 
         internal virtual async void Start()
         {
@@ -99,15 +102,14 @@ namespace eBuddy
             bTimer = new Timer(CallbackB, null, 0, 30000);
             //  bTimer = new Timer(Callback, null, 0, 300000); TODO CHANGE TO THIS IN PROD
             aTimer = new Timer(Callback, null, 0, 1);
-
+            _Waypoints.Clear();
             MaxHeartRate = 0;
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
             changed = false;
-            _Waypoints = new List<Geopoint>();
 
             LocationService.Instance.Start();
-
-            await ReadText("activity started");
+            if(solorun)
+                await ReadText("activity started");
 
         }
 
@@ -140,41 +142,48 @@ namespace eBuddy
                        + " kilometer. Average speed: " + RunData.Speed
                        + "kilometer per hour";
             InRun = false;
-            OnPopped?.Invoke(true);
             aTimer.Dispose();
             bTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
             MobileService.Instance.SaveRunData(RunData);
-
             _lastLocationTimeSeconds = 1;
+            OnPopped?.Invoke(true);
+
         }
 
         protected virtual async void Instance_OnLocationChange(Geoposition obj)
         {
-            _DataUpdateSyncEvent.Reset();
+            if (InRun)
+            {
+                _DataUpdateSyncEvent.Reset();
 
-            await UpdateRunStats(obj);
+                await UpdateRunStats(obj);
 
-            _DataUpdateSyncEvent.Set();
+                _DataUpdateSyncEvent.Set();
+            }
         }
 
         protected async Task UpdateRunStats(Geoposition obj)
         {
-            _Waypoints.Add(obj.ToGeoPoint());
-
-            var route = await MapServiceWrapper.Instance.GetRoute(_Waypoints);
-
-            if (route != null)
+            if (InRun)
             {
-                OnRouteUpdate?.Invoke(this, route);
-                double distanceDiff = route.LengthInMeters - RunData.Distance;
-                RunData.Distance = route.LengthInMeters;
-                RunData.Speed = (distanceDiff / 1000) / ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
-                _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
-            }
+                _Waypoints.Add(obj.ToGeoPoint());
 
-            UpdateVoiceMsg();
+                var route = await MapServiceWrapper.Instance.GetRoute(_Waypoints);
+
+                if (route != null)
+                {
+                    OnRouteUpdate?.Invoke(this, route);
+                    double distanceDiff = route.LengthInMeters - RunData.Distance;
+                    RunData.Distance = route.LengthInMeters;
+                    RunData.Speed = (distanceDiff / 1000) /
+                                    ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
+                    _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
+                }
+
+                UpdateVoiceMsg();
+            }
         }
 
 
@@ -198,7 +207,7 @@ namespace eBuddy
 
         public async Task ReadText(string text)
         {
-            speechEvent.WaitOne();
+      //      speechEvent.WaitOne(2);
             speechEvent.Reset();
             mediaPlayer.Stop();
 
