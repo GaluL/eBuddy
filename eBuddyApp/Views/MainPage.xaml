@@ -11,10 +11,12 @@
       xmlns:vm="using:eBuddyApp.ViewModels"
       xmlns:system="using:System"
       xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+      xmlns:myconverters="using:eBuddyApp.Converter"
       mc:Ignorable="d">
 
     <Page.Resources>
         <converters:BoolToVisibilityConverter x:Name="BoolToVis"/>
+        <myconverters:BoolToRunColorConverter x:Name="RunColorConverter"/>
     </Page.Resources>
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="ViewModel" />
@@ -131,12 +133,12 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="Buddy: " FontSize="12" Foreground="Black" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="0"/>
-                                <TextBlock Text="{Binding BuddyName, Mode=OneWay}" FontSize="12"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"/>
-                                <TextBlock Text="Date: " FontSize="12" Foreground="Black" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="1"/>
-                                <TextBlock Text="{Binding Date, Mode=OneWay}" FontSize="12"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="1"/>
-                                <TextBlock Text="Distance: "  FontSize="12" Foreground="Black" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="2" />
-                                <TextBlock Text="{Binding Distance, Mode=OneWay}" FontSize="12" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="2" />
+                                <TextBlock Text="Buddy: " Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="0"/>
+                                <TextBlock Text="{Binding BuddyName, Mode=OneWay}" Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="0"/>
+                                <TextBlock Text="Date: " Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="1"/>
+                                <TextBlock Text="{Binding Date, Mode=OneWay}" Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12"  FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="1"/>
+                                <TextBlock Text="Distance: " Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Column="0" Grid.Row="2" />
+                                <TextBlock Text="{Binding Distance, Mode=OneWay}" Foreground="{Binding BuddyApproval, Converter={StaticResource RunColorConverter}}" FontSize="12" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Margin="7,0,0,0" Grid.Column="1" Grid.Row="2" />
                                 <Button Visibility="{Binding WaitingForMyApproval, Converter={StaticResource BoolToVis}}" Command="{Binding Approve}" FontSize="10" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.Column="2" Margin="65,4,0,0" Grid.RowSpan="2" Foreground="White"  Content="Approve"/>
                             </Grid>
                         </DataTemplate>
