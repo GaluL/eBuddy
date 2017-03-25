@@ -229,9 +229,9 @@ namespace eBuddy
         public void UpdateTipMsg()
         {
             if ((RunData.Distance < BuddyRunData.Distance) &&
-                (RunData.Speed > BuddyRunData.Speed))
+                (RunData.Speed < BuddyRunData.Speed))
             {
-                double timeSeconds = ((RunDistance - BuddyRunData.Distance) / (BuddyRunData.Speed)) * 60 * 60;
+                double timeSeconds = ((((RunDistance - BuddyRunData.Distance)/1000) / (BuddyRunData.Speed)) * 60 * 60);
                 double tipKmh = RunDistance - RunData.Distance / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(17);
