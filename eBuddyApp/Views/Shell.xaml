@@ -133,6 +133,17 @@
             </Controls:ModalDialog.ModalContent>
         </Controls:ModalDialog>
 
+        <Controls:ModalDialog x:Name="ScoreSummaryRunModal"
+                              CanBackButtonDismiss="False"
+                              DisableBackButtonWhenModal="True">
+            <Controls:ModalDialog.ModalContent>
+                <controls:ScoreSummaryRun x:Name="ScoreSummaryRun"
+                                  SummaryPop="ScoreSummary"
+                                  HideRequested="ScoreSummary_OnHideRequested"
+                                  />
+            </Controls:ModalDialog.ModalContent>
+        </Controls:ModalDialog>
+
         <Controls:ModalDialog x:Name="SummaryRunModal"
                               CanBackButtonDismiss="False"
                               DisableBackButtonWhenModal="True">
@@ -143,6 +154,7 @@
                                   />
             </Controls:ModalDialog.ModalContent>
         </Controls:ModalDialog>
+
     </Grid>
 </Page>
 

@@ -25,6 +25,7 @@ namespace eBuddyApp.ViewModels
 
         public RelayCommand StartRun;
         public RelayCommand StopRun;
+        
 
         #endregion
 
@@ -48,9 +49,9 @@ namespace eBuddyApp.ViewModels
             set { Set(ref _CurrentLocation, value); }
         }
         #endregion
-
+       
         private bool inTalk = false;
-
+        private string VoiceMsg;
         private ManualResetEvent speechEvent;
         MediaElement mediaPlayer = new MediaElement();
 
@@ -58,13 +59,14 @@ namespace eBuddyApp.ViewModels
         public ScoreRunViewModel() : base()
         {
             StartRun = new RelayCommand(() =>
-            {
+                {
+                
                 BandService.Instance.OnConnectionStatusChange += Instance_OnConnectionStatusChange;
                 ScoreRunManager.scoreRunInstance.OnRunPhaseChange += Instance_OnRunPhaseChange;
                 ScoreRunManager.scoreRunInstance.OnRouteUpdate += Instance_OnRouteUpdate;
                 LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
                 BandService.Instance.OnHeartRateChange += Instance_OnHeartRateChange;
-               
+                
 
                 ScoreRunManager.scoreRunInstance.Start();
                 StopRun.RaiseCanExecuteChanged();
@@ -78,13 +80,14 @@ namespace eBuddyApp.ViewModels
                 });
 
             StopRun = new RelayCommand(() =>
-            {
+                {
 
-
+                
                 ScoreRunManager.scoreRunInstance.Stop();
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
-            },
+                stopPressed();
+                },
                 () =>
                 {
                     return (ScoreRunManager.scoreRunInstance.InRun);
@@ -95,6 +98,7 @@ namespace eBuddyApp.ViewModels
 
             speechEvent = new ManualResetEvent(true);
             ScoreRunManager.scoreRunInstance.OnInRunChange += ScoreRunInstance_OnInRunChange;
+            ScoreRunManager.scoreRunInstance.OnIsFinishedChange += ScoreRunInstance_OnIsFinishedChange;
         }
 
         private void ScoreRunInstance_OnInRunChange(object sender, bool e)
@@ -113,14 +117,35 @@ namespace eBuddyApp.ViewModels
                 BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
                 StopRun.RaiseCanExecuteChanged();
                 StartRun.RaiseCanExecuteChanged();
+                
             }
             
             
         }
 
+        private async void ScoreRunInstance_OnIsFinishedChange(object sender, bool e)
+        {
+            if (e)
+            {
+                VoiceMsg = "scoreRun completed. Run summery. your score is: " +
+                           ScoreRunManager.scoreRunInstance.finalScore;
+                await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                {
+                    await ReadText(VoiceMsg);
+                });
+            }          
+        }
 
 
-        public void Instance_OnHeartRateChange(object sender, int e)
+        private async void stopPressed()
+        {
+                VoiceMsg = "you did not finished the scoreRun. the score was not calculated";
+                await page.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                 {
+                await ReadText(VoiceMsg);
+                 });
+        }
+            public void Instance_OnHeartRateChange(object sender, int e)
         {
             Heartrate = e;
         }

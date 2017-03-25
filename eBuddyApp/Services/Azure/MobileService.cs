@@ -279,8 +279,19 @@ namespace eBuddyApp.Services.Azure
 
         public async void SaveRunData(RunItem runData)
         {
-            runData.FacebookId = UserData.FacebookId;
-            await Service.GetTable<RunItem>().InsertAsync(runData);
+            await Service.GetTable<RunItem>().InsertAsync(copyRunData(runData));
+        }
+        private RunItem copyRunData(RunItem RunData)
+        {
+            RunItem RunDataSaved = new RunItem();
+            RunDataSaved.FacebookId = MobileService.Instance.UserData.FacebookId;
+
+            RunDataSaved.Time = RunData.Time;
+            RunDataSaved.Date = RunData.Date;
+            RunDataSaved.Distance = RunData.Distance;
+            RunDataSaved.Speed = RunData.Speed;
+
+            return RunDataSaved;
         }
 
         public async Task SaveUserScore(double score)
