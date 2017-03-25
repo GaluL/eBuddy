@@ -331,9 +331,11 @@ namespace eBuddy
 
         }
 
-        public void OnUpcomingRun(string facebookId)
+        public void OnUpcomingRun(string facebookId, string runId)
         {
             _buddyUserId = facebookId;
+
+            RunId = runId;
 
             GetBuddyData(_buddyUserId);
 

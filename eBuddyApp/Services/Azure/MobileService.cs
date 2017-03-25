@@ -216,7 +216,7 @@ namespace eBuddyApp.Services.Azure
             var closestRun = ScheduledRuns.First(x => x.Date == ScheduledRuns.Min(y => y.Date));
 
             BuddyRunManager.Instance.OnUpcomingRun(closestRun.InitializerFacebookId.Equals(
-                UserData.FacebookId) ? closestRun.BuddyFacebookId : closestRun.InitializerFacebookId);
+                UserData.FacebookId) ? closestRun.BuddyFacebookId : closestRun.InitializerFacebookId, closestRun.Id);
         }
 
         internal async Task CollectFinishedRuns()
