@@ -365,11 +365,13 @@ namespace eBuddy
             base.Stop();
         }
 
-        public void OnUpcomingRun(string facebookId, string runId)
+        public void OnUpcomingRun(string facebookId, string runId, double distance)
         {
             _buddyUserId = facebookId;
 
             RunId = runId;
+
+            RunDistance = distance;
 
             GetBuddyData(_buddyUserId);
 
