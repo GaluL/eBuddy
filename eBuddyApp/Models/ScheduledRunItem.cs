@@ -49,6 +49,9 @@ namespace eBuddyApp.Models
         public bool WaitingForMyApproval { get; set; }
 
         [JsonIgnore]
+        public String BuddyName { get; set; }
+
+        [JsonIgnore]
         public RelayCommand Approve { get; set; }
 
         public ScheduledRunItem()

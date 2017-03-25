@@ -180,6 +180,14 @@ namespace eBuddyApp.Services.Azure
                             run.WaitingForMyApproval = true;
                         }
 
+                        String buddyFbId = run.InitializerFacebookId.Equals(UserData.FacebookId)
+                            ? run.BuddyFacebookId
+                            : run.InitializerFacebookId;
+
+                        run.BuddyName =
+                            (await Service.GetTable<UserItem>().ToEnumerableAsync()).First(
+                                x => x.FacebookId.Equals(buddyFbId)).PrivateName;
+
                         ScheduledRuns.Add(run);
                     }
                 }
