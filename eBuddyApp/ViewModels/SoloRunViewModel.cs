@@ -64,6 +64,10 @@ namespace eBuddyApp.ViewModels
         public Geopoint CurrentLocation { get { return _CurrentLocation; }
             set { Set(ref _CurrentLocation, value); } }
 
+        public bool WaitingForWheather { get; set; }
+
+
+
         #endregion
 
         public SoloRunViewModel() : base()
@@ -93,6 +97,9 @@ namespace eBuddyApp.ViewModels
 
             CurrentLocation = ExtentionMethods.GetDefaultPoint();
             speechEvent = new ManualResetEvent(true);
+            WaitingForWheather = false;
+
+
 
         }
 
@@ -107,6 +114,9 @@ namespace eBuddyApp.ViewModels
 
             CurrentWeather = WeatherService.Instance.GetWeatherForLocation(obj.Coordinate.Point.Position.Longitude,
                 obj.Coordinate.Point.Position.Latitude).Result;
+
+            if (!WaitingForWheather)
+                WaitingForWheather = true;
         }
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)

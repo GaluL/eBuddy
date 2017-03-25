@@ -207,7 +207,7 @@ namespace eBuddy
 
         public async Task ReadText(string text)
         {
-      //      speechEvent.WaitOne(2);
+            speechEvent.WaitOne(2);
             speechEvent.Reset();
             mediaPlayer.Stop();
 

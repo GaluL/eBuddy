@@ -346,7 +346,7 @@ namespace eBuddy
         {
             RunData.Speed = RunData.Time.Seconds != 0 ? (RunData.Distance / 1000) / (RunData.Time.Seconds / 60.0 / 60) : 0;
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
-            SocialMsg = "0activity completed." + _winner + "is the winner!. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
+            SocialMsg = "0activity completed, " + _winner + " is the winner!. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
            "seconds . Distance: " + RunData.Distance
            + " kilometer. Average speed: " + RunData.Speed
            + "kilometer per hour";

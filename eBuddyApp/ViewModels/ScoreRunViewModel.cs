@@ -16,6 +16,7 @@ using Template10.Mvvm;
 using Windows.Media.SpeechSynthesis;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using WeatherNet.Model;
 
 namespace eBuddyApp.ViewModels
 {
@@ -47,6 +48,17 @@ namespace eBuddyApp.ViewModels
         {
             get { return _CurrentLocation; }
             set { Set(ref _CurrentLocation, value); }
+        }
+
+        private CurrentWeatherResult _CurrentWeather;
+        public CurrentWeatherResult CurrentWeather
+        {
+            get { return _CurrentWeather; }
+            set
+            {
+                _CurrentWeather = value;
+                RaisePropertyChanged("CurrentWeather");
+            }
         }
         #endregion
        

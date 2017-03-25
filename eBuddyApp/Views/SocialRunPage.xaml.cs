@@ -57,6 +57,10 @@ namespace eBuddyApp.Views
 
         }
 
+        private void pageHeader_Opened(object sender, object e)
+        {
+
+        }
     }
 }
 

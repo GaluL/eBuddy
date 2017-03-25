@@ -73,7 +73,7 @@
                 <TextBlock Text="Time: "   FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="2" Grid.Column="0"></TextBlock>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Time,Converter={StaticResource TimeFormatter}, Mode=OneWay}"  Grid.Row="2" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand" Grid.ColumnSpan="2" Margin="99,0,-3,0"/>
                 <TextBlock Text="Avg. Speed: " Grid.Row="3" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
-                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance,Converter={StaticResource DoubleFormatter}, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="3" Grid.ColumnSpan="2" Margin="99,0,-3,0"/>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding Speed,Converter={StaticResource DoubleFormatter}, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="3" Grid.ColumnSpan="2" Margin="99,0,-3,0"/>
                 <TextBlock Text="Max HeartRate: " Grid.Row="4" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding MaxHeartRate, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="4" Grid.Column="1" Margin="46,0,45,0"/>
                 <TextBlock Text="Score: " Grid.Row="5" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.RowSpan="2"/>
