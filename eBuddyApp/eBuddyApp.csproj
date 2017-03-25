@@ -103,6 +103,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScoreSummaryRun.xaml.cs">
+      <DependentUpon>ScoreSummaryRun.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SummaryRun.xaml.cs">
       <DependentUpon>SummaryRun.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,7 @@
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
     <Compile Include="Controls\Converter\DataConverter.cs" />
     <Compile Include="Services\Weather\WeatherService.cs" />
+    <Compile Include="ViewModels\ScoreSummaryViewModel.cs" />
     <Compile Include="ViewModels\SummaryViewModel.cs" />
     <Compile Include="ViewModels\SuggestionsPageViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -207,6 +211,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\BandPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ScoreSummaryRun.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

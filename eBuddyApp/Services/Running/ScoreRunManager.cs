@@ -28,14 +28,15 @@ namespace eBuddy
         private double _DistanceBeforeWarmUp;
         private int _MinHeartrate = int.MaxValue;
         private int _MaxHeartrate = 0;
-        private double _finalScore = 0;
-        public double finalScore
+        private int _finalScore = 0;
+        public int finalScore
         {
             get { return _finalScore; }
             private set { _finalScore = value; }
         }
 
-
+        public double Vo2Max = 0;
+        public double MAS = 0; 
 
         private double _score_by_mas = 0;
         public double score_by_mas
@@ -79,6 +80,7 @@ namespace eBuddy
 
         protected ManualResetEvent _DataUpdateSyncEvent;
 
+        public event Action<object> OnPopped;
         internal event EventHandler<MapRoute> OnRouteUpdate;
         public  ScoreRunManager() 
         {
@@ -86,7 +88,7 @@ namespace eBuddy
             _DataUpdateSyncEvent = new ManualResetEvent(true);
 
             RunData = new RunItem();
-            RunData.FacebookId = MobileService.Instance.UserData.FacebookId;
+        //    RunData.FacebookId = MobileService.Instance.UserData.FacebookId;
             
             _HeartratePreRunList = new List<int>();
         }
@@ -106,6 +108,7 @@ namespace eBuddy
 
         public event EventHandler<ERunPhase> OnRunPhaseChange;
         public event EventHandler <bool> OnInRunChange;
+        public event EventHandler<bool> OnIsFinishedChange;
         private ERunPhase _RunPhase;
         public ERunPhase RunPhase
         {
@@ -128,10 +131,25 @@ namespace eBuddy
             }
         }
 
+        private bool _isFinished;
+        public bool isFinished
+        {
+            get { return _isFinished; }
+            set
+            {
+                _isFinished = value;
+                OnIsFinishedChange?.Invoke(this, value);
+            }
+        }
+
         internal  void Start()
         {
-            RunData = new RunItem();
-            RunData.FacebookId = MobileService.Instance.UserData.FacebookId;
+            Vo2Max = 0;
+            MAS = 0;
+            isFinished = false;
+            RunData.Time = TimeSpan.Zero;
+            RunData.Distance = 0;
+            RunData.Speed = 0;
             RunPhase = ERunPhase.Chill;
             InRun = true;
             aTimer = new Timer(Callback, null, 0, 1);
@@ -180,9 +198,6 @@ namespace eBuddy
         internal async Task Stop()
         {
             InRun = false;
-            RunData.Time = TimeSpan.Zero;
-            RunData.Distance = 0;
-            RunData.Speed = 0;
             aTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
@@ -192,15 +207,17 @@ namespace eBuddy
         
             if (RunPhase == ERunPhase.Finished)
             {
-                finalScore = CalculateScore();
+                
+                finalScore = (int)CalculateScore();
                 MobileService.Instance.SaveRunData(RunData);
                 await MobileService.Instance.SaveUserScore(finalScore);
-                
-
+                isFinished = true;
             }
-            isChilledCalled = true;
 
+            OnPopped?.Invoke(true);
+            isChilledCalled = true;
             RunPhase = ERunPhase.NotStarted;
+            
         }
 
         protected  async void Instance_OnLocationChange(Geoposition obj)
@@ -209,7 +226,7 @@ namespace eBuddy
 
             await UpdateRunStats(obj);
 
-            UpdateTestPhase();
+            await UpdateTestPhase();
 
             _DataUpdateSyncEvent.Set();
         }
@@ -255,10 +272,6 @@ namespace eBuddy
                 }
                 case ERunPhase.WarmUp:
                     {
-                        if (RunData.Time.TotalSeconds >= 40)
-                        {
-                            RunData.Distance = 1600;
-                        }
                         if (RunData.Distance >= _DistanceBeforeWarmUp + WARM_UP_DISTANCE)
                         {
                             _TimeBeforePreRun = RunData.Time;
@@ -284,10 +297,7 @@ namespace eBuddy
                     }
                 case ERunPhase.Intense:
                     {
-                        if (RunData.Time.TotalSeconds >= 10)
-                        {
-                            RunData.Distance = 1600;
-                        }
+
                         if (RunData.Distance >= INTENSE_DISTANCE)
                         {
 
@@ -332,10 +342,16 @@ namespace eBuddy
 
             score_by_mas = (mas_avg / 6.22) * 100;
             score_by_vo2max = (vo2max_avg / 70.0) * 100;
+            Vo2Max = vo2max_avg;
+            MAS = mas_avg;
 
-            
+
             return (score_by_mas + score_by_vo2max) / 2;
         }
+
+
+
+
 
  
     }

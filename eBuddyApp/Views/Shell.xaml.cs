@@ -120,6 +120,15 @@ namespace eBuddyApp.Views
             SummaryRunModal.IsModal = true;
         }
 
+        private void ScoreSummary_OnHideRequested(object sender, EventArgs e)
+        {
+            ScoreSummaryRunModal.IsModal = false;
+        }
+
+        private void ScoreSummary(object sender, System.EventArgs e)
+        {
+            ScoreSummaryRunModal.IsModal = true;
+        }
         #endregion
     }
 }
