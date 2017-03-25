@@ -122,6 +122,7 @@
       <DependentUpon>LoginPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converter\BoolToGenderConverter.cs" />
+    <Compile Include="Converter\BoolToRunColorConverter.cs" />
     <Compile Include="Converter\DistanceAndSpeedConverter.cs" />
     <Compile Include="Converter\StringFormatConverter.cs" />
     <Compile Include="Converter\WindConverter.cs" />
