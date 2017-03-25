@@ -121,6 +121,9 @@
     <Compile Include="Converter\BoolToGenderConverter.cs" />
     <Compile Include="Converter\DistanceAndSpeedConverter.cs" />
     <Compile Include="Converter\StringFormatConverter.cs" />
+    <Compile Include="Converter\WindConverter.cs" />
+    <Compile Include="Converter\HumidityConverter.cs" />
+    <Compile Include="Converter\TempratureConverter.cs" />
     <Compile Include="Converter\TimeToStringConverter.cs" />
     <Compile Include="Models\BuddyRunInfo.cs" />
     <Compile Include="Models\RunItem.cs" />

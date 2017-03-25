@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +14,10 @@ using Windows.UI.Xaml.Controls;
 using eBuddy;
 using eBuddyApp.Models;
 using eBuddyApp.Services.Location;
+using eBuddyApp.Services.Weather;
 using GalaSoft.MvvmLight.Command;
 using Template10.Mvvm;
+using WeatherNet.Model;
 
 namespace eBuddyApp.ViewModels
 {
@@ -38,6 +41,101 @@ namespace eBuddyApp.ViewModels
         public virtual RunItem RunData
         {
             get { return RunManager.Instance.RunData; }
+        }
+
+        private CurrentWeatherResult _CurrentWeather;
+        public CurrentWeatherResult CurrentWeather
+        {
+            get { return _CurrentWeather; }
+            set
+            {
+                _CurrentWeather = value;
+                RaisePropertyChanged("CurrentWeather");
+                RaisePropertyChanged("City");
+                RaisePropertyChanged("Country");
+                RaisePropertyChanged("Temp");
+                RaisePropertyChanged("WindSpeed");
+                RaisePropertyChanged("Hunidity");
+                RaisePropertyChanged("Icon");
+            }
+        }
+
+        public String City
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(String);
+                }
+
+                return _CurrentWeather.City;
+            }
+        }
+
+        public String Country
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(String);
+                }
+
+                return _CurrentWeather.Country;
+            }
+        }
+
+        public double Temp
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(double);
+                }
+
+                return _CurrentWeather.Temp;
+            }
+        }
+
+        public double WindSpeed
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(double);
+                }
+
+                return _CurrentWeather.WindSpeed;
+            }
+        }
+
+        public double Humidity
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(double);
+                }
+
+                return _CurrentWeather.Humidity;
+            }
+        }
+
+        public String Icon
+        {
+            get
+            {
+                if (_CurrentWeather == null)
+                {
+                    return default(String);
+                }
+
+                return _CurrentWeather.Icon;
+            }
         }
 
         public int _Heartrate;
@@ -90,6 +188,9 @@ namespace eBuddyApp.ViewModels
         public void Instance_OnLocationChange(Geoposition obj)
         {
             CurrentLocation = obj.ToGeoPoint();
+
+            CurrentWeather = WeatherService.Instance.GetWeatherForLocation(obj.Coordinate.Point.Position.Longitude,
+                obj.Coordinate.Point.Position.Latitude).Result;
         }
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)

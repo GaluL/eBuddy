@@ -20,6 +20,9 @@
     <Page.Resources>
         <converter:TimeToStringConverter x:Key="TimeFormatter"/>
         <converter:DistanceAndSpeedConverter x:Key="DoubleFormatter"/>
+        <converter:TempratureConverter x:Key="tempConverter"/>
+        <converter:WindConverter x:Key="windConverter"/>
+        <converter:HumidityConverter x:Key="humidityConverter"/>
     </Page.Resources>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -82,6 +85,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
+                        <RowDefinition/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -100,12 +104,35 @@
                 </Grid>
 
                 <Grid Grid.Row="1"  Margin="5,389,-10,10.333">
-                    <maps:MapControl x:Name="myMap"  
+                    <Canvas>
+                        <Grid HorizontalAlignment="Center" Canvas.Top="-378" Canvas.Left="20" Canvas.ZIndex="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Image Stretch="Fill" Name="weatherIcon" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{x:Bind ViewModel.CurrentWeather.City, FallbackValue=NaN, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Text="{x:Bind ViewModel.CurrentWeather.Country, FallbackValue=NaN, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="3" Text="{x:Bind ViewModel.CurrentWeather.Temp, FallbackValue=NaN, Mode=OneWay, Converter={StaticResource tempConverter}}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" Text="Wind: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" FontWeight="SemiBold"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.CurrentWeather.WindSpeed, FallbackValue=NaN, Mode=OneWay, Converter={StaticResource windConverter}}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2" Text="Humidity: " FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" FontWeight="SemiBold"/>
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="3" Text="{x:Bind ViewModel.CurrentWeather.Humidity, FallbackValue=NaN, Mode=OneWay, Converter={StaticResource humidityConverter}}" FontFamily="/Fonts/Quicksand-Light.otf#Quicksand"/>
+                        </Grid>
+                        <maps:MapControl Canvas.ZIndex="0" Canvas.Top="0" Canvas.Left="0" x:Name="myMap"  
                                      TiltInteractionMode="GestureAndControl"
                                      ZoomInteractionMode="GestureAndControl"
                                      Center="{x:Bind ViewModel.CurrentLocation, Mode=OneWay}"
                                      MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Margin="-17,-381,-18,-1" Height="Auto" Width="Auto"
                                      ZoomLevel="15"/>
+                    </Canvas>
                 </Grid>
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="-5,173.667,-2,-348.667"

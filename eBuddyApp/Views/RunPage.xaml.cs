@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using eBuddy;
 
@@ -44,6 +45,14 @@ namespace eBuddyApp.Views
             {
                 myMap.Routes.Clear();
                 myMap.Routes.Add(new MapRouteView(ViewModel.MyRoute));
+            }
+
+            if (e.PropertyName.Equals("Icon"))
+            {
+                if (ViewModel.Icon != null && !ViewModel.Icon.Equals(String.Empty))
+                {
+                    weatherIcon.Source = new BitmapImage(new Uri(String.Format(@"http://openweathermap.org/img/w/{0}.png", ViewModel.Icon), UriKind.Absolute));
+                }
             }
         }
 
