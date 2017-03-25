@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Google.Protobuf.WellKnownTypes;
 using Newtonsoft.Json;
 using Template10.Mvvm;
 
@@ -26,11 +27,11 @@ namespace eBuddyApp.Models
 
         double _Distance = default(double);
         [JsonProperty(PropertyName = "distance")]
-        public double Distance { get { return _Distance; } set { Set(ref _Distance, value); } }
+        public double Distance { get { return _Distance; } set { Set(ref _Distance, Math.Round(value, 2)); } }
 
         double _Speed = default(double);
         [JsonProperty(PropertyName = "speed")]
         public double Speed { get { return _Speed; }
-            set { Set(ref _Speed, value); } }
+            set { Set(ref _Speed, Math.Round(value, 2)); } }
     }
 }

@@ -307,7 +307,7 @@ namespace eBuddy
             await RunnersHubProxy.Invoke("Register",
                 eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
 
-            await RunnersHubProxy.Invoke("HandShake", "shiran6",
+            await RunnersHubProxy.Invoke("HandShake", RunId,
                 eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
 
             return true;

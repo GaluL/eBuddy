@@ -30,7 +30,12 @@ namespace eBuddyApp.Models
 
         private Double _Height = default(Double);
         [JsonProperty(PropertyName = "height")]
-        public Double Height { get { return _Height; } set { Set(ref _Height, value); } }
+        public Double Height { get { return _Height; }
+            set
+            {   
+                Set(ref _Height, value);
+            }
+        }
 
         private Boolean? _Gender = default(bool);
         [JsonProperty(PropertyName = "gender")]
@@ -46,6 +51,6 @@ namespace eBuddyApp.Models
 
         private double _Score = default(double);
         [JsonProperty(PropertyName = "score")]
-        public double Score { get { return _Score; } set { Set(ref _Score, value); } }
+        public double Score { get { return _Score; } set { Set(ref _Score, Math.Round(value, 2)); } }
     }
 }
