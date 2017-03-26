@@ -115,9 +115,6 @@ namespace eBuddyApp.ViewModels
 
             CurrentWeather = WeatherService.Instance.GetWeatherForLocation(obj.Coordinate.Point.Position.Longitude,
                 obj.Coordinate.Point.Position.Latitude).Result;
-
-            if (!WaitingForWheather)
-                WaitingForWheather = true;
         }
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)

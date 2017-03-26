@@ -16,6 +16,7 @@ using Template10.Mvvm;
 using Windows.Media.SpeechSynthesis;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using eBuddyApp.Services.Weather;
 using WeatherNet.Model;
 
 namespace eBuddyApp.ViewModels
@@ -164,6 +165,9 @@ namespace eBuddyApp.ViewModels
         public void Instance_OnLocationChange(Geoposition obj)
         {
             CurrentLocation = obj.ToGeoPoint();
+
+            CurrentWeather = WeatherService.Instance.GetWeatherForLocation(obj.Coordinate.Point.Position.Longitude,
+                obj.Coordinate.Point.Position.Latitude).Result;
         }
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)

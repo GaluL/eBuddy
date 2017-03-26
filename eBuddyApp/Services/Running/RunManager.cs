@@ -160,11 +160,11 @@ namespace eBuddy
         {
             if (InRun)
             {
-                _DataUpdateSyncEvent.Reset();
+                //_DataUpdateSyncEvent.Reset();
 
                 await UpdateRunStats(obj);
 
-                _DataUpdateSyncEvent.Set();
+                //_DataUpdateSyncEvent.Set();
             }
         }
 
@@ -173,8 +173,8 @@ namespace eBuddy
             if (InRun)
             {
 
-                routeEvent.WaitOne();
-                routeEvent.Reset();
+                //routeEvent.WaitOne();
+                //routeEvent.Reset();
 
                 _Waypoints.Add(obj.ToGeoPoint());
 
@@ -198,7 +198,7 @@ namespace eBuddy
 
                 UpdateVoiceMsg();
 
-                routeEvent.Set();
+                //routeEvent.Set();
             }
         }
 

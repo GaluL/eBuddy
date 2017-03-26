@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using eBuddyApp.ViewModels;
 
@@ -52,6 +53,38 @@ namespace eBuddyApp.Views
             if (e.PropertyName.Equals("SocialColor"))
             {
                 textBlock.Foreground = new SolidColorBrush(ViewModel.SocialColor);
+            }
+
+            if (e.PropertyName.Equals("CurrentWeather"))
+            {
+
+                if (ViewModel.CurrentWeather != null)
+                {
+                    if (ViewModel.CurrentWeather.Icon != null && !ViewModel.CurrentWeather.Icon.Equals(String.Empty))
+                    {
+                        weatherIcon.Source =
+                            new BitmapImage(
+                                new Uri(
+                                    String.Format(@"http://openweathermap.org/img/w/{0}.png",
+                                        ViewModel.CurrentWeather.Icon), UriKind.Absolute));
+                    }
+                }
+            }
+
+            if (e.PropertyName.Equals("CurrentBuddyWeather"))
+            {
+
+                if (ViewModel.CurrentBuddyWeather != null)
+                {
+                    if (ViewModel.CurrentBuddyWeather.Icon != null && !ViewModel.CurrentBuddyWeather.Icon.Equals(String.Empty))
+                    {
+                        weatherIcon2.Source =
+                            new BitmapImage(
+                                new Uri(
+                                    String.Format(@"http://openweathermap.org/img/w/{0}.png",
+                                        ViewModel.CurrentBuddyWeather.Icon), UriKind.Absolute));
+                    }
+                }
             }
 
 

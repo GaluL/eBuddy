@@ -247,6 +247,10 @@ namespace eBuddy
                 _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
 
             }
+            else
+            {
+                _Waypoints.RemoveAt(_Waypoints.Count - 1);
+            }
         }
 
         private async Task UpdateTestPhase()
