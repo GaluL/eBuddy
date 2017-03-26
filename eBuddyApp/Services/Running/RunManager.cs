@@ -78,6 +78,8 @@ namespace eBuddy
         MediaElement mediaPlayer = new MediaElement();
         private bool changed;
 
+        private object waypointsLock;
+
         public RunManager()
         {
             _DataUpdateSyncEvent = new ManualResetEvent(true);
@@ -86,7 +88,7 @@ namespace eBuddy
             speechEvent = new ManualResetEvent(true);
             msgChangeEvent = new ManualResetEvent(true);
             routeEvent = new ManualResetEvent(true);
-
+            waypointsLock = new object();
         }
 
         public Timer aTimer;
@@ -170,16 +172,20 @@ namespace eBuddy
         {
             if (InRun)
             {
+
+                routeEvent.WaitOne();
+                routeEvent.Reset();
+
                 _Waypoints.Add(obj.ToGeoPoint());
 
                 var route = await MapServiceWrapper.Instance.GetRoute(_Waypoints);
 
                 if (route != null)
                 {
-                    routeEvent.WaitOne(2);
-                    routeEvent.Reset();
+                    //routeEvent.WaitOne(2);
+                    //routeEvent.Reset();
                     OnRouteUpdate?.Invoke(this, route);
-                    routeEvent.Set();
+                    //routeEvent.Set();
 
                     double distanceDiff = route.LengthInMeters - RunData.Distance;
                     RunData.Distance = route.LengthInMeters;
@@ -187,8 +193,14 @@ namespace eBuddy
                                     ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
                     _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
                 }
+                else
+                {
+                    _Waypoints.RemoveAt(_Waypoints.Count - 1);
+                }
 
                 UpdateVoiceMsg();
+
+                routeEvent.Set();
             }
         }
 

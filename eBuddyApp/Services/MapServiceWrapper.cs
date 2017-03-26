@@ -33,14 +33,21 @@ namespace eBuddyApp.Services
 
         internal async Task<MapRoute> GetRoute(IEnumerable<Geopoint> waypoints)
         {
-            if (waypoints.Count() > 1)
+            try
             {
-                var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(waypoints);
-
-                if (routeFind.Status == MapRouteFinderStatus.Success)
+                if (waypoints.Count() > 1)
                 {
-                    return routeFind.Route;
+                    var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(waypoints);
+
+                    if (routeFind.Status == MapRouteFinderStatus.Success)
+                    {
+                        return routeFind.Route;
+                    }
                 }
+            }
+            catch
+            {
+                return null;
             }
 
             return null;
