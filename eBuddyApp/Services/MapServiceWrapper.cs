@@ -35,14 +35,20 @@ namespace eBuddyApp.Services
         {
             try
             {
+                MapRouteFinderResult routeFind = null;
+
                 if (waypoints.Count() > 1)
                 {
-                    var routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(waypoints);
+                    routeFind = await MapRouteFinder.GetWalkingRouteFromWaypointsAsync(waypoints);
+                }
+                else if (waypoints.Count() == 1)
+                {
+                    routeFind = await MapRouteFinder.GetWalkingRouteAsync(waypoints.ElementAt(0), waypoints.ElementAt(0));
+                }
 
-                    if (routeFind.Status == MapRouteFinderStatus.Success)
-                    {
-                        return routeFind.Route;
-                    }
+                if (routeFind != null && routeFind.Status == MapRouteFinderStatus.Success)
+                {
+                    return routeFind.Route;
                 }
             }
             catch
