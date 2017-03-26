@@ -84,7 +84,7 @@ namespace eBuddy
         internal event EventHandler<MapRoute> OnRouteUpdate;
         public  ScoreRunManager() 
         {
-            
+            _Waypoints = new List<Geopoint>();
             _DataUpdateSyncEvent = new ManualResetEvent(true);
 
             RunData = new RunItem();
@@ -150,6 +150,7 @@ namespace eBuddy
             RunData.Time = TimeSpan.Zero;
             RunData.Distance = 0;
             RunData.Speed = 0;
+            _Waypoints.Clear();
             RunPhase = ERunPhase.Chill;
             InRun = true;
             aTimer = new Timer(Callback, null, 0, 1);
@@ -157,7 +158,6 @@ namespace eBuddy
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
             isChilledCalled = false;
             RunData.Date = DateTime.Now;
-            _Waypoints = new List<Geopoint>();
 
             LocationService.Instance.Start();
 
@@ -203,8 +203,7 @@ namespace eBuddy
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
 
             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
-            
-        
+
             if (RunPhase == ERunPhase.Finished)
             {
                 

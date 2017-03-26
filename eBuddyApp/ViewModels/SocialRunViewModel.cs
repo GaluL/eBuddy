@@ -75,6 +75,8 @@ namespace eBuddyApp.ViewModels
         public Page page;
 
         private CurrentWeatherResult _CurrentBuddyWeather;
+        private ManualResetEvent routeEvent;
+
         public CurrentWeatherResult CurrentBuddyWeather
         {
             get { return _CurrentBuddyWeather; }
@@ -87,6 +89,7 @@ namespace eBuddyApp.ViewModels
 
         public SocialRunViewModel()
         {
+            routeEvent = new ManualResetEvent(true);
             SocialMsg = "You don't have any schedualed runs for now. Invite a buddy!";
             SocialColor = Colors.DarkGray;
             SocialSize = 16;
@@ -176,7 +179,10 @@ namespace eBuddyApp.ViewModels
 
         private void Instance_OnBuddyRouteUpdate(MapRoute e)
         {
+            routeEvent.WaitOne(2);
+            routeEvent.Reset();
             BuddyRoute = e;
+            routeEvent.Set();
         }
 
         private void Instance_OnBuddyLocationUpdate(Geopoint obj)

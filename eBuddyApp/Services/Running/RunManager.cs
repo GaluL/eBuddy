@@ -85,12 +85,14 @@ namespace eBuddy
             RunData = new RunItem();
             speechEvent = new ManualResetEvent(true);
             msgChangeEvent = new ManualResetEvent(true);
+            routeEvent = new ManualResetEvent(true);
 
         }
 
         public Timer aTimer;
         public Timer bTimer;
         public bool solorun = true;
+        private ManualResetEvent routeEvent;
 
         internal virtual async void Start()
         {
@@ -99,8 +101,8 @@ namespace eBuddy
             RunData.Time = TimeSpan.Zero;
             InRun = true;
             RunData.Date = DateTime.Now;
-            bTimer = new Timer(CallbackB, null, 0, 30000);
-            //  bTimer = new Timer(Callback, null, 0, 300000); TODO CHANGE TO THIS IN PROD
+            //bTimer = new Timer(CallbackB, null, 0, 30000);
+              bTimer = new Timer(Callback, null, 0, 300000);
             aTimer = new Timer(Callback, null, 0, 1);
             _Waypoints.Clear();
             MaxHeartRate = 0;
@@ -174,7 +176,11 @@ namespace eBuddy
 
                 if (route != null)
                 {
+                    routeEvent.WaitOne(2);
+                    routeEvent.Reset();
                     OnRouteUpdate?.Invoke(this, route);
+                    routeEvent.Set();
+
                     double distanceDiff = route.LengthInMeters - RunData.Distance;
                     RunData.Distance = route.LengthInMeters;
                     RunData.Speed = (distanceDiff / 1000) /
