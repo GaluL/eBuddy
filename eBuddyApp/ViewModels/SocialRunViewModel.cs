@@ -179,10 +179,7 @@ namespace eBuddyApp.ViewModels
 
         private void Instance_OnBuddyRouteUpdate(MapRoute e)
         {
-            routeEvent.WaitOne(2);
-            routeEvent.Reset();
             BuddyRoute = e;
-            routeEvent.Set();
         }
 
         private void Instance_OnBuddyLocationUpdate(Geopoint obj)

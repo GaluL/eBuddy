@@ -66,8 +66,6 @@ namespace eBuddyApp.ViewModels
 
         public bool WaitingForWheather { get; set; }
 
-        private ManualResetEvent routeEvent;
-
 
 
 
@@ -75,7 +73,6 @@ namespace eBuddyApp.ViewModels
 
         public SoloRunViewModel() : base()
         {
-            routeEvent = new ManualResetEvent(true);
             StartRun = new RelayCommand(() => {
                     RunManager.Instance.Start();
                     StopRun.RaiseCanExecuteChanged();
@@ -125,10 +122,7 @@ namespace eBuddyApp.ViewModels
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)
         {
-            routeEvent.WaitOne(2);
-            routeEvent.Reset();
             MyRoute = e;
-            routeEvent.Set();
         }
 
         private async void Instance_OnMsgUpdate(string obj)

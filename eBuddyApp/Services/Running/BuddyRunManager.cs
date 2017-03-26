@@ -168,7 +168,7 @@ namespace eBuddy
             {
                 SocialMsg = "0Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
-                           + " kilometer. Speed: " + RunData.Speed
+                           + " meters. Speed: " + RunData.Speed
                            + "kilometer per hour";
             }
         }
@@ -348,7 +348,7 @@ namespace eBuddy
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
             SocialMsg = "0activity completed, " + _winner + " is the winner!. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
            "seconds . Distance: " + RunData.Distance
-           + " kilometer. Average speed: " + RunData.Speed
+           + " meters. Average speed: " + RunData.Speed
            + "kilometer per hour";
             RunManager.Instance.RunData = RunData;
             OnFinish?.Invoke(0);

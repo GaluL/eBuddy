@@ -49,10 +49,17 @@ namespace eBuddyApp.Views
 
             if (e.PropertyName.Equals("CurrentWeather"))
             {
-            
-                if (ViewModel.CurrentWeather.Icon != null && !ViewModel.CurrentWeather.Icon.Equals(String.Empty))
+
+                if (ViewModel.CurrentWeather != null)
                 {
-                    weatherIcon.Source = new BitmapImage(new Uri(String.Format(@"http://openweathermap.org/img/w/{0}.png", ViewModel.CurrentWeather.Icon), UriKind.Absolute));
+                    if (ViewModel.CurrentWeather.Icon != null && !ViewModel.CurrentWeather.Icon.Equals(String.Empty))
+                    {
+                        weatherIcon.Source =
+                            new BitmapImage(
+                                new Uri(
+                                    String.Format(@"http://openweathermap.org/img/w/{0}.png",
+                                        ViewModel.CurrentWeather.Icon), UriKind.Absolute));
+                    }
                 }
             }
         }

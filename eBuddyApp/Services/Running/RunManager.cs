@@ -132,7 +132,7 @@ namespace eBuddy
             {
                 VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
-                           + " kilometer. Speed: " + RunData.Speed
+                           + " meters. Speed: " + RunData.Speed
                            + "kilometer per hour";
             }
         }
@@ -182,10 +182,8 @@ namespace eBuddy
 
                 if (route != null)
                 {
-                    //routeEvent.WaitOne(2);
-                    //routeEvent.Reset();
+
                     OnRouteUpdate?.Invoke(this, route);
-                    //routeEvent.Set();
 
                     double distanceDiff = route.LengthInMeters - RunData.Distance;
                     RunData.Distance = route.LengthInMeters;

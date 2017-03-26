@@ -66,11 +66,9 @@ namespace eBuddyApp.ViewModels
         private string VoiceMsg;
         private ManualResetEvent speechEvent;
         MediaElement mediaPlayer = new MediaElement();
-        private ManualResetEvent routeEvent;
 
         public ScoreRunViewModel() : base()
         {
-            routeEvent = new ManualResetEvent(true);
             StartRun = new RelayCommand(() =>
                 {
                 
@@ -170,10 +168,7 @@ namespace eBuddyApp.ViewModels
 
         public void Instance_OnRouteUpdate(object sender, MapRoute e)
         {
-            routeEvent.WaitOne(2);
-            routeEvent.Reset();
             MyRoute = e;
-            routeEvent.Set();
         }
         private void Instance_OnConnectionStatusChange(bool obj)
         {

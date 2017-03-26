@@ -67,7 +67,7 @@
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
                              RelativePanel.AlignTopWithPanel="True"
-                             Text="Solo Run"/>
+                             Text="Score Run"/>
 
 
         <RelativePanel EntranceNavigationTransitionInfo.IsTargetElement="True"
