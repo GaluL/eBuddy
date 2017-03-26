@@ -26,6 +26,9 @@ namespace eBuddy
         private TimeSpan _TimeBeforeIntense;
         private TimeSpan _TimeBeforePreRun;
         private double _DistanceBeforeWarmUp;
+
+        private double _DistanceSoFar = 0;
+        private double _DistanceBeforeIntense { get; set; }
         private int _MinHeartrate = int.MaxValue;
         private int _MaxHeartrate = 0;
         private int _finalScore = 0;
@@ -201,7 +204,7 @@ namespace eBuddy
             aTimer.Dispose();
             LocationService.Instance.Stop();
             LocationService.Instance.OnLocationChange -= Instance_OnLocationChange;
-
+            _DistanceSoFar = 0;
             BandService.Instance.OnHeartRateChange -= Instance_OnHeartRateChange;
 
             if (RunPhase == ERunPhase.Finished)
@@ -239,7 +242,7 @@ namespace eBuddy
             { 
                 OnRouteUpdate?.Invoke(this, route);
                 double distanceDiff = route.LengthInMeters - RunData.Distance;
-                RunData.Distance = route.LengthInMeters;
+                RunData.Distance = route.LengthInMeters - _DistanceSoFar;
                 RunData.Speed = (distanceDiff / 1000) / ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
                 _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
 
@@ -256,14 +259,15 @@ namespace eBuddy
                     {
                         if (!isChilledCalled)
                         {
-                            _DistanceBeforeWarmUp = RunData.Distance;
+                            
                             bTimer.Dispose();
                             isChilledCalled = true;
                             RunPhase++;
-                            RunData.Distance = 0;
                             RunData.Time = TimeSpan.Zero;
                             RunData.Date = DateTime.Now;
-                            
+                            _DistanceSoFar = RunData.Distance;
+
+
                         }
                     }
 
@@ -271,7 +275,7 @@ namespace eBuddy
                 }
                 case ERunPhase.WarmUp:
                     {
-                        if (RunData.Distance >= _DistanceBeforeWarmUp + WARM_UP_DISTANCE)
+                        if (RunData.Distance >= WARM_UP_DISTANCE)
                         {
                             _TimeBeforePreRun = RunData.Time;
 
@@ -286,6 +290,7 @@ namespace eBuddy
                         {
                             RunPhase++;
                             _TimeBeforeIntense = RunData.Time;
+                            _DistanceSoFar = RunData.Distance;
                             //_DistanceBeforeIntense = RunData.Distance;
                             RunData.Distance = 0;
                             RunData.Time = TimeSpan.Zero;
@@ -309,11 +314,14 @@ namespace eBuddy
                     }
                 case ERunPhase.Finished:
                     {
+
                         break;
                     }
             }
         }
-     
+
+        
+
         private double CalculateScore()
         {
             double vo2max_hr_based = 15.3 * (_MaxHeartrate / (double)_MinHeartrate);
