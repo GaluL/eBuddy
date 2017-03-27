@@ -104,7 +104,7 @@ namespace eBuddy
             RunData.Time = TimeSpan.Zero;
             InRun = true;
             RunData.Date = DateTime.Now;
-            bTimer = new Timer(CallbackB, null, 0, 30000);
+            bTimer = new Timer(CallbackB, null, 0, 60000);
             aTimer = new Timer(Callback, null, 0, 1);
             _Waypoints.Clear();
             MaxHeartRate = 0;

@@ -32,7 +32,7 @@ namespace eBuddyApp.Services.Weather
 
         public async Task<CurrentWeatherResult> GetWeatherForLocation(double lon, double lat)
         {
-            return (await WeatherNet.Clients.CurrentWeather.GetByCoordinatesAsync(lat, lon, "eng", "metric")).Item;
+            return (WeatherNet.Clients.CurrentWeather.GetByCoordinatesAsync(lat, lon, "eng", "metric")).Result.Item;
         }
     }
 }
