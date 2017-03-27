@@ -62,7 +62,7 @@ namespace eBuddy
 
         private BandService()
         {
-            MinTargetZoneHeartRate = 180;
+            MinTargetZoneHeartRate = 161;
             MaxTargetZoneHeartRate = 200;
         }
 

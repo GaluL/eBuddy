@@ -61,6 +61,7 @@ namespace eBuddyApp.ViewModels
         public MapRoute MyRoute { get { return _MyRoute; } private set { Set(ref _MyRoute, value); } }
 
         public Geopoint _CurrentLocation;
+
         public Geopoint CurrentLocation { get { return _CurrentLocation; }
             set { Set(ref _CurrentLocation, value); } }
 
@@ -98,14 +99,12 @@ namespace eBuddyApp.ViewModels
 
             CurrentLocation = ExtentionMethods.GetDefaultPoint();
             speechEvent = new ManualResetEvent(true);
-            WaitingForWheather = false;
-
-
 
         }
 
         public void Instance_OnHeartRateChange(object sender, int e)
         {
+
             Heartrate = e;
         }
 

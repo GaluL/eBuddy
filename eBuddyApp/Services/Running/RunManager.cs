@@ -95,6 +95,7 @@ namespace eBuddy
         public Timer bTimer;
         public bool solorun = true;
         private ManualResetEvent routeEvent;
+        private int _cnt = 0;
 
         internal virtual async void Start()
         {
@@ -103,8 +104,7 @@ namespace eBuddy
             RunData.Time = TimeSpan.Zero;
             InRun = true;
             RunData.Date = DateTime.Now;
-            //bTimer = new Timer(CallbackB, null, 0, 30000);
-              bTimer = new Timer(Callback, null, 0, 300000);
+            bTimer = new Timer(CallbackB, null, 0, 30000);
             aTimer = new Timer(Callback, null, 0, 1);
             _Waypoints.Clear();
             MaxHeartRate = 0;
@@ -133,7 +133,7 @@ namespace eBuddy
                 VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
                            + " meters. Speed: " + RunData.Speed
-                           + "kilometer per hour";
+                           + " kilometer per hour";  //todo
             }
         }
 
@@ -143,8 +143,8 @@ namespace eBuddy
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
             VoiceMsg = "activity completed. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
                        "seconds . Distance: " + RunData.Distance
-                       + " kilometer. Average speed: " + RunData.Speed
-                       + "kilometer per hour";
+                       + " meters. Average speed: " + RunData.Speed
+                       + " kilometer per hour";
             InRun = false;
             aTimer.Dispose();
             bTimer.Dispose();
@@ -172,10 +172,6 @@ namespace eBuddy
         {
             if (InRun)
             {
-
-                //routeEvent.WaitOne();
-                //routeEvent.Reset();
-
                 _Waypoints.Add(obj.ToGeoPoint());
 
                 var route = await MapServiceWrapper.Instance.GetRoute(_Waypoints);
@@ -187,8 +183,20 @@ namespace eBuddy
 
                     double distanceDiff = route.LengthInMeters - RunData.Distance;
                     RunData.Distance = route.LengthInMeters;
-                    RunData.Speed = (distanceDiff / 1000) /
-                                    ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
+                    if (distanceDiff > 0 || _cnt > 9)
+                    {
+                        RunData.Speed = (distanceDiff / 1000) /
+                                        ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
+                    }
+                    if (distanceDiff > 0)
+                    {
+                        _cnt = 0;
+                    }
+                    else
+                    {
+                        _cnt++;
+                    }
+
                     _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
                 }
                 else
@@ -198,10 +206,8 @@ namespace eBuddy
 
                 UpdateVoiceMsg();
 
-                //routeEvent.Set();
             }
         }
-
 
         public void UpdateVoiceMsg()
         {
@@ -215,7 +221,7 @@ namespace eBuddy
             {
                 changed = false;
                 VoiceMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
-                           "! you are in your target Heart Rate!  .the minimum target Heart rate is " +
+                           "! you are in your target Heart Rate! the minimum target Heart rate is " +
                            BandService.Instance.MinTargetZoneHeartRate.ToString() + " beats per seconds and up";
             }
         }

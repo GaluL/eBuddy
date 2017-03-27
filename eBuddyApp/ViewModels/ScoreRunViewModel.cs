@@ -204,7 +204,6 @@ namespace eBuddyApp.ViewModels
                 {
                     case ScoreRunManager.ERunPhase.NotStarted:
                         {
-                            //  await ReadText("Score mode");
                             break;
                         }
                     case ScoreRunManager.ERunPhase.Chill:
@@ -216,7 +215,7 @@ namespace eBuddyApp.ViewModels
                         }
                     case ScoreRunManager.ERunPhase.WarmUp:
                         {
-                            await ReadText("You are now in warmup mode, go for 1.5 kilometers walk as fast as you can");
+                            await ReadText("You are now in warmup mode, go for 1.6 kilometers walk as fast as you can");
                             break;
                         }
                     case ScoreRunManager.ERunPhase.PreRun:

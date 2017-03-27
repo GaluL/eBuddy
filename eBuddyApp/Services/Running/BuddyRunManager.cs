@@ -72,7 +72,6 @@ namespace eBuddy
 
        // private readonly double runDistance = 10 / 1000;
         private string _winner = "";
-        //       string BUDDY_USER_ID = "sid:a750a0f0db72b4ac1dba1255de64cfb9"; //todo change to real usrid
         string _buddyUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
 
         private RunItem _buddyRunData;
@@ -115,7 +114,7 @@ namespace eBuddy
 
         public BuddyRunManager() : base()
         {
-            RunId = "nobody"; //TODO change to real value
+            RunId = "nobody"; //default value
             RunDistance = 0;
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
@@ -141,7 +140,7 @@ namespace eBuddy
 
             if (InRun)
             {
-                if (RunData.Distance >= RunDistance && _winner.Equals("")) //todo
+                if (RunData.Distance >= RunDistance && _winner.Equals("")) 
                 {
                     OnMsgSizeUpdate?.Invoke(17);
                     _winner = MobileService.Instance.UserData.PrivateName;
@@ -169,7 +168,7 @@ namespace eBuddy
                 SocialMsg = "0Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
                            + " meters. Speed: " + RunData.Speed
-                           + "kilometer per hour";
+                           + " kilometer per hour";
             }
         }
 
@@ -192,11 +191,11 @@ namespace eBuddy
                     if (routeFind.Status == MapRouteFinderStatus.Success)
                     {
                         BuddyRoute = routeFind.Route;
-                        double distanceDiff = BuddyRoute.LengthInMeters - BuddyRunData.Distance;
+                        //double distanceDiff = BuddyRoute.LengthInMeters - BuddyRunData.Distance;
                         BuddyRunData.Distance = BuddyRoute.LengthInMeters;
-                        BuddyRunData.Speed = (distanceDiff / 1000) /
-                                             ((BuddyRunData.Time.Subtract(DateTime.Now.TimeOfDay)).TotalSeconds / 60.0 /
-                                              60.0);
+                        //BuddyRunData.Speed = (distanceDiff / 1000) /
+                                //             ((BuddyRunData.Time.Subtract(DateTime.Now.TimeOfDay)).TotalSeconds / 60.0 /
+                                  //            60.0);
                         BuddyRunData.Time = DateTime.Now - BuddyRunData.Date;
 
                         if (BuddyRunData.Distance >= RunDistance && _winner.Equals(""))
@@ -337,9 +336,6 @@ namespace eBuddy
             LocationService.Instance.OnLocationChange += My_OnLocationChange;
             Busy.SetBusy(true, "waiting for buddy approval");
             await ConnectHub();
-            //SocialMsg = "RUN!";
-            //OnMsgColorUpdate?.Invoke(Colors.Green);
-            //OnMsgSizeUpdate?.Invoke(28);
         }
 
         internal override async void Stop()
@@ -370,7 +366,7 @@ namespace eBuddy
             _buddyUserId = facebookId;
 
             RunId = runId;
-
+      
             RunDistance = distance * 1000;
 
             GetBuddyData(_buddyUserId);

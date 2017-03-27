@@ -20,8 +20,8 @@ namespace eBuddy
         private double _lastLocationTimeSeconds = 1;
         private const int CHILL_TIME = 20;
         private const int PRE_RUN_TIME = 10;
-        private const int WARM_UP_DISTANCE = 1600;
-        private const int INTENSE_DISTANCE = 1200;      
+        private const int WARM_UP_DISTANCE = 1600;  //todo
+        private const int INTENSE_DISTANCE = 1200;      //todo 
 
         private TimeSpan _TimeBeforeIntense;
         private TimeSpan _TimeBeforePreRun;
@@ -241,7 +241,7 @@ namespace eBuddy
             if (route != null)
             { 
                 OnRouteUpdate?.Invoke(this, route);
-                double distanceDiff = route.LengthInMeters - RunData.Distance;
+                double distanceDiff = route.LengthInMeters - RunData.Distance -_DistanceSoFar;
                 RunData.Distance = route.LengthInMeters - _DistanceSoFar;
                 RunData.Speed = (distanceDiff / 1000) / ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
                 _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
