@@ -208,7 +208,7 @@ namespace eBuddyApp.Services.Azure
                 _SocialRunTimer.Dispose();
             }
 
-            _SocialRunTimer = new Timer(SocialRunInitializer, null, closestRun.Date - DateTime.Now, new TimeSpan(-1));
+            _SocialRunTimer = new Timer(SocialRunInitializer, null, closestRun.Date.ToUniversalTime() - DateTime.Now.ToUniversalTime(), new TimeSpan(-1));
         }
 
         private void SocialRunInitializer(object state)

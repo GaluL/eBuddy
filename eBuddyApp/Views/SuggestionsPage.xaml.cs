@@ -36,7 +36,7 @@ namespace eBuddyApp.Views
             scheduleModal.IsModal = false;
 
             MobileService.Instance.ScheduleARun(((UserItem) suggestionsFlipView.SelectedItem).FacebookId,
-                schedulePart.Distance, schedulePart.Date);
+                schedulePart.Distance, schedulePart.Date.ToUniversalTime());
         }
     }
 }
