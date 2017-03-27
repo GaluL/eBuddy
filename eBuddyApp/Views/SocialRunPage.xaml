@@ -127,10 +127,10 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <Image Stretch="Fill" Name="weatherIcon" Grid.Row="0" Grid.Column="0" Margin="76,0,0,28" Grid.RowSpan="2" />
-                            <TextBlock  Foreground="Azure" FontSize="14" HorizontalAlignment="Right" Grid.Row="0" Margin="0,2,26.667,16" Text="{x:Bind ViewModel.CurrentWeather.City, FallbackValue=-, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="85" />
-                            <TextBlock  Foreground="Azure" Grid.Row="0" FontSize="14" TextAlignment="Center" Text="{x:Bind ViewModel.CurrentWeather.Country, FallbackValue=-, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="3" Margin="124,1,33.667,17" RenderTransformOrigin="-0.323,0.772" Grid.RowSpan="2" />
-                            <TextBlock  Foreground="Azure" Grid.Row="0" Grid.Column="2" FontSize="14" Text="{x:Bind ViewModel.CurrentWeather.Temp, FallbackValue=-, Mode=OneWay, Converter={StaticResource tempConverter}}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" HorizontalAlignment="Left" Margin="47.333,1,0,6" Grid.RowSpan="2" Width="88" Grid.ColumnSpan="2"  />
+                            <Image Stretch="Fill" Name="weatherIcon" Grid.Row="0" Grid.Column="0" Margin="-2,1,71.667,18" Grid.RowSpan="2" />
+                            <TextBlock  Foreground="Azure" FontSize="14" HorizontalAlignment="Right" Grid.Row="0" Margin="0,0,37.667,18" Text="{x:Bind ViewModel.CurrentWeather.City, FallbackValue=-, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="85" />
+                            <TextBlock  Foreground="Azure" Grid.Row="0" FontSize="14" TextAlignment="Center" Text="{x:Bind ViewModel.CurrentWeather.Country, FallbackValue=-, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="2" Margin="17.333,1,42.667,17" RenderTransformOrigin="-0.323,0.772" Grid.RowSpan="2" Grid.Column="1" />
+                            <TextBlock  Foreground="Azure" Grid.Row="0" Grid.Column="3" FontSize="14" Text="{x:Bind ViewModel.CurrentWeather.Temp, FallbackValue=-, Mode=OneWay, Converter={StaticResource tempConverter}}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" HorizontalAlignment="Left" Margin="2.333,1,0,1.667" Width="83"  />
                             <TextBlock  Foreground="Azure" Grid.Row="1" Grid.Column="0" TextAlignment="Center" Text="Wind: " FontSize="14" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="2" Margin="70,0.333,44,0" />
                             <TextBlock  Foreground="Azure" Grid.Row="1" Grid.Column="1" FontSize="14" Text="{x:Bind ViewModel.CurrentWeather.WindSpeed, FallbackValue=-, Mode=OneWay, Converter={StaticResource windConverter}}" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"  />
                             <TextBlock   Foreground="Azure" Grid.Row="1" Grid.Column="2"  TextAlignment="Center" Text="Humidity: " FontSize="14" FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.ColumnSpan="2" Margin="8,0.333,101,0"  />
@@ -201,7 +201,7 @@
                 <maps:MapControl Canvas.ZIndex="0" Canvas.Top="2" x:Name="myMap2"   Background="Orange"
                                      TiltInteractionMode="GestureAndControl"
                                      ZoomInteractionMode="GestureAndControl"
-                                     Center="{x:Bind ViewModel.CurrentLocation, Mode=OneWay}"
+                                     Center="{x:Bind ViewModel.BuddyLocation, Mode=OneWay}"
                                      MapServiceToken="OARdWd6u76SCOJpF63br~nEfdGL_BYBbFn1jt0wom8Q~Aoyg4vAPbQczjy1VVSUyFfFcpz_G1Q9eqrBUO9FdMP1a725us7XvhB7zycvi-lbq" Height="244" Width="210"
                                      ZoomLevel="17" Canvas.Left="2"/>
             </Canvas>

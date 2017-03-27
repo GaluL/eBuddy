@@ -93,6 +93,8 @@ namespace eBuddyApp.ViewModels
             SocialMsg = "You don't have any schedualed runs for now. Invite a buddy!";
             SocialColor = Colors.DarkGray;
             SocialSize = 16;
+            BuddyRunManager.Instance.OnMsgUpdate += Instance_OnMsgVUpdate;
+
             StartRun = new RelayCommand(() =>
                 {
                     BuddyRunManager.Instance.Start();
