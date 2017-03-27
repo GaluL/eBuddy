@@ -71,7 +71,7 @@ namespace eBuddy
         public static BuddyRunManager Instance => _instance ?? (_instance = new BuddyRunManager());
 
        // private readonly double runDistance = 10 / 1000;
-        private string _winner = "";
+        private string _winner = "nobody";
         string _buddyUserId = "sid:af7d6ae6d4abbcb585bc46ab45d42c05"; //todo change to real usrid
 
         private RunItem _buddyRunData;
@@ -114,7 +114,7 @@ namespace eBuddy
 
         public BuddyRunManager() : base()
         {
-            RunId = "nobody"; //default value
+            _winner = "nobody"; //default value
             RunDistance = 0;
             BuddyRunData = new RunItem();
             _buddyWaypoints = new ObservableCollection<Geopoint>();
@@ -140,11 +140,10 @@ namespace eBuddy
 
             if (InRun)
             {
-                if (RunData.Distance >= RunDistance && _winner.Equals("")) 
+                if (RunData.Distance >= RunDistance && _winner.Equals("nobody")) 
                 {
-                    OnMsgSizeUpdate?.Invoke(17);
                     _winner = MobileService.Instance.UserData.PrivateName;
-                    OnMsgSizeUpdate?.Invoke(15);
+                    OnMsgSizeUpdate?.Invoke(14);
                     OnMsgColorUpdate?.Invoke(Colors.RoyalBlue);
                     SocialMsg = "Great job " + MobileService.Instance.UserData.PrivateName +
                                 " you have completed the run first and you are the winner! yay!";
@@ -198,14 +197,14 @@ namespace eBuddy
                                   //            60.0);
                         BuddyRunData.Time = DateTime.Now - BuddyRunData.Date;
 
-                        if (BuddyRunData.Distance >= RunDistance && _winner.Equals(""))
+                        if (BuddyRunData.Distance >= RunDistance && _winner.Equals("nobody"))
                         {
                             _winner = BuddyData.PrivateName;
-                            OnMsgColorUpdate?.Invoke(Colors.LightCoral);
+                            OnMsgColorUpdate?.Invoke(Colors.DarkRed);
                             string he_she = BuddyData.Gender == true ? "he" : "she";
                             SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she +
                                         " is the winner!";
-                            OnMsgSizeUpdate?.Invoke(18);
+                            OnMsgSizeUpdate?.Invoke(14);
                         }
 
                     }
@@ -233,7 +232,7 @@ namespace eBuddy
                 double timeSeconds = ((((RunDistance - BuddyRunData.Distance)/1000) / (BuddyRunData.Speed > 0.5 ? BuddyRunData.Speed : 1)) * 60 * 60);
                 double tipKmh = (RunDistance - RunData.Distance) / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
-                OnMsgSizeUpdate?.Invoke(17);
+                OnMsgSizeUpdate?.Invoke(14);
                 if (tipKmh < BuddyRunData.Speed && _tip != 1)
                 {
                     SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tipKmh +
@@ -244,7 +243,7 @@ namespace eBuddy
                 {
 
                     SocialMsg = BuddyData.PrivateName +
-                                " is currently first! your speed is great and you're on the right track to win this race!";
+                                " is currently first! keep with that speed. because you're on the right track to win this race!";
                     _tip = 2;
 
                 }
@@ -253,7 +252,7 @@ namespace eBuddy
                      (BandService.Instance.HeartRate < BandService.Instance.MinTargetZoneHeartRate) && _tip != 3)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkSlateGray);
-                OnMsgSizeUpdate?.Invoke(15);
+                OnMsgSizeUpdate?.Invoke(13);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! but you are not in your target Heart rate (that is " +
                             BandService.Instance.MinTargetZoneHeartRate + " and up). speed up!";
@@ -263,7 +262,7 @@ namespace eBuddy
                      (BandService.Instance.HeartRate > BandService.Instance.MinTargetZoneHeartRate) && _tip != 4)
             {
                 OnMsgColorUpdate?.Invoke(Colors.DarkGreen);
-                OnMsgSizeUpdate?.Invoke(15);
+                OnMsgSizeUpdate?.Invoke(13);
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
                 _tip = 4;
@@ -351,7 +350,7 @@ namespace eBuddy
             InRun = false;
             await RunnersHubProxy.Invoke("BuddyFinish", RunId,
                 eBuddyApp.Services.Azure.MobileService.Instance.Service.CurrentUser.UserId);
-            _winner = "";
+            _winner = "nobody";
             solorun = true;
             BuddyWaypoints.Clear();
             BuddyRunData.Distance = 0;

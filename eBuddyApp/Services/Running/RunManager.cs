@@ -23,26 +23,47 @@ using Template10.Samples.SearchSample.Controls;
 
 namespace eBuddy
 {
-    class RunManager
+    internal class RunManager
     {
-        private double _lastLocationTimeSeconds = 1;
         private static RunManager _Instance;
+        private int _cnt = 0;
+
+        protected ManualResetEvent _DataUpdateSyncEvent;
+        private double _lastLocationTimeSeconds = 1;
+
+        private RunItem _RunData;
+        private string _voiceMsg;
+
+        private IList<Geopoint> _Waypoints;
+
+        public Timer aTimer;
+
+        public Timer bTimer;
+        private bool changed;
+
+        public bool InRun = false;
+        private MediaElement mediaPlayer = new MediaElement();
+        public bool solorun = true;
+        private ManualResetEvent speechEvent;
+
+        public RunManager()
+        {
+            _DataUpdateSyncEvent = new ManualResetEvent(true);
+            _Waypoints = new List<Geopoint>();
+            RunData = new RunItem();
+            speechEvent = new ManualResetEvent(true);
+        }
 
         public static RunManager Instance
         {
             get
             {
                 if (_Instance == null)
-                {
                     _Instance = new RunManager();
-                }
 
                 return _Instance;
             }
         }
-
-
-        private string _voiceMsg;
 
         public string VoiceMsg
         {
@@ -54,48 +75,17 @@ namespace eBuddy
             }
         }
 
-        private RunItem _RunData;
-
         public RunItem RunData
         {
             get { return _RunData; }
-             set { _RunData = value; }
+            set { _RunData = value; }
         }
 
         public int MaxHeartRate { get; internal set; }
 
-        public bool InRun = false;
-
-        private IList<Geopoint> _Waypoints;
-
-        protected ManualResetEvent _DataUpdateSyncEvent;
-
         internal event EventHandler<MapRoute> OnRouteUpdate;
         public event Action<string> OnVoiceMsgUpdate;
         public event Action<object> OnPopped;
-        private ManualResetEvent speechEvent;
-        private ManualResetEvent msgChangeEvent;
-        MediaElement mediaPlayer = new MediaElement();
-        private bool changed;
-
-        private object waypointsLock;
-
-        public RunManager()
-        {
-            _DataUpdateSyncEvent = new ManualResetEvent(true);
-            _Waypoints = new List<Geopoint>();
-            RunData = new RunItem();
-            speechEvent = new ManualResetEvent(true);
-            msgChangeEvent = new ManualResetEvent(true);
-            routeEvent = new ManualResetEvent(true);
-            waypointsLock = new object();
-        }
-
-        public Timer aTimer;
-        public Timer bTimer;
-        public bool solorun = true;
-        private ManualResetEvent routeEvent;
-        private int _cnt = 0;
 
         internal virtual async void Start()
         {
@@ -106,42 +96,43 @@ namespace eBuddy
             RunData.Date = DateTime.Now;
             bTimer = new Timer(CallbackB, null, 0, 60000);
             aTimer = new Timer(Callback, null, 0, 1);
+
+
             _Waypoints.Clear();
             MaxHeartRate = 0;
             LocationService.Instance.OnLocationChange += Instance_OnLocationChange;
             changed = false;
 
             LocationService.Instance.Start();
-            if(solorun)
+            if (solorun)
                 await ReadText("activity started");
-
         }
 
         public void Callback(object state)
         {
             RunData.Time = DateTime.Now - RunData.Date;
             if (MaxHeartRate < BandService.Instance.HeartRate)
-            {
                 MaxHeartRate = BandService.Instance.HeartRate;
-            }
         }
+
 
         public virtual void CallbackB(object state)
         {
             if (InRun)
-            {
                 VoiceMsg = "Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds + "seconds . Distance: " +
                            RunData.Distance
                            + " meters. Speed: " + RunData.Speed
-                           + " kilometer per hour";  //todo
-            }
+                           + " kilometer per hour";
         }
 
         internal virtual void Stop()
         {
-            RunData.Speed = RunData.Time.Seconds != 0 ? (RunData.Distance/1000) / (RunData.Time.Seconds / 60.0 / 60) : 0;
+            RunData.Speed = RunData.Time.Seconds != 0
+                ? (RunData.Distance / 1000) / (RunData.Time.Seconds / 60.0 / 60)
+                : 0;
             if (double.IsNaN(RunData.Speed)) RunData.Speed = 0;
-            VoiceMsg = "activity completed. Run summery. Time: " + RunData.Time.Minutes + "minutes" + RunData.Time.Seconds +
+            VoiceMsg = "activity completed. Run summery. Time: " + RunData.Time.Minutes + "minutes" +
+                       RunData.Time.Seconds +
                        "seconds . Distance: " + RunData.Distance
                        + " meters. Average speed: " + RunData.Speed
                        + " kilometer per hour";
@@ -153,19 +144,12 @@ namespace eBuddy
             MobileService.Instance.SaveRunData(RunData);
             _lastLocationTimeSeconds = 1;
             OnPopped?.Invoke(true);
-
         }
 
         protected virtual async void Instance_OnLocationChange(Geoposition obj)
         {
             if (InRun)
-            {
-                //_DataUpdateSyncEvent.Reset();
-
                 await UpdateRunStats(obj);
-
-                //_DataUpdateSyncEvent.Set();
-            }
         }
 
         protected async Task UpdateRunStats(Geoposition obj)
@@ -178,24 +162,17 @@ namespace eBuddy
 
                 if (route != null)
                 {
-
                     OnRouteUpdate?.Invoke(this, route);
 
                     double distanceDiff = route.LengthInMeters - RunData.Distance;
                     RunData.Distance = route.LengthInMeters;
                     if (distanceDiff > 0 || _cnt > 9)
-                    {
                         RunData.Speed = (distanceDiff / 1000) /
                                         ((RunData.Time.TotalSeconds - _lastLocationTimeSeconds) / 60.0 / 60.0);
-                    }
                     if (distanceDiff > 0)
-                    {
                         _cnt = 0;
-                    }
                     else
-                    {
                         _cnt++;
-                    }
 
                     _lastLocationTimeSeconds = RunData.Time.TotalSeconds;
                 }
@@ -205,7 +182,6 @@ namespace eBuddy
                 }
 
                 UpdateVoiceMsg();
-
             }
         }
 

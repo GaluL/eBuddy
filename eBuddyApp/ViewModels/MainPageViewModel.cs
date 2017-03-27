@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.UI.WebUI;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
+using eBuddy;
 using eBuddyApp.Models;
 using eBuddyApp.Services.Azure;
 using GalaSoft.MvvmLight.Command;
@@ -44,6 +45,7 @@ namespace eBuddyApp.ViewModels
             });
 
             MobileService.Instance.UserDataLoaded += Instance_UserDataLoaded;
+            BuddyRunManager.Instance.RunId = "";
         }
 
         private void Instance_UserDataLoaded(object sender, EventArgs e)

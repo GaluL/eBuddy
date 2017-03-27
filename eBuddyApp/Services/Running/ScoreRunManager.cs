@@ -224,13 +224,13 @@ namespace eBuddy
 
         protected  async void Instance_OnLocationChange(Geoposition obj)
         {
-            _DataUpdateSyncEvent.Reset();
+          //  _DataUpdateSyncEvent.Reset();
 
             await UpdateRunStats(obj);
 
             await UpdateTestPhase();
 
-            _DataUpdateSyncEvent.Set();
+         //   _DataUpdateSyncEvent.Set();
         }
         protected async Task UpdateRunStats(Geoposition obj)
         {
