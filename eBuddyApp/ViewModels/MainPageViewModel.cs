@@ -45,7 +45,6 @@ namespace eBuddyApp.ViewModels
             });
 
             MobileService.Instance.UserDataLoaded += Instance_UserDataLoaded;
-            BuddyRunManager.Instance.RunId = "";
         }
 
         private void Instance_UserDataLoaded(object sender, EventArgs e)

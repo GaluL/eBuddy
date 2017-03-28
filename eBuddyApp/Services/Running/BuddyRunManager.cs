@@ -147,6 +147,11 @@ namespace eBuddy
                     OnMsgColorUpdate?.Invoke(Colors.RoyalBlue);
                     SocialMsg = "Great job " + MobileService.Instance.UserData.PrivateName +
                                 " you have completed the run first and you are the winner! yay!";
+                    var msg = BuddyRunInfo.FromGeoposition(obj, DateTime.UtcNow);
+                    msg.SourceUserId = eBuddyApp.Services.Azure.MobileService.Instance.UserData.FacebookId;
+                    msg.DestUserId = _buddyUserId;
+
+                    await RunnersHubProxy.Invoke("SendLocation", msg);
                     Stop();
                 }
                 else
