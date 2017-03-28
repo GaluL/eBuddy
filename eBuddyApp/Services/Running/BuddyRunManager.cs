@@ -88,7 +88,6 @@ namespace eBuddy
             get { return _runId;} 
            
             set {
-                SocialMsg = "Let's start running! press start as soon as you are ready";
                 _runId = value;
             }
         }
@@ -231,20 +230,20 @@ namespace eBuddy
 
         public void UpdateTipMsg()
         {
-            if (RunData.Distance < BuddyRunData.Distance)
+            if (RunData.Distance < BuddyRunData.Distance && _winner.Equals("nobody"))
             {
                 
                 double timeSeconds = ((((RunDistance - BuddyRunData.Distance)/1000) / (BuddyRunData.Speed > 0.5 ? BuddyRunData.Speed : 1)) * 60 * 60);
                 double tipKmh = (RunDistance - RunData.Distance) / timeSeconds;
                 OnMsgColorUpdate?.Invoke(Colors.Black);
                 OnMsgSizeUpdate?.Invoke(14);
-                if (tipKmh < BuddyRunData.Speed && _tip != 1)
+                if (tipKmh > RunData.Speed && _tip != 1) 
                 {
                     SocialMsg = BuddyData.PrivateName + " is currently the first! speed up to " + tipKmh +
                                 " in order to win!";
                     _tip = 1;
                 }
-                else if (tipKmh >= BuddyRunData.Speed && _tip != 2)
+                else if (tipKmh <= RunData.Speed && _tip != 2)
                 {
 
                     SocialMsg = BuddyData.PrivateName +
@@ -271,6 +270,16 @@ namespace eBuddy
                 SocialMsg = "Good job " + MobileService.Instance.UserData.PrivateName +
                             "! you are currently first! and you are in your target Heart Rate!";
                 _tip = 4;
+            }
+
+            if (BuddyRunData.Distance >= RunDistance && _winner.Equals("nobody"))
+            {
+                _winner = BuddyData.PrivateName;
+                OnMsgColorUpdate?.Invoke(Colors.DarkRed);
+                string he_she = BuddyData.Gender == true ? "he" : "she";
+                SocialMsg = BuddyData.PrivateName + " has completed the run and " + he_she +
+                            " is the winner!";
+                OnMsgSizeUpdate?.Invoke(14);
             }
 
 
