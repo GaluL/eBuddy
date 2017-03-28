@@ -100,7 +100,7 @@
                                 <TextBlock Text="Time: "   FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand" Grid.Row="2" Grid.Column="0"></TextBlock>
                                 <TextBlock HorizontalAlignment="Center" Text="{Binding Time, Mode=OneWay}"  Grid.Row="2" Grid.Column="1" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"/>
                                 <TextBlock Text="Speed: " Grid.Row="3" Grid.Column="0"  FontFamily="/Fonts/Quicksand-Bold.otf#Quicksand"/>
-                                <TextBlock HorizontalAlignment="Center" Text="{Binding Distance, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="3" Grid.Column="1"/>
+                                <TextBlock HorizontalAlignment="Center" Text="{Binding Speed, Mode=OneWay}" FontFamily="/Fonts/Quicksand-Regular.otf#Quicksand"  Grid.Row="3" Grid.Column="1"/>
                             </Grid>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
