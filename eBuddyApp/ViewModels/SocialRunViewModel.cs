@@ -111,7 +111,7 @@ namespace eBuddyApp.ViewModels
                     BuddyRunManager.Instance.OnFinish += Instance_OnFinish;
 
                 },
-                () => { return (!BuddyRunManager.Instance.InRun && BuddyRunManager.Instance.RunId != null && BuddyRunManager.Instance.RunId.Equals("nobody")); });
+                () => { return (!BuddyRunManager.Instance.InRun && BuddyRunManager.Instance.RunId != null && !BuddyRunManager.Instance.RunId.Equals("nobody")); });
 
             StopRun = new RelayCommand(() =>
                 {
